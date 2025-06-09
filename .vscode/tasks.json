@@ -4,7 +4,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "cd src && go build -o ../build/main.exe main.go && cd .. && ./build/main.exe ",
+      "command": "./script/launch.sh",
       "group": {
         "kind": "build",
         "isDefault": true

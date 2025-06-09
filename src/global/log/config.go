@@ -1,6 +1,7 @@
 package log
 
 import (
+	"MVC_DI/global"
 	"runtime"
 
 	"github.com/gookit/color"
@@ -8,18 +9,19 @@ import (
 )
 
 var (
-	timeColor   = color.HEX("#018025")
-	callerColor = color.HEX("#888888")
+	timeColor   = global.Green
+	callerColor = global.Grey
 )
 
 var levelColorMap = map[logrus.Level]*color.RGBStyle{
-	logrus.PanicLevel: color.HEXStyle("#d32f2f"),
-	logrus.FatalLevel: color.HEXStyle("#d32f2f"),
-	logrus.ErrorLevel: color.HEXStyle("#d32f2f"),
-	logrus.WarnLevel:  color.HEXStyle("#fbc02d"),
-	logrus.InfoLevel:  color.HEXStyle("#2196f3"),
-	logrus.DebugLevel: color.HEXStyle("#777777"),
+	logrus.PanicLevel: global.Red,
+	logrus.FatalLevel: global.Red,
+	logrus.ErrorLevel: global.Red,
+	logrus.WarnLevel:  global.Yellow,
+	logrus.InfoLevel:  global.Blue,
+	logrus.DebugLevel: global.Grey,
 }
+
 var levelNameMap = map[logrus.Level]string{
 	logrus.PanicLevel: "PANC",
 	logrus.FatalLevel: "FATL",

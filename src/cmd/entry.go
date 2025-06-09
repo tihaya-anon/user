@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"MVC_DI/config"
+	"MVC_DI/global"
 	"MVC_DI/global/log"
 	test_router "MVC_DI/router/test"
 	test_controller_builder "MVC_DI/section/test/controller/builder"
@@ -9,7 +10,6 @@ import (
 	test_service_builder "MVC_DI/section/test/service/builder"
 	"MVC_DI/server"
 	"context"
-	"fmt"
 	"os/signal"
 	"syscall"
 	"time"
@@ -39,20 +39,20 @@ func startServer(publicPath, authPath string, engine *gin.Engine, timeOut time.D
 }
 
 func Start() {
-	fmt.Println("============= START =============")
+	global.Grey.Println("============= START =============")
 	bindController()
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 	engine.Use(gin.Recovery())
-	fmt.Printf("activate profile: %s\n", config.Application.Env)
-	fmt.Printf("listen to: %s\n", config.Application.App.Uri)
+	global.Green.Printf("activate profile : %s\n", config.Application.Env)
+	global.Green.Printf("listen to        : %s\n", config.Application.App.Uri)
 	publicPath := "/api/v1/public"
 	authPath := "/api/v1/auth"
-	fmt.Printf("public path: %s\n", publicPath)
-	fmt.Printf("auth path: %s\n", authPath)
+	global.Green.Printf("public path      : %s\n", publicPath)
+	global.Green.Printf("auth path        : %s\n", authPath)
 	startServer(publicPath, authPath, engine, 5*time.Second)
 }
 
 func Stop() {
-	fmt.Println("============= STOP =============")
+	global.Grey.Println("============= STOP =============")
 }

@@ -11,8 +11,8 @@ func Test_LogFormat(t *testing.T) {
 	frequency := 3
 	logger := log.GetLogger(time.Duration(interval) * time.Second)
 	logger.Error("This is an error message.")
-	for i := 0; i < 3; i++ {
-		for j := 0; j < frequency; j++ {
+	for range 3 {
+		for range frequency {
 			logger.Debug("This is a debug message.")
 			logger.Info("This is an info message.")
 			logger.Warn("This is a warn message.")

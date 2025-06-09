@@ -2,11 +2,11 @@ package server
 
 import (
 	"MVC_DI/config"
+	"MVC_DI/global"
 	"MVC_DI/middleware"
 	"MVC_DI/router"
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -39,7 +39,7 @@ func (s *Server) Setup(publicPath, authPath string, engine *gin.Engine) {
 func (s *Server) Run() {
 	go func() {
 		if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			fmt.Printf("Start server failed: %s\n", err)
+			global.Red.Printf("Server Start failed: %s\n", err)
 			return
 		}
 	}()
@@ -50,8 +50,8 @@ func (s *Server) Stop(timeOut time.Duration) {
 	defer cancelShutdown()
 
 	if err := s.server.Shutdown(ctx); err != nil {
-		fmt.Printf("Server shutdown failed: %s\n", err)
+		global.Red.Printf("Server shutdown failed: %s\n", err)
 		return
 	}
-	fmt.Println("Server shutdown successfully")
+	global.Green.Println("Server shutdown successfully")
 }
