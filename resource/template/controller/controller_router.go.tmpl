@@ -11,8 +11,8 @@ import (
 
 func Bind{{.TableName}}Controller (ctrl *{{.entity_name}}_controller.{{.TableName}}Controller) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-//    publicGroup := util.RoutesWrapper(publicRouterGroup.Group("/{{.table_name_hyphen}}"))
-//    authGroup := util.RoutesWrapper(authRouterGroup.Group("/{{.table_name_hyphen}}"))
-//    authGroup.Use(middleware.JwtMiddleware())
+    // publicGroup := util.RoutesWrapper(publicRouterGroup.Group("/{{.table_name_hyphen}}"))
+    authGroup := util.RoutesWrapper(authRouterGroup.Group("/{{.table_name_hyphen}}"))
+    authGroup.Use(middleware.JwtMiddleware())
   })
 }

@@ -18,6 +18,7 @@ func BindValidation[T any](ctx *gin.Context) (*T, *common.ValidationError) {
 			field, msg := getValidationMsg(validationErrors, &bind)
 			return nil, &common.ValidationError{Field: field, Msg: msg}
 		}
+		return nil, &common.ValidationError{Msg: "cannot parse body"}
 	}
 	return &bind, nil
 }
