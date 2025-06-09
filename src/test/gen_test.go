@@ -21,10 +21,13 @@ func Test_GenQuery(t *testing.T) {
 }
 
 func Test_MVC(t *testing.T) {
-	Test_GenController(t)
-	Test_GenService(t)
-	Test_GenMapper(t)
+	gen.GenerateMVC("MVC_DI", "section", "auth", []string{"auth"})
+	gen.GenerateMVC("MVC_DI", "section", "user", []string{"user"})
+	gen.GenerateMVC("MVC_DI", "section", "credential", []string{"credential"})
+	gen.GenerateMVC("MVC_DI", "section", "permission", []string{"permission"})
+	gen.GenerateMVC("MVC_DI", "section", "security", []string{"security"})
 }
+
 func Test_GenController(t *testing.T) {
 	gen.GenerateGinController("MVC_DI", "section", "test", []string{"test_a"})
 }

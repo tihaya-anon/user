@@ -23,6 +23,17 @@ func (commonMethod *ICommonMethod) BeforeCreate(tx *gorm.DB) error {
 	return nil
 }
 
+func GenerateMVC(pkg, basePath, entity string, tables []string) {
+	//  generate mapper and mapper impl
+	GenerateMapper(pkg, basePath, entity, tables)
+
+	//  generate service and service impl
+	GenerateService(pkg, basePath, entity, tables)
+
+	//  generate gin controller
+	GenerateGinController(pkg, basePath, entity, tables)
+}
+
 // # Generate
 //
 // generate code for the given entities
