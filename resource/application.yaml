@@ -1,0 +1,6 @@
+env: dev
+jwt:
+  expiration:
+    hour: 0
+    minute: 15
+    second: 0

@@ -1,0 +1,96 @@
+{
+  "yaml.schemas": {
+    "schema/application.json": "/application*.yaml"
+  },
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true,
+  "explorer.confirmDelete": false,
+  "editor.tabSize": 2,
+  "git.enableSmartCommit": true,
+  "editor.guides.indentation": true,
+  "indentRainbow.colors": [
+    "rgba(255,255,64, 0.2)",
+    "rgba(127,255,127,0.2)",
+    "rgba(255,127,255,0.2)",
+    "rgba(79, 236,236,0.2)"
+  ],
+  "editor.guides.bracketPairs": false,
+  "material-icon-theme.activeIconPack": "react",
+  "material-icon-theme.folders.customClones": [
+    {
+      "name": "Comments",
+      "base": "messages",
+      "color": "light-green-500",
+      "folderNames": [
+        "comment",
+        "comments"
+      ],
+      "rootFolderNames": [
+        "section"
+      ]
+    },
+    {
+      "name": "Service",
+      "base": "api",
+      "color": "blue-600",
+      "folderNames": [
+        "service"
+      ]
+    },
+    {
+      "name": "Model",
+      "base": "class",
+      "color": "green-500",
+      "folderNames": [
+        "model"
+      ]
+    },
+    {
+      "name": "Impl",
+      "base": "helper",
+      "color": "brown-500",
+      "folderNames": [
+        "impl"
+      ]
+    }
+  ],
+  "material-icon-theme.folders.theme": "specific",
+  "material-icon-theme.folders.associations": {
+    "vo": "Enum",
+    "dto": "Enum",
+    "store": "Store",
+    "aspect": "Middleware",
+    "interceptor": "Middleware",
+    "message": "Messages",
+    "listener": "Event",
+    "entity": "Enum",
+    "map": "Mappings",
+    "mapper": "Mappings",
+    "exception": "Error",
+    "payload": "Upload",
+    "section": "Components",
+    "ref": "Contract",
+    "user": "Admin",
+    "tag": "Custom",
+    "resp": "Download",
+    "req": "Upload",
+    "global": "Base",
+    "builder": "Project"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.wordWrap": "on",
+  "workbench.iconTheme": "material-icon-theme",
+  "indentRainbow.excludedLanguages": [
+    "java",
+    "plaintext",
+    "go"
+  ],
+  "conventionalCommits.scopes": [
+    "post",
+    "user",
+    "template",
+    "generator",
+    "util/controller",
+    "logger"
+  ]
+}

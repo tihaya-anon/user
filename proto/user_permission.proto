@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package user_permission;
+
+option java_package = "com.anon.user_permission";
+option java_outer_classname = "UserPermissionProto";
+option java_multiple_files = false;
+
+import "google/protobuf/timestamp.proto";
+
+message UserPermission {
+  int64 user_id = 1;
+  string permission = 2; // e.g., "trade", "withdraw", "view_sensitive_data"
+  bool granted = 3;
+  int64 granted_by = 4;
+  google.protobuf.Timestamp granted_at = 5;
+  string comment = 6;
+}
+
+// ==== 设置权限 ====
+
+message SetUserPermissionRequest {
+  int64 user_id = 1;
+  string permission = 2;
+  bool granted = 3;
+  int64 granted_by = 4;
+  string comment = 5;
+}
+
+message SetUserPermissionResponse { bool success = 1; }
+
+// ==== 查询用户权限 ====
+
+message GetUserPermissionsRequest { int64 user_id = 1; }
+
+message GetUserPermissionsResponse { repeated UserPermission permissions = 1; }
+
+// ==== Service ====
+
+service UserPermissionService {
+  rpc SetUserPermission(SetUserPermissionRequest)
+      returns (SetUserPermissionResponse);
+  rpc GetUserPermissions(GetUserPermissionsRequest)
+      returns (GetUserPermissionsResponse);
+}

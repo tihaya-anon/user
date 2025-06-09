@@ -1,0 +1,36 @@
+package {{.entity_name}}_service_builder
+
+import (
+	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
+	{{.entity_name}}_service_impl "{{.pkg}}/section/{{.entity_name}}/service/impl"
+	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
+)
+
+func (builder *{{.TableName}}ServiceBuilder) Build() {{.entity_name}}_service.{{.TableName}}Service {
+	if builder.isStrict && builder.{{.tableName}}ServiceImpl.{{.TableName}}Mapper == nil {
+		panic("`{{.TableName}}Mapper` is required")
+	}
+	return builder.{{.tableName}}ServiceImpl
+}
+
+func (builder *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.entity_name}}_mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
+	builder.{{.tableName}}ServiceImpl.{{.TableName}}Mapper = mapper
+	return builder
+}
+
+// BUILDER
+type {{.TableName}}ServiceBuilder struct {
+  isStrict bool
+	{{.tableName}}ServiceImpl *{{.entity_name}}_service_impl.{{.TableName}}ServiceImpl
+}
+
+func New{{.TableName}}ServiceBuilder() *{{.TableName}}ServiceBuilder {
+	return &{{.TableName}}ServiceBuilder{
+		{{.tableName}}ServiceImpl: &{{.entity_name}}_service_impl.{{.TableName}}ServiceImpl{},
+	}
+}
+
+func (builder *{{.TableName}}ServiceBuilder) UseStrict() *{{.TableName}}ServiceBuilder { 
+  builder.isStrict = true
+  return builder
+}

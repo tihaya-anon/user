@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package auth_session;
+
+option java_package = "com.anon.auth_session";
+option java_outer_classname = "AuthSessionProto";
+option java_multiple_files = false;
+
+import "google/protobuf/timestamp.proto";
+
+message AuthSession {
+  int64 session_id = 1;
+  int64 user_id = 2;
+  string token = 3;
+  string device_info = 4;
+  string ip_address = 5;
+  google.protobuf.Timestamp expires_at = 6;
+  bool is_valid = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+// ==== 创建会话 ====
+
+message CreateAuthSessionRequest {
+  int64 user_id = 1;
+  string token = 2;
+  string device_info = 3;
+  string ip_address = 4;
+  google.protobuf.Timestamp expires_at = 5;
+}
+
+message CreateAuthSessionResponse { int64 session_id = 1; }
+
+// ==== 查询用户会话 ====
+
+message GetUserSessionsRequest { int64 user_id = 1; }
+
+message GetUserSessionsResponse { repeated AuthSession sessions = 1; }
+
+// ==== 注销会话 ====
+
+message InvalidateSessionRequest { int64 session_id = 1; }
+
+message InvalidateSessionResponse { bool success = 1; }
+
+// ==== Service ====
+
+service AuthSessionService {
+  rpc CreateAuthSession(CreateAuthSessionRequest)
+      returns (CreateAuthSessionResponse);
+  rpc GetUserSessions(GetUserSessionsRequest) returns (GetUserSessionsResponse);
+  rpc InvalidateSession(InvalidateSessionRequest)
+      returns (InvalidateSessionResponse);
+}

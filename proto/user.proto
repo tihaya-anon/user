@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package user;
+
+option java_package = "com.anon.user";
+option java_outer_classname = "UserProto";
+option java_multiple_files = false;
+
+import "google/protobuf/timestamp.proto";
+
+enum UserRole {
+  USER_ROLE_UNSPECIFIED = 0;
+  ADMIN = 1;
+  TRADER = 2;
+  USER = 3;
+}
+
+message User {
+  int64 user_id = 1;
+  string username = 2;
+  string email = 3;
+  UserRole role = 4;
+  bool is_deleted = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+// ==== CreateUser ====
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  UserRole role = 3;
+  string hashed_pwd = 4;
+}
+
+message CreateUserResponse { int64 user_id = 1; }
+
+// ==== GetUser ====
+
+message GetUserByIdRequest { int64 user_id = 1; }
+
+message GetUserByIdResponse { User user = 1; }
+
+// ==== UpdateUser ====
+
+message UpdateUserRequest {
+  int64 user_id = 1;
+  string username = 2;
+  string email = 3;
+  UserRole role = 4;
+  string hashed_pwd = 5;
+}
+
+message UpdateUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ==== Service ====
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+}

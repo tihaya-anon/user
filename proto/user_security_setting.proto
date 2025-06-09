@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package user_security;
+
+option java_package = "com.anon.user_security";
+option java_outer_classname = "UserSecurityProto";
+option java_multiple_files = false;
+
+import "google/protobuf/timestamp.proto";
+
+enum KycStatus {
+  KYC_STATUS_UNSPECIFIED = 0;
+  UNVERIFIED = 1;
+  PENDING = 2;
+  VERIFIED = 3;
+}
+
+enum RiskLevel {
+  RISK_LEVEL_UNSPECIFIED = 0;
+  LOW = 1;
+  MEDIUM = 2;
+  HIGH = 3;
+}
+
+message UserSecuritySetting {
+  int64 user_id = 1;
+  bool is_2fa_enabled = 2;
+  KycStatus kyc_status = 3;
+  RiskLevel risk_level = 4;
+  repeated string withdrawal_whitelist =
+      5; // parsed from JSON array (e.g., ["addr1", "addr2"])
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+// ==== 查询设置 ====
+message GetUserSecuritySettingRequest { int64 user_id = 1; }
+
+message GetUserSecuritySettingResponse { UserSecuritySetting setting = 1; }
+
+// ==== 更新设置 ====
+message UpdateUserSecuritySettingRequest {
+  int64 user_id = 1;
+  bool is_2fa_enabled = 2;
+  KycStatus kyc_status = 3;
+  RiskLevel risk_level = 4;
+  string withdrawal_whitelist = 5;
+}
+
+message UpdateUserSecuritySettingResponse { bool success = 1; }
+
+// ==== 创建设置 ====
+message CreateUserSecuritySettingRequest {
+  int64 user_id = 1;
+  bool is_2fa_enabled = 2;
+  KycStatus kyc_status = 3;
+  RiskLevel risk_level = 4;
+  string withdrawal_whitelist = 5; // JSON 格式的提币白名单地址
+}
+
+message CreateUserSecuritySettingResponse {
+  bool success = 1;
+  string message = 2; // Optional message for additional info
+}
+
+// ==== Service ====
+service UserSecuritySettingService {
+  rpc GetUserSecuritySetting(GetUserSecuritySettingRequest)
+      returns (GetUserSecuritySettingResponse);
+  rpc UpdateUserSecuritySetting(UpdateUserSecuritySettingRequest)
+      returns (UpdateUserSecuritySettingResponse);
+  rpc CreateUserSecuritySetting(CreateUserSecuritySettingRequest) returns (
+      CreateUserSecuritySettingResponse); // New RPC method for creating user
+                                          // security setting
+}

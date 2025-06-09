@@ -1,0 +1,34 @@
+package {{.entity_name}}_mapper_builder
+
+import (
+	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
+	{{.entity_name}}_mapper_impl "{{.pkg}}/section/{{.entity_name}}/mapper/impl"
+	
+	"gorm.io/gorm"
+)
+
+func (builder *{{.TableName}}MapperBuilder) Build() {{.entity_name}}_mapper.{{.TableName}}Mapper {
+	return builder.{{.tableName}}MapperImpl
+}
+
+func (builder *{{.TableName}}MapperBuilder) WithDB(DB *gorm.DB) *{{.TableName}}MapperBuilder {
+  builder.{{.tableName}}MapperImpl.DB = DB
+  return builder
+}
+
+// BUILDER
+type {{.TableName}}MapperBuilder struct {
+  isStrict bool
+	{{.tableName}}MapperImpl *{{.entity_name}}_mapper_impl.{{.TableName}}MapperImpl
+}
+
+func New{{.TableName}}MapperBuilder() *{{.TableName}}MapperBuilder {
+	return &{{.TableName}}MapperBuilder{
+		{{.tableName}}MapperImpl: &{{.entity_name}}_mapper_impl.{{.TableName}}MapperImpl{},
+	}
+}
+
+func (builder *{{.TableName}}MapperBuilder) UseStrict() *{{.TableName}}MapperBuilder { 
+  builder.isStrict = true
+  return builder
+}
