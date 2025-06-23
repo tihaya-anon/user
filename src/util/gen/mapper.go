@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-// # GenerateMapper
+// GenerateMapper
 //
 // generates Mapper and MapperImpl
 func GenerateMapper(pkg, basePath, entity string, tables []string) {

@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-// # GenerateGinController
+// GenerateGinController
 //
 // generates the core and builder files for a Gin controller
 //
@@ -20,7 +20,7 @@ func GenerateGinController(pkg, basePath, entity string, tables []string) {
 	}
 }
 
-// # _generateGinController
+// _generateGinController
 //
 // generates the core and builder files for a Gin controller
 //

@@ -34,9 +34,9 @@ func GenerateMVC(pkg, basePath, entity string, tables []string) {
 	GenerateGinController(pkg, basePath, entity, tables)
 }
 
-// # Generate
+// Generate
 //
-// generate code for the given entities
+//	code for the given entities
 //
 // This function will generate query, service, service impl, mapper, mapper impl, and gin controller for the given entities.
 func Generate(pkg string, entities []string) {

@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-// # GenerateService
+// GenerateService
 //
 // generates Service and ServiceImpl
 func GenerateService(pkg, basePath, entity string, tables []string) {
@@ -15,7 +15,8 @@ func GenerateService(pkg, basePath, entity string, tables []string) {
 		_generateService(pkg, basePath, entity, table)
 	}
 }
-// # _generateService
+
+// _generateService
 //
 // _generateService generates Service and ServiceImpl
 //

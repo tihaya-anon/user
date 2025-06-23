@@ -1,9 +1,9 @@
 package auth_service_builder
 
 import (
+	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
 	auth_service_impl "MVC_DI/section/auth/service/impl"
-	auth_mapper "MVC_DI/section/auth/mapper"
 )
 
 func (builder *AuthServiceBuilder) Build() auth_service.AuthService {
@@ -18,10 +18,17 @@ func (builder *AuthServiceBuilder) WithAuthMapper(mapper auth_mapper.AuthMapper)
 	return builder
 }
 
+func (builder *AuthServiceBuilder) WithMatchService(svc auth_service.MatchService) *AuthServiceBuilder {
+	builder.authServiceImpl.MatchService = svc
+	return builder
+}
+
 // BUILDER
+
 type AuthServiceBuilder struct {
-  isStrict bool
-	authServiceImpl *auth_service_impl.AuthServiceImpl
+	isStrict         bool
+	authServiceImpl  *auth_service_impl.AuthServiceImpl
+	matchServiceImpl *auth_service_impl.MatchServiceImpl
 }
 
 func NewAuthServiceBuilder() *AuthServiceBuilder {
@@ -30,7 +37,7 @@ func NewAuthServiceBuilder() *AuthServiceBuilder {
 	}
 }
 
-func (builder *AuthServiceBuilder) UseStrict() *AuthServiceBuilder { 
-  builder.isStrict = true
-  return builder
+func (builder *AuthServiceBuilder) UseStrict() *AuthServiceBuilder {
+	builder.isStrict = true
+	return builder
 }

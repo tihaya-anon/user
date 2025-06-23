@@ -10,7 +10,7 @@ import (
 	"text/template"
 )
 
-// # GenerateTemplate
+// GenerateTemplate
 //
 // generates the code file based on the given template
 // and table information.
