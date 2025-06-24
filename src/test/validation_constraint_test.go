@@ -24,6 +24,7 @@ func TestBindValidation(t *testing.T) {
 	router.POST("/test", func(c *gin.Context) {
 		data, validationErr := controller_util.BindValidation[TestRequest](c)
 		if validationErr != nil {
+			t.Log(validationErr)
 			c.JSON(http.StatusBadRequest, validationErr)
 			return
 		}

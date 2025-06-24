@@ -1,6 +1,7 @@
 package controller_util
 
 import (
+	"MVC_DI/util"
 	"MVC_DI/vo/resp/common"
 	"errors"
 	"reflect"
@@ -34,7 +35,7 @@ func BindValidation[T any](ctx *gin.Context) (*T, *common.ValidationError) {
 func getValidationMsg(fieldError validator.FieldError, bind any) (string, string) {
 	obj := reflect.TypeOf(bind)
 	if field, ok := obj.Elem().FieldByName(fieldError.Field()); ok {
-		return field.Name, field.Tag.Get("msg")
+		return util.PascalToSnake(field.Name), field.Tag.Get("msg")
 	}
 	return "", ""
 }
