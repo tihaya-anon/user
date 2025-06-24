@@ -48,9 +48,6 @@ components:
     AuthSessionResponse:
       type: object
       properties:
-        session_id:
-          type: integer
-          format: int64
         token:
           type: string
         device_info:
@@ -314,6 +311,7 @@ paths:
       tags:
       - Auth
       operationId: loginUser
+      security: []
       parameters: []
       requestBody:
         content:
@@ -362,6 +360,7 @@ paths:
       tags:
       - User
       operationId: registerUser
+      security: []
       parameters: []
       requestBody:
         content:

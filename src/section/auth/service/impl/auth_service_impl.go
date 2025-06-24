@@ -6,8 +6,12 @@ import (
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
+	"MVC_DI/security"
+	"MVC_DI/security/claims"
 	"context"
 	"fmt"
+
+	"github.com/gin-gonic/gin"
 )
 
 type AuthServiceImpl struct {
@@ -15,6 +19,13 @@ type AuthServiceImpl struct {
 	MatchService auth_service.MatchService
 }
 
+// LogoutUser implements auth_service.AuthService.
+func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
+	err := a.AuthMapper.InvalidSession(ctx, sessionId)
+	return err
+}
+
+// LoginUser implements auth_service.AuthService.
 func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error) {
 	getCredentialsByIdentifierAndTypeDto := auth_dto.GetCredentialsByIdentifierAndTypeDto{Identifier: userLoginDto.Identifier, Type: userLoginDto.Type}
 	authCredentials, err := a.AuthMapper.GetCredentialsByIdentifierAndType(ctx, getCredentialsByIdentifierAndTypeDto)
@@ -57,9 +68,15 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 	if err != nil {
 		return nil, err
 	}
+	token, err := security.GenerateJWT(claims.UserClaim{
+		UserId: authCredential.UserId,
+	})
+	if err != nil {
+		return nil, err
+	}
 	response := &auth_dto.UserLoginRespDto{
 		SessionId: *sessionId,
-		Token:     fmt.Sprintf("token_%d", *sessionId),
+		Token:     token,
 	}
 	return response, nil
 }

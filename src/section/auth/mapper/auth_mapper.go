@@ -10,5 +10,6 @@ import (
 type AuthMapper interface {
 	GetCredentialsByIdentifierAndType(ctx context.Context, dto auth_dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error)
 	CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error)
+	InvalidSession(ctx context.Context, sessionId int64) error
 	// DEFINE METHODS
 }

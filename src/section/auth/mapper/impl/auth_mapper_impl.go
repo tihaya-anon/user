@@ -6,11 +6,23 @@ import (
 	auth_mapper "MVC_DI/section/auth/mapper"
 	"context"
 	"fmt"
+
 	"google.golang.org/grpc"
 )
 
 type AuthMapperImpl struct {
 	conn *grpc.ClientConn
+}
+
+// InvalidSession implements auth_mapper.AuthMapper.
+func (a *AuthMapperImpl) InvalidSession(ctx context.Context, id int64) error {
+	client := proto.NewAuthSessionServiceClient(a.conn)
+	request := &proto.InvalidateSessionRequest{SessionId: id}
+	_, err := client.InvalidateSession(ctx, request)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error) {

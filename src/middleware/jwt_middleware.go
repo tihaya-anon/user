@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"MVC_DI/global/enum"
-	"MVC_DI/vo/resp"
 	"MVC_DI/security"
+	"MVC_DI/vo/resp"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -22,10 +22,21 @@ func JwtMiddleware() gin.HandlerFunc {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE.INVALID_TOKEN, enum.MSG.INVALID_TOKEN, nil))
 			return
 		}
+		ctx.Set("token", &token)
 		ctx.Next()
 	}
 }
-
+func GetToken(ctx *gin.Context) *string {
+	token, exists := ctx.Get("token")
+	if !exists {
+		return nil
+	}
+	str, ok := token.(*string)
+	if !ok {
+		return nil
+	}
+	return str
+}
 func extractToken(token string) (bool, string) {
 	isLegal := strings.HasPrefix(token, "Bearer ") && len(strings.Split(token, " ")) == 2
 	if isLegal {
