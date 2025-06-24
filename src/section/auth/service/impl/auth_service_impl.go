@@ -33,7 +33,7 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 		return nil, err
 	}
 	matched := false
-	msg := auth_enum.MSG.UNKNOWN_CREDENTIAL
+	errMsg := auth_enum.MSG.UNKNOWN_CREDENTIAL
 	authCredential := &proto.AuthCredential{}
 	authCredential = nil
 	for _, credential := range authCredentials {
@@ -44,24 +44,24 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 		break
 	}
 	if authCredential == nil {
-		return nil, errors.New(msg)
+		return nil, errors.New(errMsg)
 	}
 	switch authCredential.Type {
 	case proto.CredentialType_PASSWORD:
 		matched = a.MatchService.MatchPassword(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		msg = auth_enum.MSG.PASSWORD_WRONG
+		errMsg = auth_enum.MSG.PASSWORD_WRONG
 	case proto.CredentialType_EMAIL_CODE:
 		matched = a.MatchService.MatchEmailCode(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		msg = auth_enum.MSG.EMAIL_CODE_WRONG
+		errMsg = auth_enum.MSG.EMAIL_CODE_WRONG
 	case proto.CredentialType_GOOGLE_2FA:
 		matched = a.MatchService.MatchGoogle2FA(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		msg = auth_enum.MSG.GOOGLE_2FA_WRONG
+		errMsg = auth_enum.MSG.GOOGLE_2FA_WRONG
 	case proto.CredentialType_OAUTH:
 		matched = a.MatchService.MatchOauth(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		msg = auth_enum.MSG.OAUTH_WRONG
+		errMsg = auth_enum.MSG.OAUTH_WRONG
 	}
 	if !matched {
-		return nil, errors.New(msg)
+		return nil, errors.New(errMsg)
 	}
 	createSessionDto := auth_dto.CreateSessionDto{UserId: authCredential.GetUserId()}
 	sessionId, err := a.AuthMapper.CreateSession(ctx, createSessionDto)
