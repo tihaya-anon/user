@@ -1,5 +1,6 @@
 #!/bin/bash
 # Navigate to source directory
+cd "$(dirname "$0")" || exit
 cd ../src || exit
 
 # Create build directory if it doesn't exist

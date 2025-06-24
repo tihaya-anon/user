@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package kafka;
+
+option java_package = "com.anon.kafka";
+option java_outer_classname = "KafkaEventProto";
+option java_multiple_files = false;
+option go_package = "./proto";
+
+import "google/protobuf/timestamp.proto";
+
+// ===== 枚举定义 =====
+
+enum Priority {
+  PRIORITY_UNSPECIFIED = 0;
+  HIGH = 1;
+  MEDIUM = 2;
+  LOW = 3;
+}
+
+enum DeliveryMode {
+  DELIVERY_UNSPECIFIED = 0;
+  PUSH = 1;
+  PULL = 2;
+}
+
+enum EventStatus {
+  STATUS_UNSPECIFIED = 0; // 未指定状态
+  PENDING = 1;            // 待处理
+  PROCESSED_SUCCESS = 2;  // 处理成功
+  PROCESSED_FAILED = 3;   // 处理失败（可重试）
+  FINAL_FAILED = 4;       // 最终失败（放弃重试）
+  CANCELLED = 5;          // 主动取消（不处理，非失败）
+}
+
+// ===== 错误详情结构 =====
+
+message FailureDetail {
+  string error_code = 1;
+  string error_message = 2;
+  google.protobuf.Timestamp occurred_at = 3;
+}
+
+// ===== 通用 Kafka 消息 Envelope 对应 kafka_event 表结构 =====
+
+message KafkaEnvelope {
+  int64 event_id = 1;                          // 主键 ID
+  string topic_name = 2;                       // Kafka topic 名称
+  string event_type = 3;                       // 业务事件类型
+  Priority priority = 4;                       // 优先级
+  bytes payload = 5;                           // 消息内容
+  DeliveryMode delivery_mode = 6;              // 投递模式
+  EventStatus status = 7;                      // 当前状态
+  int32 retry_cnt = 8;                         // 重试次数
+  string idempotency_key = 9;                  // 幂等键
+  string correlation_id = 10;                  // 请求链路标识
+  map<string, string> headers = 11;            // 可选的 Kafka headers
+  string error_code = 12;                      // 错误码
+  string error_message = 13;                   // 错误信息
+  google.protobuf.Timestamp created_at = 14;   // 创建时间
+  google.protobuf.Timestamp processed_at = 15; // 处理时间
+}
+
+// ===== 提交事件 =====
+
+message SubmitEventRequest { KafkaEnvelope envelope = 1; }
+
+message SubmitEventResponse {
+  int64 event_id = 1;
+  EventStatus status = 2;
+}
+
+// ===== 确认处理 =====
+
+message AcknowledgeEventRequest { int64 event_id = 1; }
+
+message AcknowledgeEventResponse { bool success = 1; }
+
+// ===== 标记失败（可重试） =====
+
+message FailEventRequest {
+  int64 event_id = 1;
+  FailureDetail failure = 2;
+}
+
+message FailEventResponse { bool success = 1; }
+// ===== 标记失败（不可重试） =====
+message MarkFinalFailedRequest {
+  int64 event_id = 1;
+  FailureDetail failure = 2;
+}
+
+message MarkFinalFailedResponse { bool success = 1; }
+// ==== 取消处理 ====
+message CancelEventRequest {
+  int64 event_id = 1;
+  string reason = 2; // 取消理由（如“超时放弃”、“业务撤销”）
+  google.protobuf.Timestamp cancelled_at = 3; // 取消时间（可选）
+}
+
+message CancelEventResponse { bool success = 1; }
+
+// ===== 获取待处理事件 =====
+
+message GetPendingEventsRequest {
+  int32 limit = 1;
+  string page_token = 2;
+  string topic_name = 3;
+  string event_type = 4;
+  optional Priority min_priority = 5;
+}
+
+message GetPendingEventsResponse {
+  repeated KafkaEnvelope envelopes = 1;
+  string next_page_token = 2;
+  int64 total_cnt = 3;
+}
+
+// ===== 服务定义 =====
+
+service KafkaEventService {
+  rpc SubmitEvent(SubmitEventRequest) returns (SubmitEventResponse);
+  rpc AcknowledgeEvent(AcknowledgeEventRequest)
+      returns (AcknowledgeEventResponse);
+  rpc FailEvent(FailEventRequest)
+      returns (FailEventResponse); // 处理失败（可能重试）
+  rpc MarkFinalFailed(MarkFinalFailedRequest)
+      returns (MarkFinalFailedResponse); // 明确失败终态
+  rpc CancelEvent(CancelEventRequest)
+      returns (CancelEventResponse); // 主动取消，不再处理
+  rpc GetPendingEvents(GetPendingEventsRequest)
+      returns (GetPendingEventsResponse);
+}
