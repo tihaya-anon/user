@@ -48,16 +48,16 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 	}
 	switch authCredential.Type {
 	case proto.CredentialType_PASSWORD:
-		matched = a.MatchService.MatchPassword(userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchPassword(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
 		msg = auth_enum.MSG.PASSWORD_WRONG
 	case proto.CredentialType_EMAIL_CODE:
-		matched = a.MatchService.MatchEmailCode(userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchEmailCode(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
 		msg = auth_enum.MSG.EMAIL_CODE_WRONG
 	case proto.CredentialType_GOOGLE_2FA:
-		matched = a.MatchService.MatchGoogle2FA(userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchGoogle2FA(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
 		msg = auth_enum.MSG.GOOGLE_2FA_WRONG
 	case proto.CredentialType_OAUTH:
-		matched = a.MatchService.MatchOauth(userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchOauth(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
 		msg = auth_enum.MSG.OAUTH_WRONG
 	}
 	if !matched {

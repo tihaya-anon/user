@@ -7,6 +7,8 @@ import (
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_service_impl "MVC_DI/section/auth/service/impl"
+	"MVC_DI/security"
+	"MVC_DI/security/claims"
 	"context"
 	"errors"
 	"testing"
@@ -94,7 +96,7 @@ func Test_LoginUser_CreateSessionInternalError(t *testing.T) {
 		Return([]*proto.AuthCredential{activeCredential}, nil)
 
 	mockMatch.EXPECT().
-		MatchPassword(dto.Secret, "1234").
+		MatchPassword(dto.Identifier, dto.Secret, "1234").
 		Return(true)
 
 	mockMapper.EXPECT().
@@ -134,7 +136,7 @@ func Test_LoginUser_Success(t *testing.T) {
 		Return([]*proto.AuthCredential{activeCredential}, nil)
 
 	mockMatch.EXPECT().
-		MatchPassword("secret", "encoded_secret").
+		MatchPassword(dto.Identifier, dto.Secret, "encoded_secret").
 		Return(true)
 
 	sessionId := int64(9876)
@@ -143,10 +145,15 @@ func Test_LoginUser_Success(t *testing.T) {
 		Return(&sessionId, nil)
 
 	resp, err := svc.LoginUser(ctx, dto)
+	assert.NoError(t, err)
+
+	token, err := security.GenerateJWT(claims.UserClaim{
+		UserId: activeCredential.UserId,
+	})
 
 	assert.NoError(t, err)
 	assert.Equal(t, &auth_dto.UserLoginRespDto{
 		SessionId: sessionId,
-		Token:     "token_9876",
+		Token:     token,
 	}, resp)
 }

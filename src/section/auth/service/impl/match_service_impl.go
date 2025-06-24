@@ -5,22 +5,22 @@ import auth_service "MVC_DI/section/auth/service"
 type MatchServiceImpl struct {
 }
 
-func (m MatchServiceImpl) MatchPassword(raw string, encoded string) bool {
+func (m MatchServiceImpl) MatchPassword(identifier string, raw string, encoded string) bool {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m MatchServiceImpl) MatchEmailCode(raw string, encoded string) bool {
+func (m MatchServiceImpl) MatchEmailCode(identifier string, raw string, encoded string) bool {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m MatchServiceImpl) MatchGoogle2FA(raw string, encoded string) bool {
+func (m MatchServiceImpl) MatchGoogle2FA(identifier string, raw string, encoded string) bool {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (m MatchServiceImpl) MatchOauth(raw string, encoded string) bool {
+func (m MatchServiceImpl) MatchOauth(identifier string, raw string, encoded string) bool {
 	//TODO implement me
 	panic("implement me")
 }
