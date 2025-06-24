@@ -1,4 +1,4 @@
-package controller_uitl
+package controller_util
 
 import (
 	"MVC_DI/vo/req"

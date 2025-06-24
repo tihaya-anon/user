@@ -1,4 +1,4 @@
-package controller_uitl
+package controller_util
 
 import (
 	"MVC_DI/vo/resp/common"
@@ -14,21 +14,27 @@ func BindValidation[T any](ctx *gin.Context) (*T, *common.ValidationError) {
 	err := ctx.ShouldBind(&bind)
 	if err != nil {
 		var validationErrors validator.ValidationErrors
-		if errors.As(err, &validationErrors) {
-			field, msg := getValidationMsg(validationErrors, &bind)
-			return nil, &common.ValidationError{Field: field, Msg: msg}
+		validationErrorBody := make(common.ValidationError)
+		if !errors.As(err, &validationErrors) {
+			validationErrorBody["error"] = "cannot parse body"
+			return nil, &validationErrorBody
 		}
-		return nil, &common.ValidationError{Msg: "cannot parse body"}
+		for _, fieldError := range validationErrors {
+			field, msg := getValidationMsg(fieldError, &bind)
+			if field == "" || msg == "" {
+				continue
+			}
+			validationErrorBody[field] = msg
+		}
+		return nil, &validationErrorBody
 	}
 	return &bind, nil
 }
 
-func getValidationMsg(validationErrors validator.ValidationErrors, bind any) (string, string) {
+func getValidationMsg(fieldError validator.FieldError, bind any) (string, string) {
 	obj := reflect.TypeOf(bind)
-	for _, validationError := range validationErrors {
-		if field, ok := obj.Elem().FieldByName(validationError.Field()); ok {
-			return field.Tag.Get("form"), field.Tag.Get("msg")
-		}
+	if field, ok := obj.Elem().FieldByName(fieldError.Field()); ok {
+		return field.Name, field.Tag.Get("msg")
 	}
 	return "", ""
 }
