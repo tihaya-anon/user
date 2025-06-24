@@ -9,7 +9,7 @@ import (
 	"MVC_DI/security"
 	"MVC_DI/security/claims"
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,39 +37,39 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 	authCredential := &proto.AuthCredential{}
 	authCredential = nil
 	for _, credential := range authCredentials {
-		if !credential.IsActive {
+		if !credential.GetIsActive() {
 			continue
 		}
 		authCredential = credential
 		break
 	}
 	if authCredential == nil {
-		return nil, fmt.Errorf(msg)
+		return nil, errors.New(msg)
 	}
 	switch authCredential.Type {
 	case proto.CredentialType_PASSWORD:
-		matched = a.MatchService.MatchPassword(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchPassword(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
 		msg = auth_enum.MSG.PASSWORD_WRONG
 	case proto.CredentialType_EMAIL_CODE:
-		matched = a.MatchService.MatchEmailCode(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchEmailCode(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
 		msg = auth_enum.MSG.EMAIL_CODE_WRONG
 	case proto.CredentialType_GOOGLE_2FA:
-		matched = a.MatchService.MatchGoogle2FA(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchGoogle2FA(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
 		msg = auth_enum.MSG.GOOGLE_2FA_WRONG
 	case proto.CredentialType_OAUTH:
-		matched = a.MatchService.MatchOauth(userLoginDto.Identifier, userLoginDto.Secret, authCredential.Secret)
+		matched = a.MatchService.MatchOauth(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
 		msg = auth_enum.MSG.OAUTH_WRONG
 	}
 	if !matched {
-		return nil, fmt.Errorf(msg)
+		return nil, errors.New(msg)
 	}
-	createSessionDto := auth_dto.CreateSessionDto{UserId: authCredential.UserId}
+	createSessionDto := auth_dto.CreateSessionDto{UserId: authCredential.GetUserId()}
 	sessionId, err := a.AuthMapper.CreateSession(ctx, createSessionDto)
 	if err != nil {
 		return nil, err
 	}
 	token, err := security.GenerateJWT(claims.UserClaim{
-		UserId: authCredential.UserId,
+		UserId: authCredential.GetUserId(),
 	})
 	if err != nil {
 		return nil, err

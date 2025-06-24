@@ -5,7 +5,7 @@ import (
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	"context"
-	"fmt"
+	"errors"
 
 	"google.golang.org/grpc"
 )
@@ -34,7 +34,8 @@ func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSe
 	if err != nil {
 		return nil, err
 	}
-	return &response.SessionId, nil
+	sessionID := response.GetSessionId()
+	return &sessionID, nil
 }
 
 func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, dto auth_dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error) {
@@ -46,10 +47,10 @@ func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, d
 	if err != nil {
 		return nil, err
 	}
-	if len(response.Credentials) == 0 {
-		return nil, fmt.Errorf("credential not found")
+	if len(response.GetCredentials()) == 0 {
+		return nil, errors.New("credential not found")
 	}
-	return response.Credentials, nil
+	return response.GetCredentials(), nil
 }
 
 // INTERFACE
