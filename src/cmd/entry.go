@@ -45,5 +45,5 @@ func Start() {
 }
 
 func Stop() {
-	global.Grey.Println("============= STOP =============")
+	global.Grey.Println("============= STOP ==============")
 }

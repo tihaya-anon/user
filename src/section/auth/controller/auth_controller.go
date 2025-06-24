@@ -18,10 +18,6 @@ type AuthController struct {
 	Logger      *logrus.Logger
 }
 
-func (ctrl *AuthController) Hello(ctx *gin.Context) *resp.TResponse {
-	return resp.NewResponse().SuccessWithData("hello `auth`")
-}
-
 func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 	response := resp.NewResponse()
 
