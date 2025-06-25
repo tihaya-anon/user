@@ -3,7 +3,6 @@ package auth_mapper_test
 import (
 	"context"
 	"errors"
-	"strconv"
 	"testing"
 
 	"MVC_DI/gen/proto"
@@ -17,84 +16,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
-
-func Test_InvalidSession_AsyncMode(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockKafka := proto_mock.NewMockKafkaEventServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
-		KafkaEventServiceClient: mockKafka,
-	}
-
-	ctx := context.Background()
-
-	mockKafka.EXPECT().
-		SubmitEvent(ctx, gomock.Any()).
-		Return(&proto.SubmitEventResponse{Status: proto.EventStatus_STATUS_UNSPECIFIED}, nil)
-	envelope := &proto.KafkaEnvelope{
-		DeliveryMode:         proto.DeliveryMode_PUSH,
-		TriggerModeRequested: proto.TriggerMode_ASYNC,
-		Payload:              []byte(strconv.FormatInt(123, 10)),
-	}
-	err := authMapper.InvalidSession(ctx, envelope)
-	assert.NoError(t, err)
-}
-
-func Test_InvalidSession_SyncMode_Success(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockKafka := proto_mock.NewMockKafkaEventServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
-		KafkaEventServiceClient: mockKafka,
-	}
-
-	ctx := context.Background()
-
-	// simulate sync mode by altering envelope manually via mock expectation
-	mockKafka.EXPECT().
-		SubmitEvent(ctx, gomock.Any()).
-		DoAndReturn(func(_ context.Context, req *proto.SubmitEventRequest, _ ...any) (*proto.SubmitEventResponse, error) {
-			req.Envelope.TriggerModeRequested = proto.TriggerMode_SYNC
-			return &proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_SUCCESS}, nil
-		})
-
-	envelope := &proto.KafkaEnvelope{
-		DeliveryMode:         proto.DeliveryMode_PUSH,
-		TriggerModeRequested: proto.TriggerMode_ASYNC,
-		Payload:              []byte(strconv.FormatInt(123, 10)),
-	}
-	err := authMapper.InvalidSession(ctx, envelope)
-	assert.NoError(t, err)
-}
-
-func Test_InvalidSession_SyncMode_Fail(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockKafka := proto_mock.NewMockKafkaEventServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
-		KafkaEventServiceClient: mockKafka,
-	}
-
-	ctx := context.Background()
-
-	mockKafka.EXPECT().
-		SubmitEvent(ctx, gomock.Any()).
-		DoAndReturn(func(_ context.Context, req *proto.SubmitEventRequest, _ ...any) (*proto.SubmitEventResponse, error) {
-			req.Envelope.TriggerModeRequested = proto.TriggerMode_SYNC
-			return &proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_FAILED}, nil
-		})
-
-	envelope := &proto.KafkaEnvelope{
-		DeliveryMode:         proto.DeliveryMode_PUSH,
-		TriggerModeRequested: proto.TriggerMode_ASYNC,
-		Payload:              []byte(strconv.FormatInt(123, 10)),
-	}
-	err := authMapper.InvalidSession(ctx, envelope)
-	assert.EqualError(t, err, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).Error())
-}
 
 func Test_CreateSession_Success(t *testing.T) {
 	ctrl := gomock.NewController(t)

@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package login_audit;
+
+option java_package = "com.anon.login_audit";
+option java_outer_classname = "LoginAuditProto";
+option java_multiple_files = false;
+
+import "google/protobuf/timestamp.proto";
+
+enum LoginResult {
+  LOGIN_RESULT_UNSPECIFIED = 0;
+  SUCCESS = 1;
+  FAIL_PASSWORD = 2;
+  FAIL_2FA = 3;
+}
+
+message LoginAuditLog {
+  int64 log_id = 1;
+  int64 user_id = 2;
+  google.protobuf.Timestamp login_time = 3;
+  string ip_address = 4;
+  string device_info = 5;
+  LoginResult result = 6;
+}
+
+message AddLoginAuditLogRequest {
+  int64 user_id = 1;
+  google.protobuf.Timestamp login_time = 2;
+  string ip_address = 3;
+  string device_info = 4;
+  LoginResult result = 5;
+}
+
+message AddLoginAuditLogResponse {
+  int64 log_id = 1;
+}
+
+message ListLoginAuditLogsRequest {
+  int64 user_id = 1;
+  google.protobuf.Timestamp start_time = 2;
+  google.protobuf.Timestamp end_time = 3;
+  int32 page = 4;
+  int32 page_size = 5;
+}
+
+message ListLoginAuditLogsResponse {
+  repeated LoginAuditLog logs = 1;
+  int32 total = 2;
+}
+
+service LoginAuditService {
+  rpc AddLoginAuditLog(AddLoginAuditLogRequest) returns (AddLoginAuditLogResponse);
+  rpc ListLoginAuditLogs(ListLoginAuditLogsRequest) returns (ListLoginAuditLogsResponse);
+}

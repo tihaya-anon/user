@@ -8,7 +8,8 @@ var MSG = struct {
 	MISSING_TOKEN    string
 	INVALID_TOKEN    string
 
-	SYSTEM_ERROR string
+	SYSTEM_ERROR         string
+	UNKNOWN_TRIGGER_MODE string
 
 	THIRD_PARTY_ERROR string
 }{
@@ -19,7 +20,8 @@ var MSG = struct {
 	MISSING_TOKEN:    "Must Provide Token",
 	INVALID_TOKEN:    "Invalid Token",
 
-	SYSTEM_ERROR: "System Error",
+	SYSTEM_ERROR:         "System Error",
+	UNKNOWN_TRIGGER_MODE: "unknown trigger mode",
 
 	THIRD_PARTY_ERROR: "Third Party Error",
 }

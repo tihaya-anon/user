@@ -18,10 +18,5 @@ type AuthMapper interface {
 	// error list:
 	// enum.CODE.GRPC_ERROR
 	CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error)
-	// InvalidSession
-	//
-	// error list:
-	// enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_SESSION
-	InvalidSession(ctx context.Context, envelope *proto.KafkaEnvelope) error
 	// DEFINE METHODS
 }

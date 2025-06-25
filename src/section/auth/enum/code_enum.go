@@ -6,7 +6,6 @@ var CODE = struct {
 	EMAIL_CODE_WRONG     string
 	GOOGLE_2FA_WRONG     string
 	OAUTH_WRONG          string
-	UNKNOWN_TRIGGER_MODE string
 	UNKNOWN_SESSION      string
 }{
 	UNKNOWN_CREDENTIAL:   "CRE00",
@@ -14,6 +13,5 @@ var CODE = struct {
 	EMAIL_CODE_WRONG:     "CRE02",
 	GOOGLE_2FA_WRONG:     "CRE03",
 	OAUTH_WRONG:          "CRE04",
-	UNKNOWN_TRIGGER_MODE: "TRG00",
 	UNKNOWN_SESSION:      "SES00",
 }

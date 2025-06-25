@@ -11,31 +11,8 @@ import (
 )
 
 type AuthMapperImpl struct {
-	KafkaEventServiceClient     proto.KafkaEventServiceClient
 	AuthSessionServiceClient    proto.AuthSessionServiceClient
 	AuthCredentialServiceClient proto.AuthCredentialServiceClient
-}
-
-// InvalidSession implements auth_mapper.AuthMapper.
-func (a *AuthMapperImpl) InvalidSession(ctx context.Context, envelope *proto.KafkaEnvelope) error {
-	response, err := a.KafkaEventServiceClient.SubmitEvent(ctx, &proto.SubmitEventRequest{Envelope: envelope})
-	if err != nil {
-		return err
-	}
-
-	switch envelope.GetTriggerModeRequested() {
-	case proto.TriggerMode_ASYNC:
-		return nil
-
-	case proto.TriggerMode_SYNC:
-		if response.GetStatus() != proto.EventStatus_PROCESSED_SUCCESS {
-			return global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithDetail(response.GetStatus().String())
-		}
-		return nil
-
-	default:
-		return global_model.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_TRIGGER_MODE).WithMessage(auth_enum.MSG.UNKNOWN_TRIGGER_MODE).WithDetail(envelope.GetTriggerModeRequested().String())
-	}
 }
 
 func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error) {

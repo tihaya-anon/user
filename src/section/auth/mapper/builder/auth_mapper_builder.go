@@ -7,11 +7,13 @@ import (
 )
 
 func (builder *AuthMapperBuilder) Build() auth_mapper.AuthMapper {
+	if builder.isStrict && builder.authMapperImpl.AuthCredentialServiceClient == nil {
+		panic("`AuthCredentialServiceClient` is required")
+	}
+	if builder.isStrict && builder.authMapperImpl.AuthSessionServiceClient == nil {
+		panic("`AuthSessionServiceClient` is required")
+	}
 	return builder.authMapperImpl
-}
-func (builder *AuthMapperBuilder) WithKafkaEventServiceClient(client proto.KafkaEventServiceClient) *AuthMapperBuilder {
-	builder.authMapperImpl.KafkaEventServiceClient = client
-	return builder
 }
 func (builder *AuthMapperBuilder) WithAuthSessionServiceClient(client proto.AuthSessionServiceClient) *AuthMapperBuilder {
 	builder.authMapperImpl.AuthSessionServiceClient = client

@@ -5,6 +5,7 @@ import (
 	global_model "MVC_DI/global/model"
 	auth_mapper_mock "MVC_DI/mock/auth/mapper"
 	auth_service_mock "MVC_DI/mock/auth/service"
+	event_mapper_mock "MVC_DI/mock/event/mapper"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_service_impl "MVC_DI/section/auth/service/impl"
@@ -12,8 +13,10 @@ import (
 	"MVC_DI/security/claims"
 	"context"
 	"errors"
+	"strconv"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -157,4 +160,54 @@ func Test_LoginUser_Success(t *testing.T) {
 		SessionId: sessionId,
 		Token:     token,
 	}, resp)
+}
+func Test_LogoutUser_Success(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockEventMapper := event_mapper_mock.NewMockEventMapper(ctrl)
+	svc := auth_service_impl.AuthServiceImpl{
+		EventMapper: mockEventMapper,
+	}
+
+	ctx := &gin.Context{}
+	sessionId := int64(101)
+	envelope := &proto.KafkaEnvelope{
+		DeliveryMode:         proto.DeliveryMode_PUSH,
+		TriggerModeRequested: proto.TriggerMode_ASYNC,
+		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
+	}
+
+	mockEventMapper.EXPECT().
+		SubmitEvent(ctx, envelope).
+		Return(nil)
+
+	err := svc.LogoutUser(ctx, sessionId)
+	assert.NoError(t, err)
+}
+
+func Test_LogoutUser_SubmitEventError(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockEventMapper := event_mapper_mock.NewMockEventMapper(ctrl)
+	svc := auth_service_impl.AuthServiceImpl{
+		EventMapper: mockEventMapper,
+	}
+
+	ctx := &gin.Context{}
+	sessionId := int64(202)
+	envelope := &proto.KafkaEnvelope{
+		DeliveryMode:         proto.DeliveryMode_PUSH,
+		TriggerModeRequested: proto.TriggerMode_ASYNC,
+		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
+	}
+
+	simulatedErr := errors.New("event mapper failure")
+	mockEventMapper.EXPECT().
+		SubmitEvent(ctx, envelope).
+		Return(simulatedErr)
+
+	err := svc.LogoutUser(ctx, sessionId)
+	assert.EqualError(t, err, simulatedErr.Error())
 }

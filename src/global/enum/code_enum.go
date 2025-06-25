@@ -8,8 +8,9 @@ var CODE = struct {
 	MISSING_TOKEN    string
 	INVALID_TOKEN    string
 
-	SYSTEM_ERROR string
-	GRPC_ERROR   string
+	SYSTEM_ERROR         string
+	GRPC_ERROR           string
+	UNKNOWN_TRIGGER_MODE string
 
 	THIRD_PARTY_ERROR string
 }{
@@ -20,8 +21,9 @@ var CODE = struct {
 	MISSING_TOKEN:    "C0002",
 	INVALID_TOKEN:    "C0003",
 
-	SYSTEM_ERROR: "S0000",
-	GRPC_ERROR:   "S0001",
+	SYSTEM_ERROR:         "S0000",
+	GRPC_ERROR:           "S0001",
+	UNKNOWN_TRIGGER_MODE: "S0002",
 
 	THIRD_PARTY_ERROR: "T0000",
 }

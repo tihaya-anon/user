@@ -7,6 +7,7 @@ import (
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
+	event_mapper "MVC_DI/section/event/mapper"
 	"MVC_DI/security"
 	"MVC_DI/security/claims"
 	"context"
@@ -17,6 +18,7 @@ import (
 
 type AuthServiceImpl struct {
 	AuthMapper   auth_mapper.AuthMapper
+	EventMapper  event_mapper.EventMapper
 	MatchService auth_service.MatchService
 }
 
@@ -30,7 +32,7 @@ func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 		TriggerModeRequested: proto.TriggerMode_ASYNC,
 		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
 	}
-	err := a.AuthMapper.InvalidSession(ctx, envelope)
+	err := a.EventMapper.SubmitEvent(ctx, envelope)
 	return err
 }
 
