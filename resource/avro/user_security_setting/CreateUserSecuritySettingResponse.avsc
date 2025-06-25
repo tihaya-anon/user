@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "name": "CreateUserSecuritySettingResponse",
+  "namespace": "user_security",
+  "fields": [
+    {
+      "name": "success",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "default": ""
+    }
+  ]
+}

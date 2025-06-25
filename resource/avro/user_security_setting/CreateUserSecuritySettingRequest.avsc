@@ -1,0 +1,52 @@
+{
+  "type": "record",
+  "name": "CreateUserSecuritySettingRequest",
+  "namespace": "user_security",
+  "fields": [
+    {
+      "name": "user_id",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "is_2fa_enabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "kyc_status",
+      "type": {
+        "type": "enum",
+        "name": "KycStatus",
+        "symbols": [
+          "KYC_STATUS_UNSPECIFIED",
+          "UNVERIFIED",
+          "PENDING",
+          "VERIFIED"
+        ],
+        "default": "KYC_STATUS_UNSPECIFIED"
+      },
+      "default": "KYC_STATUS_UNSPECIFIED"
+    },
+    {
+      "name": "risk_level",
+      "type": {
+        "type": "enum",
+        "name": "RiskLevel",
+        "symbols": [
+          "RISK_LEVEL_UNSPECIFIED",
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ],
+        "default": "RISK_LEVEL_UNSPECIFIED"
+      },
+      "default": "RISK_LEVEL_UNSPECIFIED"
+    },
+    {
+      "name": "withdrawal_whitelist",
+      "type": "string",
+      "default": ""
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "type": "record",
+  "name": "UserPermission",
+  "namespace": "user_permission",
+  "fields": [
+    {
+      "name": "user_id",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "permission",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "granted",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "granted_by",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "granted_at",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "default": ""
+    }
+  ]
+}
