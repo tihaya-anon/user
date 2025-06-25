@@ -42,10 +42,10 @@ func Parse[T any](file, env string, definition *T) error {
 	decoderOption := viper.DecodeHook(mapstructure.ComposeDecodeHookFunc(
 		mapstructure.StringToTimeHookFunc(time.RFC3339),
 		mapstructure.StringToSliceHookFunc(","),
-		func(f reflect.Type, t reflect.Type, data interface{}) (interface{}, error) {
+		func(f reflect.Type, t reflect.Type, data any) (any, error) {
 			if f.Kind() == reflect.Map {
-				newMap := make(map[string]interface{})
-				for key, value := range data.(map[string]interface{}) {
+				newMap := make(map[string]any)
+				for key, value := range data.(map[string]any) {
 					newKey := util.SnakeToPascal(key)
 					newMap[newKey] = value
 				}

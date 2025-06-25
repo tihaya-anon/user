@@ -45,7 +45,7 @@ func GenerateTemplate(pkg, templatePath, targetPath, targetFilePostfix, entity, 
 	}
 	defer file.Close()
 
-	if err := tmpl.Execute(file, map[string]interface{}{
+	if err := tmpl.Execute(file, map[string]any{
 		"entity_name":       entity,
 		"EntityName":        util.SnakeToPascal(entity),
 		"TableName":         util.SnakeToPascal(table),
