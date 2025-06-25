@@ -2,6 +2,7 @@ package auth_service_test
 
 import (
 	"MVC_DI/gen/proto"
+	"MVC_DI/global"
 	auth_mapper_mock "MVC_DI/mock/auth/mapper"
 	auth_service_mock "MVC_DI/mock/auth/service"
 	auth_dto "MVC_DI/section/auth/dto"
@@ -66,7 +67,7 @@ func Test_LoginUser_UnknownCredentialType(t *testing.T) {
 	resp, err := svc.LoginUser(ctx, dto)
 
 	assert.Nil(t, resp)
-	assert.EqualError(t, err, auth_enum.MSG.UNKNOWN_CREDENTIAL)
+	assert.EqualError(t, err, global.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.MSG.UNKNOWN_CREDENTIAL).Error())
 }
 
 // Test: session 创建失败

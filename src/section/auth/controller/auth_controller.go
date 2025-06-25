@@ -4,6 +4,7 @@ import (
 	"MVC_DI/gen/api"
 	"MVC_DI/global/enum"
 	auth_dto "MVC_DI/section/auth/dto"
+	auth_enum "MVC_DI/section/auth/enum"
 	auth_service "MVC_DI/section/auth/service"
 	"MVC_DI/security"
 	controller_uitl "MVC_DI/util/controller"
@@ -33,7 +34,12 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 	}
 	userLoginRespDto, err := ctrl.AuthService.LoginUser(ctx, userLoginDto)
 	if err != nil {
-		return response.SystemError()
+		switch err.Error() {
+		case auth_enum.CODE.UNKNOWN_CREDENTIAL, auth_enum.CODE.PASSWORD_WRONG, auth_enum.CODE.EMAIL_CODE_WRONG, auth_enum.CODE.GOOGLE_2FA_WRONG, auth_enum.CODE.OAUTH_WRONG:
+			return response.CustomerError(err.Error())
+		default:
+			return response.SystemError() // Fallback for unexpected/technical errors like GRPC_ERROR
+		}
 	}
 	// TODO expire config
 	security.SetSessionId(ctx, userLoginRespDto.SessionId, 3600, "/", "", true, true)
@@ -51,7 +57,12 @@ func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
 
 	err := ctrl.AuthService.LogoutUser(ctx, *sessionId)
 	if err != nil {
-		return response.SystemError()
+		switch err.Error() {
+		case auth_enum.CODE.UNKNOWN_SESSION:
+			return response.CustomerError(err.Error()) // Business-specific session error
+		default:
+			return response.SystemError() // Fallback for technical errors like GRPC_ERROR
+		}
 	}
 
 	return response.Success()

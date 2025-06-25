@@ -3,6 +3,7 @@ package auth_mapper_test
 import (
 	"context"
 	"errors"
+	"strconv"
 	"testing"
 
 	"MVC_DI/gen/proto"
@@ -28,8 +29,12 @@ func Test_InvalidSession_AsyncMode(t *testing.T) {
 	mockKafka.EXPECT().
 		SubmitEvent(ctx, gomock.Any()).
 		Return(&proto.SubmitEventResponse{Status: proto.EventStatus_STATUS_UNSPECIFIED}, nil)
-
-	err := authMapper.InvalidSession(ctx, 123)
+	envelope := &proto.KafkaEnvelope{
+		DeliveryMode: proto.DeliveryMode_PUSH,
+		TriggerMode:  proto.TriggerMode_ASYNC,
+		Payload:      []byte(strconv.FormatInt(123, 10)),
+	}
+	err := authMapper.InvalidSession(ctx, envelope)
 	assert.NoError(t, err)
 }
 
@@ -52,7 +57,12 @@ func Test_InvalidSession_SyncMode_Success(t *testing.T) {
 			return &proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_SUCCESS}, nil
 		})
 
-	err := authMapper.InvalidSession(ctx, 123)
+	envelope := &proto.KafkaEnvelope{
+		DeliveryMode: proto.DeliveryMode_PUSH,
+		TriggerMode:  proto.TriggerMode_ASYNC,
+		Payload:      []byte(strconv.FormatInt(123, 10)),
+	}
+	err := authMapper.InvalidSession(ctx, envelope)
 	assert.NoError(t, err)
 }
 
@@ -74,7 +84,12 @@ func Test_InvalidSession_SyncMode_Fail(t *testing.T) {
 			return &proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_FAILED}, nil
 		})
 
-	err := authMapper.InvalidSession(ctx, 123)
+	envelope := &proto.KafkaEnvelope{
+		DeliveryMode: proto.DeliveryMode_PUSH,
+		TriggerMode:  proto.TriggerMode_ASYNC,
+		Payload:      []byte(strconv.FormatInt(123, 10)),
+	}
+	err := authMapper.InvalidSession(ctx, envelope)
 	assert.EqualError(t, err, "sync event failed: PROCESSED_FAILED")
 }
 

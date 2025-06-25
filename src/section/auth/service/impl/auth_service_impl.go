@@ -2,6 +2,7 @@ package auth_service_impl
 
 import (
 	"MVC_DI/gen/proto"
+	"MVC_DI/global"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
@@ -9,7 +10,7 @@ import (
 	"MVC_DI/security"
 	"MVC_DI/security/claims"
 	"context"
-	"errors"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,12 +21,22 @@ type AuthServiceImpl struct {
 }
 
 // LogoutUser implements auth_service.AuthService.
+//
+// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_SESSION
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
-	err := a.AuthMapper.InvalidSession(ctx, sessionId)
+	// TODO: dynamically decide the trigger mode
+	envelope := &proto.KafkaEnvelope{
+		DeliveryMode: proto.DeliveryMode_PUSH,
+		TriggerMode:  proto.TriggerMode_ASYNC,
+		Payload:      []byte(strconv.FormatInt(sessionId, 10)),
+	}
+	err := a.AuthMapper.InvalidSession(ctx, envelope)
 	return err
 }
 
 // LoginUser implements auth_service.AuthService.
+//
+// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_CREDENTIAL, auth_enum.CODE.PASSWORD_WRONG, auth_enum.CODE.EMAIL_CODE_WRONG, auth_enum.CODE.GOOGLE_2FA_WRONG, auth_enum.CODE.OAUTH_WRONG
 func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error) {
 	getCredentialsByIdentifierAndTypeDto := auth_dto.GetCredentialsByIdentifierAndTypeDto{Identifier: userLoginDto.Identifier, Type: userLoginDto.Type}
 	authCredentials, err := a.AuthMapper.GetCredentialsByIdentifierAndType(ctx, getCredentialsByIdentifierAndTypeDto)
@@ -33,7 +44,7 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 		return nil, err
 	}
 	matched := false
-	errMsg := auth_enum.MSG.UNKNOWN_CREDENTIAL
+	appErr := global.NewAppError()
 	authCredential := &proto.AuthCredential{}
 	authCredential = nil
 	for _, credential := range authCredentials {
@@ -44,24 +55,24 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 		break
 	}
 	if authCredential == nil {
-		return nil, errors.New(errMsg)
+		return nil, appErr.WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.MSG.UNKNOWN_CREDENTIAL)
 	}
 	switch authCredential.Type {
 	case proto.CredentialType_PASSWORD:
 		matched = a.MatchService.MatchPassword(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		errMsg = auth_enum.MSG.PASSWORD_WRONG
+		appErr.WithCode(auth_enum.CODE.PASSWORD_WRONG).WithMessage(auth_enum.MSG.PASSWORD_WRONG)
 	case proto.CredentialType_EMAIL_CODE:
 		matched = a.MatchService.MatchEmailCode(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		errMsg = auth_enum.MSG.EMAIL_CODE_WRONG
+		appErr.WithCode(auth_enum.CODE.EMAIL_CODE_WRONG).WithMessage(auth_enum.MSG.EMAIL_CODE_WRONG)
 	case proto.CredentialType_GOOGLE_2FA:
 		matched = a.MatchService.MatchGoogle2FA(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		errMsg = auth_enum.MSG.GOOGLE_2FA_WRONG
+		appErr.WithCode(auth_enum.CODE.GOOGLE_2FA_WRONG).WithMessage(auth_enum.MSG.GOOGLE_2FA_WRONG)
 	case proto.CredentialType_OAUTH:
 		matched = a.MatchService.MatchOauth(userLoginDto.Identifier, userLoginDto.Secret, authCredential.GetSecret())
-		errMsg = auth_enum.MSG.OAUTH_WRONG
+		appErr.WithCode(auth_enum.CODE.OAUTH_WRONG).WithMessage(auth_enum.MSG.OAUTH_WRONG)
 	}
 	if !matched {
-		return nil, errors.New(errMsg)
+		return nil, appErr
 	}
 	createSessionDto := auth_dto.CreateSessionDto{UserId: authCredential.GetUserId()}
 	sessionId, err := a.AuthMapper.CreateSession(ctx, createSessionDto)

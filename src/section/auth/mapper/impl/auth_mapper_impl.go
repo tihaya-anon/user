@@ -2,11 +2,12 @@ package auth_mapper_impl
 
 import (
 	"MVC_DI/gen/proto"
+	"MVC_DI/global"
+	"MVC_DI/global/enum"
 	auth_dto "MVC_DI/section/auth/dto"
+	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	"context"
-	"errors"
-	"fmt"
 )
 
 type AuthMapperImpl struct {
@@ -16,10 +17,8 @@ type AuthMapperImpl struct {
 }
 
 // InvalidSession implements auth_mapper.AuthMapper.
-func (a *AuthMapperImpl) InvalidSession(ctx context.Context, id int64) error {
-	// TODO dynamically get the trigger mode
-	envelope := proto.KafkaEnvelope{DeliveryMode: proto.DeliveryMode_PUSH, TriggerMode: proto.TriggerMode_ASYNC}
-	response, err := a.KafkaEventServiceClient.SubmitEvent(ctx, &proto.SubmitEventRequest{Envelope: &envelope})
+func (a *AuthMapperImpl) InvalidSession(ctx context.Context, envelope *proto.KafkaEnvelope) error {
+	response, err := a.KafkaEventServiceClient.SubmitEvent(ctx, &proto.SubmitEventRequest{Envelope: envelope})
 	if err != nil {
 		return err
 	}
@@ -30,12 +29,12 @@ func (a *AuthMapperImpl) InvalidSession(ctx context.Context, id int64) error {
 
 	case proto.TriggerMode_SYNC:
 		if response.GetStatus() != proto.EventStatus_PROCESSED_SUCCESS {
-			return fmt.Errorf("sync event failed: %s", response.GetStatus().String())
+			return global.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithDetail(response.GetStatus().String())
 		}
 		return nil
 
 	default:
-		return fmt.Errorf("invalid trigger mode: %s", envelope.GetTriggerMode().String())
+		return global.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_TRIGGER_MODE).WithMessage(auth_enum.MSG.UNKNOWN_TRIGGER_MODE).WithDetail(envelope.GetTriggerMode().String())
 	}
 }
 
@@ -45,7 +44,7 @@ func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSe
 	}
 	response, err := a.AuthSessionServiceClient.CreateAuthSession(ctx, request)
 	if err != nil {
-		return nil, err
+		return nil, global.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(err.Error())
 	}
 	sessionID := response.GetSessionId()
 	return &sessionID, nil
@@ -57,10 +56,10 @@ func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, d
 	request := proto.GetAuthCredentialsRequest{Identifier: &dto.Identifier, Type: &credentialType}
 	response, err := a.AuthCredentialServiceClient.GetAuthCredentials(ctx, &request)
 	if err != nil {
-		return nil, err
+		return nil, global.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(err.Error())
 	}
 	if len(response.GetCredentials()) == 0 {
-		return nil, errors.New("credential not found")
+		return nil, global.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.CODE.UNKNOWN_CREDENTIAL)
 	}
 	return response.GetCredentials(), nil
 }
