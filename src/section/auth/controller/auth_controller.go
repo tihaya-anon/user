@@ -23,7 +23,7 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 
 	userLoginRequest, validationError := controller_uitl.BindValidation[api.UserLoginRequest](ctx)
 	if validationError != nil {
-		return response.ValidationError(validationError)
+		return nil
 	}
 
 	userLoginDto := auth_dto.UserLoginDto{
