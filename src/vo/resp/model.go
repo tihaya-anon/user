@@ -26,28 +26,22 @@ func (response *TResponse) SuccessWithData(data any) *TResponse {
 	return response
 }
 
-func (response *TResponse) Error(code string, error error) *TResponse {
-	var msg string
-	if error != nil {
-		msg = error.Error()
-	} else {
-		msg = enum.MSG.SYSTEM_ERROR
-	}
+func (response *TResponse) Error(code string, msg string) *TResponse {
 	response.Code = code
 	response.Msg = msg
 	return response
 }
 
-func (response *TResponse) SystemError(error error) *TResponse {
-	return response.Error(enum.CODE.SYSTEM_ERROR, error)
+func (response *TResponse) SystemError() *TResponse {
+	return response.Error(enum.CODE.SYSTEM_ERROR, enum.MSG.SYSTEM_ERROR)
 }
 
-func (response *TResponse) CustomerError(error error) *TResponse {
-	return response.Error(enum.CODE.CUSTOMER_ERROR, error)
+func (response *TResponse) CustomerError(msg string) *TResponse {
+	return response.Error(enum.CODE.CUSTOMER_ERROR, msg)
 }
 
-func (response *TResponse) ThirdPartyError(error error) *TResponse {
-	return response.Error(enum.CODE.THIRD_PARTY_ERROR, error)
+func (response *TResponse) ThirdPartyError(msg string) *TResponse {
+	return response.Error(enum.CODE.THIRD_PARTY_ERROR, msg)
 }
 
 func (response *TResponse) ValidationError(error *common.ValidationError) *TResponse {
