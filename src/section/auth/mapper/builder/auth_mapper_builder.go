@@ -1,12 +1,25 @@
 package auth_mapper_builder
 
 import (
+	"MVC_DI/gen/proto"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_mapper_impl "MVC_DI/section/auth/mapper/impl"
 )
 
 func (builder *AuthMapperBuilder) Build() auth_mapper.AuthMapper {
 	return builder.authMapperImpl
+}
+func (builder *AuthMapperBuilder) WithKafkaEventServiceClient(client proto.KafkaEventServiceClient) *AuthMapperBuilder {
+	builder.authMapperImpl.KafkaEventServiceClient = client
+	return builder
+}
+func (builder *AuthMapperBuilder) WithAuthSessionServiceClient(client proto.AuthSessionServiceClient) *AuthMapperBuilder {
+	builder.authMapperImpl.AuthSessionServiceClient = client
+	return builder
+}
+func (builder *AuthMapperBuilder) WithAuthCredentialServiceClient(client proto.AuthCredentialServiceClient) *AuthMapperBuilder {
+	builder.authMapperImpl.AuthCredentialServiceClient = client
+	return builder
 }
 
 // BUILDER
