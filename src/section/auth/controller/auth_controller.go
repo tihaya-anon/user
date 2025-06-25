@@ -33,9 +33,9 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 	}
 	userLoginRespDto, err := ctrl.AuthService.LoginUser(ctx, userLoginDto)
 	if err != nil {
-		return response.SystemError(err)
+		return response.SystemError()
 	}
-
+	// TODO expire config
 	security.SetSessionId(ctx, userLoginRespDto.SessionId, 3600, "/", "", true, true)
 	authSessionResponse := api.AuthSessionResponse{Token: &userLoginRespDto.Token}
 	return response.SuccessWithData(authSessionResponse)
@@ -51,7 +51,7 @@ func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
 
 	err := ctrl.AuthService.LogoutUser(ctx, *sessionId)
 	if err != nil {
-		return response.SystemError(err)
+		return response.SystemError()
 	}
 
 	return response.Success()

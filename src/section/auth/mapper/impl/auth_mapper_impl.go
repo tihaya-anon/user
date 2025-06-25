@@ -6,31 +6,44 @@ import (
 	auth_mapper "MVC_DI/section/auth/mapper"
 	"context"
 	"errors"
-
-	"google.golang.org/grpc"
+	"fmt"
 )
 
 type AuthMapperImpl struct {
-	conn *grpc.ClientConn
+	KafkaEventServiceClient     proto.KafkaEventServiceClient
+	AuthSessionServiceClient    proto.AuthSessionServiceClient
+	AuthCredentialServiceClient proto.AuthCredentialServiceClient
 }
 
 // InvalidSession implements auth_mapper.AuthMapper.
 func (a *AuthMapperImpl) InvalidSession(ctx context.Context, id int64) error {
-	client := proto.NewAuthSessionServiceClient(a.conn)
-	request := &proto.InvalidateSessionRequest{SessionId: id}
-	_, err := client.InvalidateSession(ctx, request)
+	// TODO dynamically get the trigger mode
+	envelope := proto.KafkaEnvelope{DeliveryMode: proto.DeliveryMode_PUSH, TriggerMode: proto.TriggerMode_ASYNC}
+	response, err := a.KafkaEventServiceClient.SubmitEvent(ctx, &proto.SubmitEventRequest{Envelope: &envelope})
 	if err != nil {
 		return err
 	}
-	return nil
+
+	switch envelope.GetTriggerMode() {
+	case proto.TriggerMode_ASYNC:
+		return nil
+
+	case proto.TriggerMode_SYNC:
+		if response.GetStatus() != proto.EventStatus_PROCESSED_SUCCESS {
+			return fmt.Errorf("sync event failed: %s", response.GetStatus().String())
+		}
+		return nil
+
+	default:
+		return fmt.Errorf("invalid trigger mode: %s", envelope.GetTriggerMode().String())
+	}
 }
 
 func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error) {
-	client := proto.NewAuthSessionServiceClient(a.conn)
 	request := &proto.CreateAuthSessionRequest{
 		UserId: dto.UserId,
 	}
-	response, err := client.CreateAuthSession(ctx, request)
+	response, err := a.AuthSessionServiceClient.CreateAuthSession(ctx, request)
 	if err != nil {
 		return nil, err
 	}
@@ -39,11 +52,10 @@ func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSe
 }
 
 func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, dto auth_dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error) {
-	client := proto.NewAuthCredentialServiceClient(a.conn)
 	val := proto.CredentialType_value[dto.Type]
 	credentialType := proto.CredentialType(val)
 	request := proto.GetAuthCredentialsRequest{Identifier: &dto.Identifier, Type: &credentialType}
-	response, err := client.GetAuthCredentials(ctx, &request)
+	response, err := a.AuthCredentialServiceClient.GetAuthCredentials(ctx, &request)
 	if err != nil {
 		return nil, err
 	}

@@ -24,6 +24,12 @@ enum DeliveryMode {
   PULL = 2;
 }
 
+enum TriggerMode {
+  TRIGGER_UNSPECIFIED = 0;
+  ASYNC = 1;
+  SYNC = 2;
+}
+
 enum EventStatus {
   STATUS_UNSPECIFIED = 0; // 未指定状态
   PENDING = 1;            // 待处理
@@ -50,15 +56,16 @@ message KafkaEnvelope {
   Priority priority = 4;                       // 优先级
   bytes payload = 5;                           // 消息内容
   DeliveryMode delivery_mode = 6;              // 投递模式
-  EventStatus status = 7;                      // 当前状态
-  int32 retry_cnt = 8;                         // 重试次数
-  string idempotency_key = 9;                  // 幂等键
-  string correlation_id = 10;                  // 请求链路标识
-  map<string, string> headers = 11;            // 可选的 Kafka headers
-  string error_code = 12;                      // 错误码
-  string error_message = 13;                   // 错误信息
-  google.protobuf.Timestamp created_at = 14;   // 创建时间
-  google.protobuf.Timestamp processed_at = 15; // 处理时间
+  TriggerMode trigger_mode = 7;                // 触发模式
+  EventStatus status = 8;                      // 当前状态
+  int32 retry_cnt = 9;                         // 重试次数
+  string idempotency_key = 10;                 // 幂等键
+  string correlation_id = 11;                  // 请求链路标识
+  map<string, string> headers = 12;            // 可选的 Kafka headers
+  string error_code = 13;                      // 错误码
+  string error_message = 14;                   // 错误信息
+  google.protobuf.Timestamp created_at = 15;   // 创建时间
+  google.protobuf.Timestamp processed_at = 16; // 处理时间
 }
 
 // ===== 提交事件 =====
