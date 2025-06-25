@@ -56,7 +56,8 @@ message KafkaEnvelope {
   Priority priority = 4;                       // 优先级
   bytes payload = 5;                           // 消息内容
   DeliveryMode delivery_mode = 6;              // 投递模式
-  TriggerMode trigger_mode = 7;                // 触发模式
+  TriggerMode trigger_mode_requested = 7;      // 期望触发模式
+  TriggerMode trigger_mode_effective = 17;     // 实际触发模式
   EventStatus status = 8;                      // 当前状态
   int32 retry_cnt = 9;                         // 重试次数
   string idempotency_key = 10;                 // 幂等键
@@ -75,6 +76,7 @@ message SubmitEventRequest { KafkaEnvelope envelope = 1; }
 message SubmitEventResponse {
   int64 event_id = 1;
   EventStatus status = 2;
+  TriggerMode trigger_mode_effective = 3; 
 }
 
 // ===== 确认处理 =====

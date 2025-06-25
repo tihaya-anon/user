@@ -7,8 +7,11 @@ import (
 	"testing"
 
 	"MVC_DI/gen/proto"
+	"MVC_DI/global/enum"
+	global_model "MVC_DI/global/model"
 	proto_mock "MVC_DI/mock/gen/proto"
 	auth_dto "MVC_DI/section/auth/dto"
+	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper_impl "MVC_DI/section/auth/mapper/impl"
 
 	"github.com/golang/mock/gomock"
@@ -30,9 +33,9 @@ func Test_InvalidSession_AsyncMode(t *testing.T) {
 		SubmitEvent(ctx, gomock.Any()).
 		Return(&proto.SubmitEventResponse{Status: proto.EventStatus_STATUS_UNSPECIFIED}, nil)
 	envelope := &proto.KafkaEnvelope{
-		DeliveryMode: proto.DeliveryMode_PUSH,
-		TriggerMode:  proto.TriggerMode_ASYNC,
-		Payload:      []byte(strconv.FormatInt(123, 10)),
+		DeliveryMode:         proto.DeliveryMode_PUSH,
+		TriggerModeRequested: proto.TriggerMode_ASYNC,
+		Payload:              []byte(strconv.FormatInt(123, 10)),
 	}
 	err := authMapper.InvalidSession(ctx, envelope)
 	assert.NoError(t, err)
@@ -53,14 +56,14 @@ func Test_InvalidSession_SyncMode_Success(t *testing.T) {
 	mockKafka.EXPECT().
 		SubmitEvent(ctx, gomock.Any()).
 		DoAndReturn(func(_ context.Context, req *proto.SubmitEventRequest, _ ...any) (*proto.SubmitEventResponse, error) {
-			req.Envelope.TriggerMode = proto.TriggerMode_SYNC
+			req.Envelope.TriggerModeRequested = proto.TriggerMode_SYNC
 			return &proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_SUCCESS}, nil
 		})
 
 	envelope := &proto.KafkaEnvelope{
-		DeliveryMode: proto.DeliveryMode_PUSH,
-		TriggerMode:  proto.TriggerMode_ASYNC,
-		Payload:      []byte(strconv.FormatInt(123, 10)),
+		DeliveryMode:         proto.DeliveryMode_PUSH,
+		TriggerModeRequested: proto.TriggerMode_ASYNC,
+		Payload:              []byte(strconv.FormatInt(123, 10)),
 	}
 	err := authMapper.InvalidSession(ctx, envelope)
 	assert.NoError(t, err)
@@ -80,17 +83,17 @@ func Test_InvalidSession_SyncMode_Fail(t *testing.T) {
 	mockKafka.EXPECT().
 		SubmitEvent(ctx, gomock.Any()).
 		DoAndReturn(func(_ context.Context, req *proto.SubmitEventRequest, _ ...any) (*proto.SubmitEventResponse, error) {
-			req.Envelope.TriggerMode = proto.TriggerMode_SYNC
+			req.Envelope.TriggerModeRequested = proto.TriggerMode_SYNC
 			return &proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_FAILED}, nil
 		})
 
 	envelope := &proto.KafkaEnvelope{
-		DeliveryMode: proto.DeliveryMode_PUSH,
-		TriggerMode:  proto.TriggerMode_ASYNC,
-		Payload:      []byte(strconv.FormatInt(123, 10)),
+		DeliveryMode:         proto.DeliveryMode_PUSH,
+		TriggerModeRequested: proto.TriggerMode_ASYNC,
+		Payload:              []byte(strconv.FormatInt(123, 10)),
 	}
 	err := authMapper.InvalidSession(ctx, envelope)
-	assert.EqualError(t, err, "sync event failed: PROCESSED_FAILED")
+	assert.EqualError(t, err, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).Error())
 }
 
 func Test_CreateSession_Success(t *testing.T) {
@@ -126,14 +129,14 @@ func Test_CreateSession_Error(t *testing.T) {
 
 	dto := auth_dto.CreateSessionDto{UserId: 42}
 	ctx := context.Background()
-
+	errMsg := "create session failed"
 	mockSession.EXPECT().
 		CreateAuthSession(ctx, gomock.Any()).
-		Return(nil, errors.New("create session failed"))
+		Return(nil, errors.New(errMsg))
 
 	result, err := authMapper.CreateSession(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, "create session failed")
+	assert.EqualError(t, err, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(errMsg).Error())
 }
 
 func Test_GetCredentialsByIdentifierAndType_Success(t *testing.T) {
@@ -182,7 +185,7 @@ func Test_GetCredentialsByIdentifierAndType_NotFound(t *testing.T) {
 
 	result, err := authMapper.GetCredentialsByIdentifierAndType(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, "credential not found")
+	assert.EqualError(t, err, global_model.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.MSG.UNKNOWN_CREDENTIAL).Error())
 }
 
 func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
@@ -199,12 +202,12 @@ func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
 		Type:       "PASSWORD",
 	}
 	ctx := context.Background()
-
+	errMsg := "rpc failed"
 	mockCredential.EXPECT().
 		GetAuthCredentials(ctx, gomock.Any()).
-		Return(nil, errors.New("rpc failed"))
+		Return(nil, errors.New(errMsg))
 
 	result, err := authMapper.GetCredentialsByIdentifierAndType(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, "rpc failed")
+	assert.EqualError(t, err, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(errMsg).Error())
 }

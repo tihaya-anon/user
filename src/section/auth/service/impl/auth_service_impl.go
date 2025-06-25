@@ -2,7 +2,7 @@ package auth_service_impl
 
 import (
 	"MVC_DI/gen/proto"
-	"MVC_DI/global"
+	global_model "MVC_DI/global/model"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
@@ -26,9 +26,9 @@ type AuthServiceImpl struct {
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
 	envelope := &proto.KafkaEnvelope{
-		DeliveryMode: proto.DeliveryMode_PUSH,
-		TriggerMode:  proto.TriggerMode_ASYNC,
-		Payload:      []byte(strconv.FormatInt(sessionId, 10)),
+		DeliveryMode:         proto.DeliveryMode_PUSH,
+		TriggerModeRequested: proto.TriggerMode_ASYNC,
+		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
 	}
 	err := a.AuthMapper.InvalidSession(ctx, envelope)
 	return err
@@ -44,7 +44,7 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 		return nil, err
 	}
 	matched := false
-	appErr := global.NewAppError()
+	appErr := global_model.NewAppError()
 	authCredential := &proto.AuthCredential{}
 	authCredential = nil
 	for _, credential := range authCredentials {

@@ -1,4 +1,4 @@
-package global
+package global_model
 
 import "fmt"
 
