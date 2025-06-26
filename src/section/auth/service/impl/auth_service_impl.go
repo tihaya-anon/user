@@ -9,7 +9,7 @@ import (
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
-	"MVC_DI/security/claims"
+	"MVC_DI/security/jwt/claims"
 	"MVC_DI/security/jwt"
 	payload_util "MVC_DI/util/payload"
 	"context"
