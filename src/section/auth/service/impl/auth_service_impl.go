@@ -3,6 +3,7 @@ package auth_service_impl
 import (
 	"MVC_DI/gen/proto"
 	event_mapper "MVC_DI/global/infra/event/mapper"
+	"MVC_DI/global/infra/schema"
 	global_model "MVC_DI/global/model"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
@@ -28,7 +29,15 @@ type AuthServiceImpl struct {
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
 	request := &proto.InvalidateSessionRequest{SessionId: sessionId}
-	payload, err := payload_util.ProtoToAvroBytes(request)
+	native, err := payload_util.ProtoToNative(request)
+	if err != nil {
+		return err
+	}
+	codec, _, err := schema.SchemaManager.GetOrLoadCodecByObject(request)
+	if err != nil {
+		return err
+	}
+	payload, err := codec.BinaryFromNative(nil, native)
 	if err != nil {
 		return err
 	}

@@ -1,14 +1,13 @@
 package payload_util
 
 import (
-	"MVC_DI/global/infra/schema"
 	"fmt"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func protoToNative(msg proto.Message) (map[string]any, error) {
+func ProtoToNative(msg proto.Message) (map[string]any, error) {
 	m := make(map[string]any)
 	pb := msg.ProtoReflect()
 
@@ -72,20 +71,8 @@ func singleValueToNative(fd protoreflect.FieldDescriptor, v protoreflect.Value) 
 		desc := fd.Enum().Values().ByNumber(v.Enum())
 		return string(desc.Name()), nil
 	case protoreflect.MessageKind, protoreflect.GroupKind:
-		return protoToNative(v.Message().Interface())
+		return ProtoToNative(v.Message().Interface())
 	default:
 		return nil, fmt.Errorf("unsupported kind %v", fd.Kind())
 	}
-}
-
-func ProtoToAvroBytes(msg proto.Message) ([]byte, error) {
-	codec, err := schema.SchemaManager.GetOrLoadCodecByObject(msg)
-	if err != nil {
-		return nil, err
-	}
-	native, err := protoToNative(msg)
-	if err != nil {
-		return nil, err
-	}
-	return codec.BinaryFromNative(nil, native)
 }

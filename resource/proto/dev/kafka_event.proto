@@ -55,6 +55,8 @@ message KafkaEnvelope {
   string event_type = 3;                       // 业务事件类型
   Priority priority = 4;                       // 优先级
   bytes payload = 5;                           // 消息内容
+  string schema_subject = 18;                  // SR 主题名称
+  string schema_id = 19;                       // SR id
   DeliveryMode delivery_mode = 6;              // 投递模式
   TriggerMode trigger_mode_requested = 7;      // 期望触发模式
   TriggerMode trigger_mode_effective = 17;     // 实际触发模式
