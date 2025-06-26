@@ -3,7 +3,7 @@ package user_mapper_builder
 import (
 	user_mapper "MVC_DI/section/user/mapper"
 	user_mapper_impl "MVC_DI/section/user/mapper/impl"
-	
+
 	"gorm.io/gorm"
 )
 
@@ -12,13 +12,13 @@ func (builder *UserMapperBuilder) Build() user_mapper.UserMapper {
 }
 
 func (builder *UserMapperBuilder) WithDB(DB *gorm.DB) *UserMapperBuilder {
-  builder.userMapperImpl.DB = DB
-  return builder
+	builder.userMapperImpl.DB = DB
+	return builder
 }
 
 // BUILDER
 type UserMapperBuilder struct {
-  isStrict bool
+	isStrict       bool
 	userMapperImpl *user_mapper_impl.UserMapperImpl
 }
 
@@ -28,7 +28,7 @@ func NewUserMapperBuilder() *UserMapperBuilder {
 	}
 }
 
-func (builder *UserMapperBuilder) UseStrict() *UserMapperBuilder { 
-  builder.isStrict = true
-  return builder
+func (builder *UserMapperBuilder) UseStrict() *UserMapperBuilder {
+	builder.isStrict = true
+	return builder
 }

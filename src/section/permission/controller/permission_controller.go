@@ -1,15 +1,16 @@
 package permission_controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	permission_service "MVC_DI/section/permission/service"
 	"MVC_DI/vo/resp"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type PermissionController struct {
 	PermissionService permission_service.PermissionService
-	Logger *logrus.Logger
+	Logger            *logrus.Logger
 }
 
 func (ctrl *PermissionController) Hello(ctx *gin.Context) *resp.TResponse {

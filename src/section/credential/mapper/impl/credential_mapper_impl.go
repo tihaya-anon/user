@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type CredentialMapperImpl struct{
+type CredentialMapperImpl struct {
 	DB *gorm.DB
 }
 

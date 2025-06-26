@@ -1,9 +1,9 @@
 package security_service_builder
 
 import (
+	security_mapper "MVC_DI/section/security/mapper"
 	security_service "MVC_DI/section/security/service"
 	security_service_impl "MVC_DI/section/security/service/impl"
-	security_mapper "MVC_DI/section/security/mapper"
 )
 
 func (builder *SecurityServiceBuilder) Build() security_service.SecurityService {
@@ -20,7 +20,7 @@ func (builder *SecurityServiceBuilder) WithSecurityMapper(mapper security_mapper
 
 // BUILDER
 type SecurityServiceBuilder struct {
-  isStrict bool
+	isStrict            bool
 	securityServiceImpl *security_service_impl.SecurityServiceImpl
 }
 
@@ -30,7 +30,7 @@ func NewSecurityServiceBuilder() *SecurityServiceBuilder {
 	}
 }
 
-func (builder *SecurityServiceBuilder) UseStrict() *SecurityServiceBuilder { 
-  builder.isStrict = true
-  return builder
+func (builder *SecurityServiceBuilder) UseStrict() *SecurityServiceBuilder {
+	builder.isStrict = true
+	return builder
 }

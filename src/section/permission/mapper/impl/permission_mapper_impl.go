@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type PermissionMapperImpl struct{
+type PermissionMapperImpl struct {
 	DB *gorm.DB
 }
 

@@ -30,12 +30,7 @@
             "type": {
               "type": "enum",
               "name": "UserRole",
-              "symbols": [
-                "USER_ROLE_UNSPECIFIED",
-                "ADMIN",
-                "TRADER",
-                "USER"
-              ],
+              "symbols": ["USER_ROLE_UNSPECIFIED", "ADMIN", "TRADER", "USER"],
               "default": "USER_ROLE_UNSPECIFIED"
             },
             "default": "USER_ROLE_UNSPECIFIED"

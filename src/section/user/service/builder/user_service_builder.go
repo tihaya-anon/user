@@ -1,9 +1,9 @@
 package user_service_builder
 
 import (
+	user_mapper "MVC_DI/section/user/mapper"
 	user_service "MVC_DI/section/user/service"
 	user_service_impl "MVC_DI/section/user/service/impl"
-	user_mapper "MVC_DI/section/user/mapper"
 )
 
 func (builder *UserServiceBuilder) Build() user_service.UserService {
@@ -20,7 +20,7 @@ func (builder *UserServiceBuilder) WithUserMapper(mapper user_mapper.UserMapper)
 
 // BUILDER
 type UserServiceBuilder struct {
-  isStrict bool
+	isStrict        bool
 	userServiceImpl *user_service_impl.UserServiceImpl
 }
 
@@ -30,7 +30,7 @@ func NewUserServiceBuilder() *UserServiceBuilder {
 	}
 }
 
-func (builder *UserServiceBuilder) UseStrict() *UserServiceBuilder { 
-  builder.isStrict = true
-  return builder
+func (builder *UserServiceBuilder) UseStrict() *UserServiceBuilder {
+	builder.isStrict = true
+	return builder
 }

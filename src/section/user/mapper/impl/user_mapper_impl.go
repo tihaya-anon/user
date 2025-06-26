@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserMapperImpl struct{
+type UserMapperImpl struct {
 	DB *gorm.DB
 }
 

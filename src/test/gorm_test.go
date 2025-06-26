@@ -3,9 +3,10 @@ package test
 import (
 	"MVC_DI/config"
 	"MVC_DI/util/gen"
+	"testing"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"testing"
 )
 
 func Test_GenQuery(t *testing.T) {

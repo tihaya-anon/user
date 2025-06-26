@@ -1,9 +1,9 @@
 package credential_service_builder
 
 import (
+	credential_mapper "MVC_DI/section/credential/mapper"
 	credential_service "MVC_DI/section/credential/service"
 	credential_service_impl "MVC_DI/section/credential/service/impl"
-	credential_mapper "MVC_DI/section/credential/mapper"
 )
 
 func (builder *CredentialServiceBuilder) Build() credential_service.CredentialService {
@@ -20,7 +20,7 @@ func (builder *CredentialServiceBuilder) WithCredentialMapper(mapper credential_
 
 // BUILDER
 type CredentialServiceBuilder struct {
-  isStrict bool
+	isStrict              bool
 	credentialServiceImpl *credential_service_impl.CredentialServiceImpl
 }
 
@@ -30,7 +30,7 @@ func NewCredentialServiceBuilder() *CredentialServiceBuilder {
 	}
 }
 
-func (builder *CredentialServiceBuilder) UseStrict() *CredentialServiceBuilder { 
-  builder.isStrict = true
-  return builder
+func (builder *CredentialServiceBuilder) UseStrict() *CredentialServiceBuilder {
+	builder.isStrict = true
+	return builder
 }

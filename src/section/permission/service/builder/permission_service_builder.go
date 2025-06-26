@@ -1,9 +1,9 @@
 package permission_service_builder
 
 import (
+	permission_mapper "MVC_DI/section/permission/mapper"
 	permission_service "MVC_DI/section/permission/service"
 	permission_service_impl "MVC_DI/section/permission/service/impl"
-	permission_mapper "MVC_DI/section/permission/mapper"
 )
 
 func (builder *PermissionServiceBuilder) Build() permission_service.PermissionService {
@@ -20,7 +20,7 @@ func (builder *PermissionServiceBuilder) WithPermissionMapper(mapper permission_
 
 // BUILDER
 type PermissionServiceBuilder struct {
-  isStrict bool
+	isStrict              bool
 	permissionServiceImpl *permission_service_impl.PermissionServiceImpl
 }
 
@@ -30,7 +30,7 @@ func NewPermissionServiceBuilder() *PermissionServiceBuilder {
 	}
 }
 
-func (builder *PermissionServiceBuilder) UseStrict() *PermissionServiceBuilder { 
-  builder.isStrict = true
-  return builder
+func (builder *PermissionServiceBuilder) UseStrict() *PermissionServiceBuilder {
+	builder.isStrict = true
+	return builder
 }

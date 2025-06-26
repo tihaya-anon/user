@@ -1,11 +1,11 @@
 package credential_service_impl
 
 import (
-	credential_service "MVC_DI/section/credential/service"
 	credential_mapper "MVC_DI/section/credential/mapper"
+	credential_service "MVC_DI/section/credential/service"
 )
 
-type CredentialServiceImpl struct{
+type CredentialServiceImpl struct {
 	CredentialMapper credential_mapper.CredentialMapper
 }
 

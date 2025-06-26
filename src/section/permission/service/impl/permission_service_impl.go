@@ -1,11 +1,11 @@
 package permission_service_impl
 
 import (
-	permission_service "MVC_DI/section/permission/service"
 	permission_mapper "MVC_DI/section/permission/mapper"
+	permission_service "MVC_DI/section/permission/service"
 )
 
-type PermissionServiceImpl struct{
+type PermissionServiceImpl struct {
 	PermissionMapper permission_mapper.PermissionMapper
 }
 

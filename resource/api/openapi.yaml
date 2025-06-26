@@ -7,16 +7,16 @@ servers:
 security:
   - bearerAuth: []
 tags:
-- name: Auth
-  description: Authentication and session management
-- name: User
-  description: User lifecycle management
-- name: Credential
-  description: User credential management
-- name: Permission
-  description: User permission management
-- name: Security
-  description: User security management
+  - name: Auth
+    description: Authentication and session management
+  - name: User
+    description: User lifecycle management
+  - name: Credential
+    description: User credential management
+  - name: Permission
+    description: User permission management
+  - name: Security
+    description: User security management
 components:
   schemas:
     Empty:
@@ -309,7 +309,7 @@ paths:
     post:
       summary: Authenticate user and create a new session
       tags:
-      - Auth
+        - Auth
       operationId: loginUser
       security: []
       parameters: []
@@ -317,48 +317,48 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserLoginRequest'
+              $ref: "#/components/schemas/UserLoginRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthSessionResponse'
-        '400':
+                $ref: "#/components/schemas/AuthSessionResponse"
+        "400":
           description: Invalid request data
-        '401':
+        "401":
           description: Authentication failed
   /user/logout:
     post:
       summary: Invalidate an existing session
       tags:
-      - Auth
+        - Auth
       operationId: logoutUser
       parameters: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Empty'
+              $ref: "#/components/schemas/Empty"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Empty'
-        '401':
+                $ref: "#/components/schemas/Empty"
+        "401":
           description: Session invalid or expired
-        '404':
+        "404":
           description: Session not found
   /user:
     post:
       summary: Create a new user account
       tags:
-      - User
+        - User
       operationId: registerUser
       security: []
       parameters: []
@@ -366,270 +366,270 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateRequest'
+              $ref: "#/components/schemas/UserCreateRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreateResponse'
-        '400':
+                $ref: "#/components/schemas/UserCreateResponse"
+        "400":
           description: Invalid user data
-        '409':
+        "409":
           description: Username or email already exists
   /user/{userId}:
     get:
       summary: Get user profile information by ID
       tags:
-      - User
+        - User
       operationId: getUserProfile
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Empty'
+              $ref: "#/components/schemas/Empty"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserProfileResponse'
-        '404':
+                $ref: "#/components/schemas/UserProfileResponse"
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID format
     put:
       summary: Update user profile information
       tags:
-      - User
+        - User
       operationId: updateUserProfile
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdateRequest'
+              $ref: "#/components/schemas/UserUpdateRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserUpdateResponse'
-        '404':
+                $ref: "#/components/schemas/UserUpdateResponse"
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID or data
   /user/{userId}/credentials:
     post:
       summary: Add a new credential for a user
       tags:
-      - Credential
+        - Credential
       operationId: addCredential
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CredentialAddRequest'
+              $ref: "#/components/schemas/CredentialAddRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CredentialAddResponse'
-        '404':
+                $ref: "#/components/schemas/CredentialAddResponse"
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID or credential data
     get:
       summary: Get all credentials for a user
       tags:
-      - Credential
+        - Credential
       operationId: getCredentials
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Empty'
+              $ref: "#/components/schemas/Empty"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CredentialListResponse'
-        '404':
+                $ref: "#/components/schemas/CredentialListResponse"
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID
   /user/{userId}/permissions:
     get:
       summary: Get all permissions for a user
       tags:
-      - Permission
+        - Permission
       operationId: getUserPermissions
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Empty'
+              $ref: "#/components/schemas/Empty"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PermissionListResponse'
-        '404':
+                $ref: "#/components/schemas/PermissionListResponse"
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID
     post:
       summary: Set permissions for a user
       tags:
-      - Permission
+        - Permission
       operationId: setUserPermissions
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PermissionSetRequest'
+              $ref: "#/components/schemas/PermissionSetRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Empty'
-        '404':
+                $ref: "#/components/schemas/Empty"
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID or permission data
   /user/{userId}/security:
     get:
       summary: Get security settings for a user
       tags:
-      - Security
+        - Security
       operationId: getUserSecurity
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Empty'
+              $ref: "#/components/schemas/Empty"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SecuritySettingResponse'
-        '404':
+                $ref: "#/components/schemas/SecuritySettingResponse"
+        "404":
           description: User or security settings not found
-        '400':
+        "400":
           description: Invalid user ID
     post:
       summary: Create security settings for a user
       tags:
-      - Security
+        - Security
       operationId: createUserSecurity
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SecurityCreateRequest'
+              $ref: "#/components/schemas/SecurityCreateRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Empty'
-        '409':
+                $ref: "#/components/schemas/Empty"
+        "409":
           description: Security settings already exist
-        '404':
+        "404":
           description: User not found
-        '400':
+        "400":
           description: Invalid user ID or security data
     put:
       summary: Update security settings for a user
       tags:
-      - Security
+        - Security
       operationId: updateUserSecurity
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/UserIdParam'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UserIdParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SecurityUpdateRequest'
+              $ref: "#/components/schemas/SecurityUpdateRequest"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Empty'
-        '404':
+                $ref: "#/components/schemas/Empty"
+        "404":
           description: User or security settings not found
-        '400':
+        "400":
           description: Invalid user ID or security data

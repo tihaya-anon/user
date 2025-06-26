@@ -10,11 +10,11 @@ AVRO_PARENT="./avro"
 
 mkdir -p "${AVRO_PARENT}"
 
-shopt -s nullglob                
+shopt -s nullglob
 for proto_path in "${PROTO_DIR}"/*.proto; do
-  proto_file="$(basename "${proto_path}")"          
-  proto_name="${proto_file%.proto}"                 
-  out_dir="${AVRO_PARENT}/${proto_name}"            
+  proto_file="$(basename "${proto_path}")"
+  proto_name="${proto_file%.proto}"
+  out_dir="${AVRO_PARENT}/${proto_name}"
 
   mkdir -p "${out_dir}"
 

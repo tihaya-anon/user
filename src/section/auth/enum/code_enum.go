@@ -1,17 +1,17 @@
 package auth_enum
 
 var CODE = struct {
-	UNKNOWN_CREDENTIAL   string
-	PASSWORD_WRONG       string
-	EMAIL_CODE_WRONG     string
-	GOOGLE_2FA_WRONG     string
-	OAUTH_WRONG          string
-	UNKNOWN_SESSION      string
+	UNKNOWN_CREDENTIAL string
+	PASSWORD_WRONG     string
+	EMAIL_CODE_WRONG   string
+	GOOGLE_2FA_WRONG   string
+	OAUTH_WRONG        string
+	UNKNOWN_SESSION    string
 }{
-	UNKNOWN_CREDENTIAL:   "CRE00",
-	PASSWORD_WRONG:       "CRE01",
-	EMAIL_CODE_WRONG:     "CRE02",
-	GOOGLE_2FA_WRONG:     "CRE03",
-	OAUTH_WRONG:          "CRE04",
-	UNKNOWN_SESSION:      "SES00",
+	UNKNOWN_CREDENTIAL: "CRE00",
+	PASSWORD_WRONG:     "CRE01",
+	EMAIL_CODE_WRONG:   "CRE02",
+	GOOGLE_2FA_WRONG:   "CRE03",
+	OAUTH_WRONG:        "CRE04",
+	UNKNOWN_SESSION:    "SES00",
 }
