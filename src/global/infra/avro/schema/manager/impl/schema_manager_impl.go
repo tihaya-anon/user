@@ -1,4 +1,4 @@
-package schema
+package schema_manager_impl
 
 import (
 	"fmt"
@@ -10,22 +10,23 @@ import (
 	"github.com/riferrei/srclient"
 	"google.golang.org/protobuf/proto"
 
-	schema_model "MVC_DI/global/infra/schema/model"
+	schema_manager "MVC_DI/global/infra/avro/schema/manager"
+	schema_mapping "MVC_DI/global/infra/avro/schema/mapping"
 	"MVC_DI/global/module"
 )
 
-// ISchemaManager Manage schema loading, caching, parsing
-type ISchemaManager struct {
+// SchemaManagerImpl Manage schema loading, caching, parsing
+type SchemaManagerImpl struct {
 	client        srclient.ISchemaRegistryClient
-	mapping       *schema_model.ISchemaMapping
+	mapping       schema_mapping.ISchemaMapping
 	codecCache    map[string]*goavro.Codec
 	schemaIdCache map[string]int
 	mu            sync.RWMutex
 }
 
 // NewSchemaManager constructor
-func NewSchemaManager(client srclient.ISchemaRegistryClient, mapping *schema_model.ISchemaMapping) *ISchemaManager {
-	return &ISchemaManager{
+func NewSchemaManager(client srclient.ISchemaRegistryClient, mapping schema_mapping.ISchemaMapping) *SchemaManagerImpl {
+	return &SchemaManagerImpl{
 		client:        client,
 		mapping:       mapping,
 		codecCache:    make(map[string]*goavro.Codec),
@@ -33,13 +34,13 @@ func NewSchemaManager(client srclient.ISchemaRegistryClient, mapping *schema_mod
 	}
 }
 
-func (sm *ISchemaManager) GetOrLoadCodecByObject(object proto.Message) (*goavro.Codec, int, error) {
+func (sm *SchemaManagerImpl) GetOrLoadCodecByObject(object proto.Message) (*goavro.Codec, int, error) {
 	return sm.GetOrLoadCodecBySchema(sm.mapping.GetSchemaByObject(object))
 }
-func (sm *ISchemaManager) GetOrLoadCodecBySchema(schema *schema_model.Schema) (*goavro.Codec, int, error) {
+func (sm *SchemaManagerImpl) GetOrLoadCodecBySchema(schema *schema_mapping.Schema) (*goavro.Codec, int, error) {
 	return sm.GetOrLoadCodecBySubject(schema.Subject, schema.AvscPath)
 }
-func (sm *ISchemaManager) GetOrLoadCodecBySubject(subject, avscPath string) (*goavro.Codec, int, error) {
+func (sm *SchemaManagerImpl) GetOrLoadCodecBySubject(subject, avscPath string) (*goavro.Codec, int, error) {
 	sm.mu.RLock()
 	if codec, ok := sm.codecCache[subject]; ok {
 		schemaID := sm.schemaIdCache[subject]
@@ -57,7 +58,7 @@ func (sm *ISchemaManager) GetOrLoadCodecBySubject(subject, avscPath string) (*go
 	}
 
 	if avscPath == "" {
-		for _, s := range sm.mapping.Schemas {
+		for _, s := range sm.mapping.GetSchemas() {
 			if s.Subject == subject {
 				avscPath = s.AvscPath
 				break
@@ -93,3 +94,6 @@ func loadSchemaFile(path string) (string, error) {
 	}
 	return string(data), nil
 }
+
+// INTERFACE
+var _ schema_manager.ISchemaManager = (*SchemaManagerImpl)(nil)

@@ -5,6 +5,7 @@ package login_audit;
 option java_package = "com.anon.login_audit";
 option java_outer_classname = "LoginAuditProto";
 option java_multiple_files = false;
+option go_package = "./proto";
 
 import "google/protobuf/timestamp.proto";
 

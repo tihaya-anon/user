@@ -8,3 +8,4 @@ docker run --rm \
   -d /defs \
   -l go \
   -o /out
+echo "✅ finished. output: $(pwd)/../src/gen"

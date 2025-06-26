@@ -2,25 +2,25 @@ package auth_service_impl
 
 import (
 	"MVC_DI/gen/proto"
+	avro_serializer "MVC_DI/global/infra/avro/serializer"
 	event_mapper "MVC_DI/global/infra/event/mapper"
-	"MVC_DI/global/infra/schema"
 	global_model "MVC_DI/global/model"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
-	"MVC_DI/security/jwt/claims"
 	"MVC_DI/security/jwt"
-	payload_util "MVC_DI/util/payload"
+	"MVC_DI/security/jwt/claims"
 	"context"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthServiceImpl struct {
-	AuthMapper   auth_mapper.AuthMapper
-	EventMapper  event_mapper.EventMapper
-	MatchService auth_service.MatchService
+	AuthMapper     auth_mapper.AuthMapper
+	EventMapper    event_mapper.EventMapper
+	MatchService   auth_service.MatchService
+	AvroSerializer avro_serializer.IAvroSerializer
 }
 
 // LogoutUser implements auth_service.AuthService.
@@ -29,19 +29,13 @@ type AuthServiceImpl struct {
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
 	request := &proto.InvalidateSessionRequest{SessionId: sessionId}
-	native, err := payload_util.ProtoToNative(request)
-	if err != nil {
-		return err
-	}
-	codec, _, err := schema.SchemaManager.GetOrLoadCodecByObject(request)
-	if err != nil {
-		return err
-	}
-	payload, err := codec.BinaryFromNative(nil, native)
+	subject, schemaId, payload, err := a.AvroSerializer.SerializeProtoMessage(request)
 	if err != nil {
 		return err
 	}
 	envelope := &proto.KafkaEnvelope{
+		SchemaSubject:        subject,
+		SchemaId:             int64(schemaId),
 		Priority:             proto.Priority_HIGH,
 		Payload:              payload,
 		DeliveryMode:         proto.DeliveryMode_PUSH,
