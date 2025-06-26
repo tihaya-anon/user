@@ -9,23 +9,24 @@ import (
 )
 
 type SchemaMappingImpl struct {
-	schemas []*schema_mapping.Schema
+	Schemas []*schema_mapping.Schema
 }
 
+// NewSchemaMapping load from system
 func NewSchemaMapping() schema_mapping.ISchemaMapping {
-	var schemaMapping = &SchemaMappingImpl{}
+	var schemaMappingImpl = &SchemaMappingImpl{}
 	path := "avro/" + config.Application.Env + "/schema_registry_mapping"
-	config.Parse(path, schemaMapping)
-	return schemaMapping
+	config.Parse(path, schemaMappingImpl)
+	return schemaMappingImpl
 }
 
 // GetSchemas implements schema_mapping.ISchemaMapping.
 func (sm *SchemaMappingImpl) GetSchemas() []*schema_mapping.Schema {
-	return sm.schemas
+	return sm.Schemas
 }
 
 func (sm *SchemaMappingImpl) GetSchemaByMessage(message string) *schema_mapping.Schema {
-	for _, schema := range sm.schemas {
+	for _, schema := range sm.Schemas {
 		if schema.Message == message {
 			return schema
 		}

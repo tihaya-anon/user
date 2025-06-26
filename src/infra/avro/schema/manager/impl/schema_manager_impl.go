@@ -22,6 +22,7 @@ type SchemaManagerImpl struct {
 	codecCache    map[string]*goavro.Codec
 	schemaIdCache map[string]int
 	mu            sync.RWMutex
+	resourcePath  string
 }
 
 // NewSchemaManager constructor
@@ -31,9 +32,12 @@ func NewSchemaManager(client srclient.ISchemaRegistryClient, mapping schema_mapp
 		mapping:       mapping,
 		codecCache:    make(map[string]*goavro.Codec),
 		schemaIdCache: make(map[string]int),
+		resourcePath:  module.GetResource(),
 	}
 }
-
+func (sm *SchemaManagerImpl) InjectResourceRoot(resourceRoot string) {
+	sm.resourcePath = resourceRoot
+}
 func (sm *SchemaManagerImpl) GetOrLoadCodecByObject(object proto.Message) (*goavro.Codec, int, error) {
 	return sm.GetOrLoadCodecBySchema(sm.mapping.GetSchemaByObject(object))
 }
@@ -70,7 +74,7 @@ func (sm *SchemaManagerImpl) GetOrLoadCodecBySubject(subject, avscPath string) (
 		return nil, 0, fmt.Errorf("schema not found for subject: %s", subject)
 	}
 
-	schemaStr, err := loadSchemaFile(path.Join(module.GetResource(), avscPath))
+	schemaStr, err := loadSchemaFile(path.Join(sm.resourcePath, avscPath))
 	if err != nil {
 		return nil, 0, err
 	}
