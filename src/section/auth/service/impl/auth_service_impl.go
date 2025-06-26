@@ -10,8 +10,8 @@ import (
 	auth_service "MVC_DI/section/auth/service"
 	"MVC_DI/security"
 	"MVC_DI/security/claims"
+	payload_util "MVC_DI/util/payload"
 	"context"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,15 +27,18 @@ type AuthServiceImpl struct {
 // error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_SESSION
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
+	request := &proto.InvalidateSessionRequest{SessionId: sessionId}
+	payload, err := payload_util.ProtoToAvroBytes(request)
+	if err != nil {
+		return err
+	}
 	envelope := &proto.KafkaEnvelope{
-		TopicName:            "auth.logout.user",
-		EventType:            "auth.logout.user",
 		Priority:             proto.Priority_HIGH,
-		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
+		Payload:              payload,
 		DeliveryMode:         proto.DeliveryMode_PUSH,
 		TriggerModeRequested: proto.TriggerMode_ASYNC,
 	}
-	err := a.EventMapper.SubmitEvent(ctx, envelope)
+	err = a.EventMapper.SubmitEvent(ctx, envelope)
 	return err
 }
 

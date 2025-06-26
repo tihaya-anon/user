@@ -8,6 +8,7 @@ import (
 
 	"github.com/linkedin/goavro/v2"
 	"github.com/riferrei/srclient"
+	"google.golang.org/protobuf/proto"
 
 	schema_model "MVC_DI/global/infra/schema/model"
 	"MVC_DI/global/module"
@@ -32,7 +33,13 @@ func newSchemaManager(schemaRegistryURL string, mapping *schema_model.ISchemaMap
 	}
 }
 
-func (sm *ISchemaManager) GetCodec(subject, avscPath string) (*goavro.Codec, error) {
+func (sm *ISchemaManager) GetOrLoadCodecByObject(object proto.Message) (*goavro.Codec, error) {
+	return sm.GetOrLoadCodecBySchema(sm.mapping.GetSchemaByObject(object))
+}
+func (sm *ISchemaManager) GetOrLoadCodecBySchema(schema *schema_model.Schema) (*goavro.Codec, error) {
+	return sm.GetOrLoadCodecBySubject(schema.Subject, schema.AvscPath)
+}
+func (sm *ISchemaManager) GetOrLoadCodecBySubject(subject, avscPath string) (*goavro.Codec, error) {
 	sm.mu.RLock()
 	if codec, ok := sm.codecCache[subject]; ok {
 		sm.mu.RUnlock()
@@ -73,7 +80,6 @@ func (sm *ISchemaManager) GetCodec(subject, avscPath string) (*goavro.Codec, err
 	sm.codecCache[subject] = codec
 	return codec, nil
 }
-
 func loadSchemaFile(path string) (string, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
