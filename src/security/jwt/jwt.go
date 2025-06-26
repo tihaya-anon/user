@@ -1,4 +1,4 @@
-package security
+package jwt
 
 import (
 	"MVC_DI/config"

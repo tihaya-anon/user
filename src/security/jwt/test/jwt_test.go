@@ -1,7 +1,7 @@
 package test
 
 import (
-	"MVC_DI/security"
+	"MVC_DI/security/jwt"
 	"testing"
 )
 
@@ -13,7 +13,7 @@ func Test_JWT(t *testing.T) {
 		Age  int
 	}
 	// When
-	token, err := security.GenerateJWT(Claims{Name: "John", Age: 30})
+	token, err := jwt.GenerateJWT(Claims{Name: "John", Age: 30})
 	// Then
 	if err != nil {
 		t.Errorf("case `Generate JWT` failed: %v", err)
@@ -23,7 +23,7 @@ func Test_JWT(t *testing.T) {
 	// Given
 	// token above
 	// When
-	_, err = security.ParseJWT[Claims](token)
+	_, err = jwt.ParseJWT[Claims](token)
 	// Then
 	if err != nil {
 		t.Errorf("case `Parse JWT Success` failed: %v", err)
@@ -33,7 +33,7 @@ func Test_JWT(t *testing.T) {
 	// Given
 	token = "abcd" + token
 	// When
-	_, err = security.ParseJWT[Claims](token)
+	_, err = jwt.ParseJWT[Claims](token)
 	// Then
 	if err == nil {
 		t.Errorf("case `Parse JWT Failed` failed: %v", err)

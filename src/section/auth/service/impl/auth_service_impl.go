@@ -9,8 +9,8 @@ import (
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
-	"MVC_DI/security"
 	"MVC_DI/security/claims"
+	"MVC_DI/security/jwt"
 	payload_util "MVC_DI/util/payload"
 	"context"
 
@@ -96,7 +96,7 @@ func (a AuthServiceImpl) LoginUser(ctx context.Context, userLoginDto auth_dto.Us
 	if err != nil {
 		return nil, err
 	}
-	token, err := security.GenerateJWT(claims.UserClaim{
+	token, err := jwt.GenerateJWT(claims.UserClaim{
 		UserId: authCredential.GetUserId(),
 	})
 	if err != nil {

@@ -9,8 +9,8 @@ import (
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_service_impl "MVC_DI/section/auth/service/impl"
-	"MVC_DI/security"
 	"MVC_DI/security/claims"
+	"MVC_DI/security/jwt"
 	"context"
 	"errors"
 	"strconv"
@@ -151,7 +151,7 @@ func Test_LoginUser_Success(t *testing.T) {
 	resp, err := svc.LoginUser(ctx, dto)
 	assert.NoError(t, err)
 
-	token, err := security.GenerateJWT(claims.UserClaim{
+	token, err := jwt.GenerateJWT(claims.UserClaim{
 		UserId: activeCredential.UserId,
 	})
 
