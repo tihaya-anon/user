@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "name": "UpdateUserResponse",
+  "namespace": "user",
+  "fields": [
+    {
+      "name": "success",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "default": ""
+    }
+  ]
+}

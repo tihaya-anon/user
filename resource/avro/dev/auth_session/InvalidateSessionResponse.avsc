@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "InvalidateSessionResponse",
+  "namespace": "auth_session",
+  "fields": [
+    {
+      "name": "success",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

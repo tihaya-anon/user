@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "FailEventResponse",
+  "namespace": "kafka",
+  "fields": [
+    {
+      "name": "success",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

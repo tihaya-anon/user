@@ -28,9 +28,12 @@ type AuthServiceImpl struct {
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
 	envelope := &proto.KafkaEnvelope{
+		TopicName:            "auth.logout.user",
+		EventType:            "auth.logout.user",
+		Priority:             proto.Priority_HIGH,
+		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
 		DeliveryMode:         proto.DeliveryMode_PUSH,
 		TriggerModeRequested: proto.TriggerMode_ASYNC,
-		Payload:              []byte(strconv.FormatInt(sessionId, 10)),
 	}
 	err := a.EventMapper.SubmitEvent(ctx, envelope)
 	return err

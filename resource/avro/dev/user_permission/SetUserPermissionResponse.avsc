@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "SetUserPermissionResponse",
+  "namespace": "user_permission",
+  "fields": [
+    {
+      "name": "success",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

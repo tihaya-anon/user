@@ -1,0 +1,43 @@
+{
+  "type": "record",
+  "name": "SubmitEventResponse",
+  "namespace": "kafka",
+  "fields": [
+    {
+      "name": "event_id",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "EventStatus",
+        "symbols": [
+          "STATUS_UNSPECIFIED",
+          "PENDING",
+          "PROCESSED_SUCCESS",
+          "PROCESSED_FAILED",
+          "FINAL_FAILED",
+          "CANCELLED"
+        ],
+        "default": "STATUS_UNSPECIFIED"
+      },
+      "default": "STATUS_UNSPECIFIED"
+    },
+    {
+      "name": "trigger_mode_effective",
+      "type": {
+        "type": "enum",
+        "name": "TriggerMode",
+        "symbols": [
+          "TRIGGER_UNSPECIFIED",
+          "ASYNC",
+          "SYNC"
+        ],
+        "default": "TRIGGER_UNSPECIFIED"
+      },
+      "default": "TRIGGER_UNSPECIFIED"
+    }
+  ]
+}

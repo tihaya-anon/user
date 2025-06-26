@@ -1,0 +1,45 @@
+{
+  "type": "record",
+  "name": "GetPendingEventsRequest",
+  "namespace": "kafka",
+  "fields": [
+    {
+      "name": "limit",
+      "type": "int",
+      "default": 0
+    },
+    {
+      "name": "page_token",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "topic_name",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "event_type",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "min_priority",
+      "type": [
+        "null",
+        {
+          "type": "enum",
+          "name": "Priority",
+          "symbols": [
+            "PRIORITY_UNSPECIFIED",
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ],
+          "default": "PRIORITY_UNSPECIFIED"
+        }
+      ],
+      "default": null
+    }
+  ]
+}

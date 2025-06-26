@@ -1,0 +1,37 @@
+{
+  "type": "record",
+  "name": "FailEventRequest",
+  "namespace": "kafka",
+  "fields": [
+    {
+      "name": "event_id",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "failure",
+      "type": {
+        "type": "record",
+        "name": "FailureDetail",
+        "namespace": "kafka",
+        "fields": [
+          {
+            "name": "error_code",
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "error_message",
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "occurred_at",
+            "type": "long",
+            "default": 0
+          }
+        ]
+      }
+    }
+  ]
+}

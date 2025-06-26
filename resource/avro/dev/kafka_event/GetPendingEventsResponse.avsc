@@ -1,0 +1,159 @@
+{
+  "type": "record",
+  "name": "GetPendingEventsResponse",
+  "namespace": "kafka",
+  "fields": [
+    {
+      "name": "envelopes",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "KafkaEnvelope",
+          "namespace": "kafka",
+          "fields": [
+            {
+              "name": "event_id",
+              "type": "long",
+              "default": 0
+            },
+            {
+              "name": "topic_name",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "event_type",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "priority",
+              "type": {
+                "type": "enum",
+                "name": "Priority",
+                "symbols": [
+                  "PRIORITY_UNSPECIFIED",
+                  "HIGH",
+                  "MEDIUM",
+                  "LOW"
+                ],
+                "default": "PRIORITY_UNSPECIFIED"
+              },
+              "default": "PRIORITY_UNSPECIFIED"
+            },
+            {
+              "name": "payload",
+              "type": "bytes",
+              "default": ""
+            },
+            {
+              "name": "delivery_mode",
+              "type": {
+                "type": "enum",
+                "name": "DeliveryMode",
+                "symbols": [
+                  "DELIVERY_UNSPECIFIED",
+                  "PUSH",
+                  "PULL"
+                ],
+                "default": "DELIVERY_UNSPECIFIED"
+              },
+              "default": "DELIVERY_UNSPECIFIED"
+            },
+            {
+              "name": "trigger_mode_requested",
+              "type": {
+                "type": "enum",
+                "name": "TriggerMode",
+                "symbols": [
+                  "TRIGGER_UNSPECIFIED",
+                  "ASYNC",
+                  "SYNC"
+                ],
+                "default": "TRIGGER_UNSPECIFIED"
+              },
+              "default": "TRIGGER_UNSPECIFIED"
+            },
+            {
+              "name": "trigger_mode_effective",
+              "type": "kafka.TriggerMode",
+              "default": ""
+            },
+            {
+              "name": "status",
+              "type": {
+                "type": "enum",
+                "name": "EventStatus",
+                "symbols": [
+                  "STATUS_UNSPECIFIED",
+                  "PENDING",
+                  "PROCESSED_SUCCESS",
+                  "PROCESSED_FAILED",
+                  "FINAL_FAILED",
+                  "CANCELLED"
+                ],
+                "default": "STATUS_UNSPECIFIED"
+              },
+              "default": "STATUS_UNSPECIFIED"
+            },
+            {
+              "name": "retry_cnt",
+              "type": "int",
+              "default": 0
+            },
+            {
+              "name": "idempotency_key",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "correlation_id",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "headers",
+              "type": {
+                "type": "map",
+                "values": "string"
+              },
+              "default": {}
+            },
+            {
+              "name": "error_code",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "error_message",
+              "type": "string",
+              "default": ""
+            },
+            {
+              "name": "created_at",
+              "type": "long",
+              "default": 0
+            },
+            {
+              "name": "processed_at",
+              "type": "long",
+              "default": 0
+            }
+          ]
+        }
+      },
+      "default": []
+    },
+    {
+      "name": "next_page_token",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "total_cnt",
+      "type": "long",
+      "default": 0
+    }
+  ]
+}

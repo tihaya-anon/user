@@ -1,0 +1,224 @@
+# Auto-generated schema registry subject mapping
+# ENV: dev
+schemas:
+  # =====================
+  # auth_credential
+  # =====================
+  - proto: auth_credential.proto
+    message: AddAuthCredentialRequest
+    avsc_path: avro/dev/auth_credential/AddAuthCredentialRequest.avsc
+    subject: dev.auth_credential.auth_credential.AddAuthCredentialRequest-value
+  - proto: auth_credential.proto
+    message: AddAuthCredentialResponse
+    avsc_path: avro/dev/auth_credential/AddAuthCredentialResponse.avsc
+    subject: dev.auth_credential.auth_credential.AddAuthCredentialResponse-value
+  - proto: auth_credential.proto
+    message: AuthCredential
+    avsc_path: avro/dev/auth_credential/AuthCredential.avsc
+    subject: dev.auth_credential.auth_credential.AuthCredential-value
+  - proto: auth_credential.proto
+    message: GetAuthCredentialsRequest
+    avsc_path: avro/dev/auth_credential/GetAuthCredentialsRequest.avsc
+    subject: dev.auth_credential.auth_credential.GetAuthCredentialsRequest-value
+  - proto: auth_credential.proto
+    message: GetAuthCredentialsResponse
+    avsc_path: avro/dev/auth_credential/GetAuthCredentialsResponse.avsc
+    subject: dev.auth_credential.auth_credential.GetAuthCredentialsResponse-value
+  # =====================
+  # auth_session
+  # =====================
+  - proto: auth_session.proto
+    message: AuthSession
+    avsc_path: avro/dev/auth_session/AuthSession.avsc
+    subject: dev.auth_session.auth_session.AuthSession-value
+  - proto: auth_session.proto
+    message: CreateAuthSessionRequest
+    avsc_path: avro/dev/auth_session/CreateAuthSessionRequest.avsc
+    subject: dev.auth_session.auth_session.CreateAuthSessionRequest-value
+  - proto: auth_session.proto
+    message: CreateAuthSessionResponse
+    avsc_path: avro/dev/auth_session/CreateAuthSessionResponse.avsc
+    subject: dev.auth_session.auth_session.CreateAuthSessionResponse-value
+  - proto: auth_session.proto
+    message: GetUserSessionsRequest
+    avsc_path: avro/dev/auth_session/GetUserSessionsRequest.avsc
+    subject: dev.auth_session.auth_session.GetUserSessionsRequest-value
+  - proto: auth_session.proto
+    message: GetUserSessionsResponse
+    avsc_path: avro/dev/auth_session/GetUserSessionsResponse.avsc
+    subject: dev.auth_session.auth_session.GetUserSessionsResponse-value
+  - proto: auth_session.proto
+    message: InvalidateSessionRequest
+    avsc_path: avro/dev/auth_session/InvalidateSessionRequest.avsc
+    subject: dev.auth_session.auth_session.InvalidateSessionRequest-value
+  - proto: auth_session.proto
+    message: InvalidateSessionResponse
+    avsc_path: avro/dev/auth_session/InvalidateSessionResponse.avsc
+    subject: dev.auth_session.auth_session.InvalidateSessionResponse-value
+  # =====================
+  # kafka_event
+  # =====================
+  - proto: kafka_event.proto
+    message: AcknowledgeEventRequest
+    avsc_path: avro/dev/kafka_event/AcknowledgeEventRequest.avsc
+    subject: dev.kafka_event.kafka_event.AcknowledgeEventRequest-value
+  - proto: kafka_event.proto
+    message: AcknowledgeEventResponse
+    avsc_path: avro/dev/kafka_event/AcknowledgeEventResponse.avsc
+    subject: dev.kafka_event.kafka_event.AcknowledgeEventResponse-value
+  - proto: kafka_event.proto
+    message: CancelEventRequest
+    avsc_path: avro/dev/kafka_event/CancelEventRequest.avsc
+    subject: dev.kafka_event.kafka_event.CancelEventRequest-value
+  - proto: kafka_event.proto
+    message: CancelEventResponse
+    avsc_path: avro/dev/kafka_event/CancelEventResponse.avsc
+    subject: dev.kafka_event.kafka_event.CancelEventResponse-value
+  - proto: kafka_event.proto
+    message: FailEventRequest
+    avsc_path: avro/dev/kafka_event/FailEventRequest.avsc
+    subject: dev.kafka_event.kafka_event.FailEventRequest-value
+  - proto: kafka_event.proto
+    message: FailEventResponse
+    avsc_path: avro/dev/kafka_event/FailEventResponse.avsc
+    subject: dev.kafka_event.kafka_event.FailEventResponse-value
+  - proto: kafka_event.proto
+    message: FailureDetail
+    avsc_path: avro/dev/kafka_event/FailureDetail.avsc
+    subject: dev.kafka_event.kafka_event.FailureDetail-value
+  - proto: kafka_event.proto
+    message: GetPendingEventsRequest
+    avsc_path: avro/dev/kafka_event/GetPendingEventsRequest.avsc
+    subject: dev.kafka_event.kafka_event.GetPendingEventsRequest-value
+  - proto: kafka_event.proto
+    message: GetPendingEventsResponse
+    avsc_path: avro/dev/kafka_event/GetPendingEventsResponse.avsc
+    subject: dev.kafka_event.kafka_event.GetPendingEventsResponse-value
+  - proto: kafka_event.proto
+    message: KafkaEnvelope
+    avsc_path: avro/dev/kafka_event/KafkaEnvelope.avsc
+    subject: dev.kafka_event.kafka_event.KafkaEnvelope-value
+  - proto: kafka_event.proto
+    message: MarkFinalFailedRequest
+    avsc_path: avro/dev/kafka_event/MarkFinalFailedRequest.avsc
+    subject: dev.kafka_event.kafka_event.MarkFinalFailedRequest-value
+  - proto: kafka_event.proto
+    message: MarkFinalFailedResponse
+    avsc_path: avro/dev/kafka_event/MarkFinalFailedResponse.avsc
+    subject: dev.kafka_event.kafka_event.MarkFinalFailedResponse-value
+  - proto: kafka_event.proto
+    message: SubmitEventRequest
+    avsc_path: avro/dev/kafka_event/SubmitEventRequest.avsc
+    subject: dev.kafka_event.kafka_event.SubmitEventRequest-value
+  - proto: kafka_event.proto
+    message: SubmitEventResponse
+    avsc_path: avro/dev/kafka_event/SubmitEventResponse.avsc
+    subject: dev.kafka_event.kafka_event.SubmitEventResponse-value
+  # =====================
+  # login_audit_log
+  # =====================
+  - proto: login_audit_log.proto
+    message: AddLoginAuditLogRequest
+    avsc_path: avro/dev/login_audit_log/AddLoginAuditLogRequest.avsc
+    subject: dev.login_audit_log.login_audit_log.AddLoginAuditLogRequest-value
+  - proto: login_audit_log.proto
+    message: AddLoginAuditLogResponse
+    avsc_path: avro/dev/login_audit_log/AddLoginAuditLogResponse.avsc
+    subject: dev.login_audit_log.login_audit_log.AddLoginAuditLogResponse-value
+  - proto: login_audit_log.proto
+    message: ListLoginAuditLogsRequest
+    avsc_path: avro/dev/login_audit_log/ListLoginAuditLogsRequest.avsc
+    subject: dev.login_audit_log.login_audit_log.ListLoginAuditLogsRequest-value
+  - proto: login_audit_log.proto
+    message: ListLoginAuditLogsResponse
+    avsc_path: avro/dev/login_audit_log/ListLoginAuditLogsResponse.avsc
+    subject: dev.login_audit_log.login_audit_log.ListLoginAuditLogsResponse-value
+  - proto: login_audit_log.proto
+    message: LoginAuditLog
+    avsc_path: avro/dev/login_audit_log/LoginAuditLog.avsc
+    subject: dev.login_audit_log.login_audit_log.LoginAuditLog-value
+  # =====================
+  # user
+  # =====================
+  - proto: user.proto
+    message: CreateUserRequest
+    avsc_path: avro/dev/user/CreateUserRequest.avsc
+    subject: dev.user.user.CreateUserRequest-value
+  - proto: user.proto
+    message: CreateUserResponse
+    avsc_path: avro/dev/user/CreateUserResponse.avsc
+    subject: dev.user.user.CreateUserResponse-value
+  - proto: user.proto
+    message: GetUserByIdRequest
+    avsc_path: avro/dev/user/GetUserByIdRequest.avsc
+    subject: dev.user.user.GetUserByIdRequest-value
+  - proto: user.proto
+    message: GetUserByIdResponse
+    avsc_path: avro/dev/user/GetUserByIdResponse.avsc
+    subject: dev.user.user.GetUserByIdResponse-value
+  - proto: user.proto
+    message: UpdateUserRequest
+    avsc_path: avro/dev/user/UpdateUserRequest.avsc
+    subject: dev.user.user.UpdateUserRequest-value
+  - proto: user.proto
+    message: UpdateUserResponse
+    avsc_path: avro/dev/user/UpdateUserResponse.avsc
+    subject: dev.user.user.UpdateUserResponse-value
+  - proto: user.proto
+    message: User
+    avsc_path: avro/dev/user/User.avsc
+    subject: dev.user.user.User-value
+  # =====================
+  # user_permission
+  # =====================
+  - proto: user_permission.proto
+    message: GetUserPermissionsRequest
+    avsc_path: avro/dev/user_permission/GetUserPermissionsRequest.avsc
+    subject: dev.user_permission.user_permission.GetUserPermissionsRequest-value
+  - proto: user_permission.proto
+    message: GetUserPermissionsResponse
+    avsc_path: avro/dev/user_permission/GetUserPermissionsResponse.avsc
+    subject: dev.user_permission.user_permission.GetUserPermissionsResponse-value
+  - proto: user_permission.proto
+    message: SetUserPermissionRequest
+    avsc_path: avro/dev/user_permission/SetUserPermissionRequest.avsc
+    subject: dev.user_permission.user_permission.SetUserPermissionRequest-value
+  - proto: user_permission.proto
+    message: SetUserPermissionResponse
+    avsc_path: avro/dev/user_permission/SetUserPermissionResponse.avsc
+    subject: dev.user_permission.user_permission.SetUserPermissionResponse-value
+  - proto: user_permission.proto
+    message: UserPermission
+    avsc_path: avro/dev/user_permission/UserPermission.avsc
+    subject: dev.user_permission.user_permission.UserPermission-value
+  # =====================
+  # user_security_setting
+  # =====================
+  - proto: user_security_setting.proto
+    message: CreateUserSecuritySettingRequest
+    avsc_path: avro/dev/user_security_setting/CreateUserSecuritySettingRequest.avsc
+    subject: dev.user_security_setting.user_security_setting.CreateUserSecuritySettingRequest-value
+  - proto: user_security_setting.proto
+    message: CreateUserSecuritySettingResponse
+    avsc_path: avro/dev/user_security_setting/CreateUserSecuritySettingResponse.avsc
+    subject: dev.user_security_setting.user_security_setting.CreateUserSecuritySettingResponse-value
+  - proto: user_security_setting.proto
+    message: GetUserSecuritySettingRequest
+    avsc_path: avro/dev/user_security_setting/GetUserSecuritySettingRequest.avsc
+    subject: dev.user_security_setting.user_security_setting.GetUserSecuritySettingRequest-value
+  - proto: user_security_setting.proto
+    message: GetUserSecuritySettingResponse
+    avsc_path: avro/dev/user_security_setting/GetUserSecuritySettingResponse.avsc
+    subject: dev.user_security_setting.user_security_setting.GetUserSecuritySettingResponse-value
+  - proto: user_security_setting.proto
+    message: UpdateUserSecuritySettingRequest
+    avsc_path: avro/dev/user_security_setting/UpdateUserSecuritySettingRequest.avsc
+    subject: dev.user_security_setting.user_security_setting.UpdateUserSecuritySettingRequest-value
+  - proto: user_security_setting.proto
+    message: UpdateUserSecuritySettingResponse
+    avsc_path: avro/dev/user_security_setting/UpdateUserSecuritySettingResponse.avsc
+    subject: dev.user_security_setting.user_security_setting.UpdateUserSecuritySettingResponse-value
+  - proto: user_security_setting.proto
+    message: UserSecuritySetting
+    avsc_path: avro/dev/user_security_setting/UserSecuritySetting.avsc
+    subject: dev.user_security_setting.user_security_setting.UserSecuritySetting-value

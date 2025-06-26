@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "GetUserSecuritySettingRequest",
+  "namespace": "user_security",
+  "fields": [
+    {
+      "name": "user_id",
+      "type": "long",
+      "default": 0
+    }
+  ]
+}

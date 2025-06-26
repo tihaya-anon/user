@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "GetUserSessionsRequest",
+  "namespace": "auth_session",
+  "fields": [
+    {
+      "name": "user_id",
+      "type": "long",
+      "default": 0
+    }
+  ]
+}

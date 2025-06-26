@@ -1,0 +1,22 @@
+{
+  "type": "record",
+  "name": "CancelEventRequest",
+  "namespace": "kafka",
+  "fields": [
+    {
+      "name": "event_id",
+      "type": "long",
+      "default": 0
+    },
+    {
+      "name": "reason",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "cancelled_at",
+      "type": "long",
+      "default": 0
+    }
+  ]
+}

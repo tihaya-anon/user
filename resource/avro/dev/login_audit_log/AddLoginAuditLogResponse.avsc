@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "AddLoginAuditLogResponse",
+  "namespace": "login_audit",
+  "fields": [
+    {
+      "name": "log_id",
+      "type": "long",
+      "default": 0
+    }
+  ]
+}
