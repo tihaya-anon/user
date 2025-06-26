@@ -2,8 +2,8 @@ package event_mapper_builder
 
 import (
 	"MVC_DI/gen/proto"
-	event_mapper "MVC_DI/global/infra/event/mapper"
-	event_mapper_impl "MVC_DI/global/infra/event/mapper/impl"
+	event_mapper "MVC_DI/infra/event/mapper"
+	event_mapper_impl "MVC_DI/infra/event/mapper/impl"
 )
 
 func (builder *EventMapperBuilder) Build() event_mapper.EventMapper {

@@ -10,9 +10,9 @@ import (
 	"github.com/riferrei/srclient"
 	"google.golang.org/protobuf/proto"
 
-	schema_manager "MVC_DI/global/infra/avro/schema/manager"
-	schema_mapping "MVC_DI/global/infra/avro/schema/mapping"
 	"MVC_DI/global/module"
+	schema_manager "MVC_DI/infra/avro/schema/manager"
+	schema_mapping "MVC_DI/infra/avro/schema/mapping"
 )
 
 // SchemaManagerImpl Manage schema loading, caching, parsing

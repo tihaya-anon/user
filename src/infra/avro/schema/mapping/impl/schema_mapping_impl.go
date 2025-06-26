@@ -2,7 +2,7 @@ package schema_mapping_impl
 
 import (
 	"MVC_DI/config"
-	schema_mapping "MVC_DI/global/infra/avro/schema/mapping"
+	schema_mapping "MVC_DI/infra/avro/schema/mapping"
 	"reflect"
 
 	"google.golang.org/protobuf/proto"

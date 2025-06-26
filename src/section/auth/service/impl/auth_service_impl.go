@@ -2,9 +2,9 @@ package auth_service_impl
 
 import (
 	"MVC_DI/gen/proto"
-	avro_serializer "MVC_DI/global/infra/avro/serializer"
-	event_mapper "MVC_DI/global/infra/event/mapper"
 	global_model "MVC_DI/global/model"
+	avro_serializer "MVC_DI/infra/avro/serializer"
+	event_mapper "MVC_DI/infra/event/mapper"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"

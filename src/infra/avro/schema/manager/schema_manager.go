@@ -1,7 +1,7 @@
 package schema_manager
 
 import (
-	schema_mapping "MVC_DI/global/infra/avro/schema/mapping"
+	schema_mapping "MVC_DI/infra/avro/schema/mapping"
 
 	"github.com/linkedin/goavro/v2"
 	"google.golang.org/protobuf/proto"

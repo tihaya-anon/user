@@ -1,9 +1,9 @@
 package avro_serializer_impl
 
 import (
-	schema_manager "MVC_DI/global/infra/avro/schema/manager"
-	schema_mapping "MVC_DI/global/infra/avro/schema/mapping"
-	avro_serializer "MVC_DI/global/infra/avro/serializer"
+	schema_manager "MVC_DI/infra/avro/schema/manager"
+	schema_mapping "MVC_DI/infra/avro/schema/mapping"
+	avro_serializer "MVC_DI/infra/avro/serializer"
 	payload_util "MVC_DI/util/payload"
 
 	"google.golang.org/protobuf/proto"
