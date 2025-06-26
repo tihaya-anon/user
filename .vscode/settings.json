@@ -1,0 +1,7 @@
+{
+    "yaml.schemaStore.enable": false,
+    "yaml.schemas": {
+        "./schema/application.json": "resource/application*.yaml",
+        "file:///d%3A/code/proj/tx_sys/orchestrator/user/schema/application.json": "file:///d%3A/code/proj/tx_sys/orchestrator/user/resource/application-dev.yaml"
+    }
+}

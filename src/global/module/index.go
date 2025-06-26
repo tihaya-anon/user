@@ -41,3 +41,7 @@ func GetSrc() string {
 func GetRoot() string {
 	return filepath.Dir(moduleRoot)
 }
+
+func GetResource() string {
+	return filepath.Join(GetRoot(), "resource")
+}

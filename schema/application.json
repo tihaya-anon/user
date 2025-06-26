@@ -17,6 +17,9 @@
         },
         "env": {
           "type": "string"
+        },
+        "schemaRegistry": {
+          "$ref": "#/definitions/SchemaRegistry"
         }
       },
       "title": "Application"
@@ -39,7 +42,7 @@
     },
     "Database": {
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "username": {
           "type": "string"
@@ -90,6 +93,19 @@
         }
       },
       "title": "Time"
+    },
+    "SchemaRegistry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "title": "SchemaRegistry"
     }
   }
 }

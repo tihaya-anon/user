@@ -2,12 +2,12 @@ package auth_service_impl
 
 import (
 	"MVC_DI/gen/proto"
+	event_mapper "MVC_DI/global/infra/event/mapper"
 	global_model "MVC_DI/global/model"
 	auth_dto "MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
-	event_mapper "MVC_DI/global/infra/event/mapper"
 	"MVC_DI/security"
 	"MVC_DI/security/claims"
 	"context"

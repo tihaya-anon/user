@@ -20,6 +20,11 @@ type jwt struct {
 	Expiration Time
 }
 
+type schemaRegistry struct {
+	Host string
+	Port int
+}
+
 type Time struct {
 	Hour   int
 	Minute int
@@ -27,8 +32,9 @@ type Time struct {
 }
 
 type IApplication struct {
-	Database database
-	App      app
-	Jwt      jwt
-	Env      string
+	Database       database
+	App            app
+	Jwt            jwt
+	Env            string
+	SchemaRegistry schemaRegistry
 }

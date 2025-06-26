@@ -30,12 +30,7 @@
             "type": {
               "type": "enum",
               "name": "Priority",
-              "symbols": [
-                "PRIORITY_UNSPECIFIED",
-                "HIGH",
-                "MEDIUM",
-                "LOW"
-              ],
+              "symbols": ["PRIORITY_UNSPECIFIED", "HIGH", "MEDIUM", "LOW"],
               "default": "PRIORITY_UNSPECIFIED"
             },
             "default": "PRIORITY_UNSPECIFIED"
@@ -50,11 +45,7 @@
             "type": {
               "type": "enum",
               "name": "DeliveryMode",
-              "symbols": [
-                "DELIVERY_UNSPECIFIED",
-                "PUSH",
-                "PULL"
-              ],
+              "symbols": ["DELIVERY_UNSPECIFIED", "PUSH", "PULL"],
               "default": "DELIVERY_UNSPECIFIED"
             },
             "default": "DELIVERY_UNSPECIFIED"
@@ -64,11 +55,7 @@
             "type": {
               "type": "enum",
               "name": "TriggerMode",
-              "symbols": [
-                "TRIGGER_UNSPECIFIED",
-                "ASYNC",
-                "SYNC"
-              ],
+              "symbols": ["TRIGGER_UNSPECIFIED", "ASYNC", "SYNC"],
               "default": "TRIGGER_UNSPECIFIED"
             },
             "default": "TRIGGER_UNSPECIFIED"

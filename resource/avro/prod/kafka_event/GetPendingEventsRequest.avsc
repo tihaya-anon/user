@@ -30,12 +30,7 @@
         {
           "type": "enum",
           "name": "Priority",
-          "symbols": [
-            "PRIORITY_UNSPECIFIED",
-            "HIGH",
-            "MEDIUM",
-            "LOW"
-          ],
+          "symbols": ["PRIORITY_UNSPECIFIED", "HIGH", "MEDIUM", "LOW"],
           "default": "PRIORITY_UNSPECIFIED"
         }
       ],

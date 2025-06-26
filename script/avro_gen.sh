@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")" || exit 1
 cd ../resource || exit 1
 
-ENV="prod"
+ENV="dev"
 PROTO_DIR="./proto/${ENV}"
 AVRO_PARENT="./avro/${ENV}"
 MAPPING_FILE="${AVRO_PARENT}/schema_registry_mapping.yaml"
@@ -36,8 +36,7 @@ for proto_path in "${PROTO_DIR}"/*.proto; do
   entries=""
   for avsc_file in "${out_dir}"/*.avsc; do
     msg_name="$(basename "${avsc_file}" .avsc)"
-    service="${proto_name}"
-    subject="${ENV}.${service}.${proto_name}.${msg_name}-value"
+    subject="${ENV}.${proto_name}.${msg_name}-value"
 
     entries="${entries}
   - proto: ${proto_file}

@@ -13,18 +13,18 @@ import (
 	"github.com/spf13/viper"
 )
 
+func EnvParse[T any](file, env string, definition *T) error {
+	file = file + "-" + env
+	return Parse(file, definition)
+}
+
 // # Parse
 //
 // Parse Loads a config file into a struct
-func Parse[T any](file, env string, definition *T) error {
-	var envFile string
-	if env == "" {
-		envFile = file + ".yaml"
-	} else {
-		envFile = file + "-" + env + ".yaml"
-	}
-	pathStr, fileStr := path.Split(envFile)
-	pathStr = path.Join(module.GetRoot(), "resource", pathStr)
+func Parse[T any](file string, definition *T) error {
+	file = file + ".yaml"
+	pathStr, fileStr := path.Split(file)
+	pathStr = path.Join(module.GetResource(), pathStr)
 	splitFile := strings.Split(fileStr, ".")
 
 	name := splitFile[0]

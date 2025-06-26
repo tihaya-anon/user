@@ -30,11 +30,7 @@
       "type": {
         "type": "enum",
         "name": "TriggerMode",
-        "symbols": [
-          "TRIGGER_UNSPECIFIED",
-          "ASYNC",
-          "SYNC"
-        ],
+        "symbols": ["TRIGGER_UNSPECIFIED", "ASYNC", "SYNC"],
         "default": "TRIGGER_UNSPECIFIED"
       },
       "default": "TRIGGER_UNSPECIFIED"

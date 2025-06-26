@@ -7,8 +7,10 @@ require (
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang/mock v1.6.0
+	github.com/linkedin/goavro/v2 v2.14.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/oapi-codegen/runtime v1.1.1
+	github.com/riferrei/srclient v0.7.2
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
@@ -35,6 +37,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/golang/snappy v1.0.0 // indirect
 	github.com/invopop/yaml v0.3.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
@@ -50,6 +53,7 @@ require (
 	github.com/oapi-codegen/oapi-codegen/v2 v2.4.1 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
+	github.com/santhosh-tekuri/jsonschema/v5 v5.0.0 // indirect
 	github.com/speakeasy-api/openapi-overlay v0.9.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect

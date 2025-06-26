@@ -33,12 +33,7 @@
       "type": {
         "type": "enum",
         "name": "RiskLevel",
-        "symbols": [
-          "RISK_LEVEL_UNSPECIFIED",
-          "LOW",
-          "MEDIUM",
-          "HIGH"
-        ],
+        "symbols": ["RISK_LEVEL_UNSPECIFIED", "LOW", "MEDIUM", "HIGH"],
         "default": "RISK_LEVEL_UNSPECIFIED"
       },
       "default": "RISK_LEVEL_UNSPECIFIED"

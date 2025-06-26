@@ -13,7 +13,7 @@ var Application = &config_model.IApplication{}
 // from a YAML file and to resolve any placeholders in that
 // configuration.
 func init() {
-	Parse("application", "", Application)
-	Parse("application", Application.Env, Application)
+	Parse("application", Application)
+	EnvParse("application", Application.Env, Application)
 	Resolve(Application)
 }
