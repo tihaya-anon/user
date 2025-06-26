@@ -4,7 +4,7 @@ import (
 	"MVC_DI/gen/proto"
 	"MVC_DI/global/enum"
 	global_model "MVC_DI/global/model"
-	event_mapper "MVC_DI/section/event/mapper"
+	event_mapper "MVC_DI/global/infra/event/mapper"
 	"context"
 )
 

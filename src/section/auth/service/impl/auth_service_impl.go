@@ -7,7 +7,7 @@ import (
 	auth_enum "MVC_DI/section/auth/enum"
 	auth_mapper "MVC_DI/section/auth/mapper"
 	auth_service "MVC_DI/section/auth/service"
-	event_mapper "MVC_DI/section/event/mapper"
+	event_mapper "MVC_DI/global/infra/event/mapper"
 	"MVC_DI/security"
 	"MVC_DI/security/claims"
 	"context"

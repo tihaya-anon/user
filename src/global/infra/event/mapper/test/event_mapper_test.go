@@ -3,7 +3,7 @@ package event_mapper_test
 import (
 	"MVC_DI/gen/proto"
 	"MVC_DI/global/enum"
-	event_mapper_impl "MVC_DI/section/event/mapper/impl"
+	event_mapper_impl "MVC_DI/global/infra/event/mapper/impl"
 	"context"
 	"errors"
 	"testing"
