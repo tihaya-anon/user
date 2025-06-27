@@ -34,12 +34,13 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 	}
 	userLoginRespDto, err := ctrl.AuthService.LoginUser(ctx, userLoginDto)
 	if err != nil {
-		switch err.Error() {
-		case auth_enum.CODE.UNKNOWN_CREDENTIAL, auth_enum.CODE.PASSWORD_WRONG, auth_enum.CODE.EMAIL_CODE_WRONG, auth_enum.CODE.GOOGLE_2FA_WRONG, auth_enum.CODE.OAUTH_WRONG:
-			return response.CustomerError(err.Error())
-		default:
-			return response.SystemError() // Fallback for unexpected/technical errors like GRPC_ERROR
-		}
+		return controller_uitl.ExposeError(response, err,
+			auth_enum.CODE.UNKNOWN_CREDENTIAL,
+			auth_enum.CODE.PASSWORD_WRONG,
+			auth_enum.CODE.EMAIL_CODE_WRONG,
+			auth_enum.CODE.GOOGLE_2FA_WRONG,
+			auth_enum.CODE.OAUTH_WRONG,
+		)
 	}
 	// TODO expire config
 	security.SetSessionId(ctx, userLoginRespDto.SessionId, 3600, "/", "", true, true)
@@ -57,13 +58,9 @@ func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
 
 	err := ctrl.AuthService.LogoutUser(ctx, *sessionId)
 	if err != nil {
-		switch err.Error() {
-		case auth_enum.CODE.UNKNOWN_SESSION:
-			return response.CustomerError(err.Error()) // Business-specific session error
-		default:
-			return response.SystemError() // Fallback for technical errors like GRPC_ERROR
-		}
+		return controller_uitl.ExposeError(response, err,
+			auth_enum.CODE.UNKNOWN_SESSION,
+		)
 	}
-
 	return response.Success()
 }
