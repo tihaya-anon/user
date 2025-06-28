@@ -13,7 +13,9 @@ enum LoginResult {
   LOGIN_RESULT_UNSPECIFIED = 0;
   SUCCESS = 1;
   FAIL_PASSWORD = 2;
-  FAIL_2FA = 3;
+  FAIL_EMAIL_CODE = 3;
+  FAIL_2FA = 4;
+  FAIL_OAUTH = 5;
 }
 
 message LoginAuditLog {

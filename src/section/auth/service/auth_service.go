@@ -2,7 +2,6 @@ package auth_service
 
 import (
 	auth_dto "MVC_DI/section/auth/dto"
-	"context"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +11,7 @@ type AuthService interface {
 	// LoginUser
 	//
 	// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_CREDENTIAL, auth_enum.CODE.PASSWORD_WRONG, auth_enum.CODE.EMAIL_CODE_WRONG, auth_enum.CODE.GOOGLE_2FA_WRONG, auth_enum.CODE.OAUTH_WRONG
-	LoginUser(ctx context.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error)
+	LoginUser(ctx *gin.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error)
 	// LogoutUser
 	//
 	// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_SESSION
