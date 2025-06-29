@@ -2,6 +2,7 @@ package auth_event_publisher_impl
 
 import (
 	"MVC_DI/gen/proto"
+	"MVC_DI/global/context_key"
 	avro_serializer "MVC_DI/infra/avro/serializer"
 	event_mapper "MVC_DI/infra/event/mapper"
 	auth_dto "MVC_DI/section/auth/dto"
@@ -25,6 +26,7 @@ func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sess
 		return err
 	}
 	envelope := &proto.KafkaEnvelope{
+		CorrelationId:        context_key.GetCorrelationId(ctx),
 		SchemaSubject:        subject,
 		SchemaId:             schemaId,
 		Priority:             proto.Priority_HIGH,
@@ -54,6 +56,7 @@ func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *aut
 		return nil
 	}
 	envelope := &proto.KafkaEnvelope{
+		CorrelationId:        context_key.GetCorrelationId(ctx),
 		SchemaSubject:        subject,
 		SchemaId:             schemaId,
 		Priority:             proto.Priority_LOW,

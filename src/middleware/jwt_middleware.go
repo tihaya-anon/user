@@ -8,11 +8,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
+const JwtHeader string = "Authorization"
+const JwtPrefix string = "Bearer "
 func JwtMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		response := resp.NewResponse()
-		token := ctx.Request.Header.Get("Authorization")
+		token := ctx.Request.Header.Get(JwtHeader)
 		if token == "" {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE.MISSING_TOKEN, enum.MSG.MISSING_TOKEN, nil))
 			return
@@ -38,7 +39,7 @@ func GetToken(ctx *gin.Context) *string {
 	return str
 }
 func extractToken(token string) (bool, string) {
-	isLegal := strings.HasPrefix(token, "Bearer ") && len(strings.Split(token, " ")) == 2
+	isLegal := strings.HasPrefix(token, JwtPrefix) && len(strings.Split(token, " ")) == 2
 	if isLegal {
 		return true, strings.Split(token, " ")[1]
 	}
