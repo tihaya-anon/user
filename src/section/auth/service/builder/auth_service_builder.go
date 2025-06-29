@@ -18,17 +18,11 @@ func (builder *AuthServiceBuilder) WithAuthMapper(mapper auth_mapper.AuthMapper)
 	return builder
 }
 
-func (builder *AuthServiceBuilder) WithMatchService(svc auth_service.MatchService) *AuthServiceBuilder {
-	builder.authServiceImpl.MatchService = svc
-	return builder
-}
-
 // BUILDER
 
 type AuthServiceBuilder struct {
-	isStrict         bool
-	authServiceImpl  *auth_service_impl.AuthServiceImpl
-	matchServiceImpl *auth_service_impl.MatchServiceImpl
+	isStrict        bool
+	authServiceImpl *auth_service_impl.AuthServiceImpl
 }
 
 func NewAuthServiceBuilder() *AuthServiceBuilder {
