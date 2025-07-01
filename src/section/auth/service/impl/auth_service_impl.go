@@ -26,14 +26,14 @@ type AuthServiceImpl struct {
 
 // LogoutUser implements auth_service.AuthService.
 //
-// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_SESSION
+// error list: enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_SESSION
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	return a.AuthEventPublisher.PublishInvalidSession(ctx, sessionId)
 }
 
 // LoginUser implements auth_service.AuthService.
 //
-// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_CREDENTIAL, auth_enum.CODE.PASSWORD_WRONG, auth_enum.CODE.EMAIL_CODE_WRONG, auth_enum.CODE_2FA_WRONG, auth_enum.CODE.OAUTH_WRONG
+// error list: enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_CREDENTIAL, auth_enum.CODE_PASSWORD_WRONG, auth_enum.CODE_EMAIL_CODE_WRONG, auth_enum.CODE_2FA_WRONG, auth_enum.CODE_OAUTH_WRONG
 func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error) {
 	getCredentialsByIdentifierAndTypeDto := auth_dto.GetCredentialsByIdentifierAndTypeDto{Identifier: userLoginDto.Identifier, Type: userLoginDto.Type}
 	authCredentials, err := a.AuthMapper.GetCredentialsByIdentifierAndType(ctx, getCredentialsByIdentifierAndTypeDto)
@@ -43,7 +43,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.User
 
 	authCredential := getActiveCredential(authCredentials)
 	if authCredential == nil {
-		return nil, global_model.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.MSG.UNKNOWN_CREDENTIAL)
+		return nil, global_model.NewAppError().WithStatusKey(auth_enum.UNKNOWN_CREDENTIAL{})
 	}
 	ok, result, err := a.VerifyService.Verify(userLoginDto, authCredential)
 

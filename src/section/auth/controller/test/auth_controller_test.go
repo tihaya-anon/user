@@ -63,7 +63,7 @@ func TestLoginUser_Success(t *testing.T) {
 
 	var response resp.TResponse
 	_ = json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Equal(t, enum.CODE.SUCCESS, response.Code)
+	assert.Equal(t, enum.CODE_SUCCESS, response.Code)
 	assert.NotNil(t, response.Data)
 }
 
@@ -92,7 +92,7 @@ func TestLogoutUser_Success(t *testing.T) {
 
 	var response resp.TResponse
 	_ = json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Equal(t, enum.CODE.SUCCESS, response.Code)
+	assert.Equal(t, enum.CODE_SUCCESS, response.Code)
 }
 
 func TestLogoutUser_MissingToken(t *testing.T) {
@@ -117,6 +117,6 @@ func TestLogoutUser_MissingToken(t *testing.T) {
 
 	var response resp.TResponse
 	_ = json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Equal(t, enum.CODE.MISSING_TOKEN, response.Code)
-	assert.Equal(t, enum.MSG.MISSING_TOKEN, response.Msg)
+	assert.Equal(t, enum.CODE_MISSING_TOKEN, response.Code)
+	assert.Equal(t, enum.MSG_MISSING_TOKEN, response.Msg)
 }

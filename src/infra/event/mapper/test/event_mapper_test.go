@@ -68,7 +68,7 @@ func Test_SubmitEvent_Sync_Failed(t *testing.T) {
 
 	err := mapper.SubmitEvent(context.Background(), envelope)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), enum.CODE.GRPC_ERROR)
+	assert.Contains(t, err.Error(), enum.CODE_GRPC_ERROR)
 }
 
 func Test_SubmitEvent_UnknownTriggerMode(t *testing.T) {
@@ -83,5 +83,5 @@ func Test_SubmitEvent_UnknownTriggerMode(t *testing.T) {
 
 	err := mapper.SubmitEvent(context.Background(), envelope)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), enum.CODE.UNKNOWN_TRIGGER_MODE)
+	assert.Contains(t, err.Error(), enum.CODE_UNKNOWN_TRIGGER_MODE)
 }

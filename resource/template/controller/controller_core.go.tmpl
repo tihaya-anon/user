@@ -13,5 +13,5 @@ type {{.TableName}}Controller struct {
 }
 
 func (ctrl *{{.TableName}}Controller) Hello(ctx *gin.Context) *resp.TResponse {
-	return resp.NewResponse().SuccessWithData("hello `{{.table_name_hyphen}}`")
+	return resp.NewResponse().Success().WithData("hello `{{.table_name_hyphen}}`")
 }

@@ -6,13 +6,13 @@ import (
 	"slices"
 )
 
-func ExposeError(response *resp.TResponse, err error, err_code ...string) *resp.TResponse {
+func ExposeError(response *resp.TResponse, err error, status ...any) *resp.TResponse {
 	appErr, ok := err.(*global_model.AppError)
 	if !ok {
 		return response.SystemError()
 	}
-	if slices.Contains(err_code, appErr.Code) {
-		return response.CustomerError(appErr.Error())
+	if slices.Contains(status, appErr.StatusKey) {
+		return response.CustomerError().WithData(*appErr)
 	}
 	return response.SystemError()
 }

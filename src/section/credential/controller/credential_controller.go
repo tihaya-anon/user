@@ -14,5 +14,5 @@ type CredentialController struct {
 }
 
 func (ctrl *CredentialController) Hello(ctx *gin.Context) *resp.TResponse {
-	return resp.NewResponse().SuccessWithData("hello `credential`")
+	return resp.NewResponse().Success().WithData("hello `credential`")
 }

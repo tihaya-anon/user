@@ -14,5 +14,5 @@ type UserController struct {
 }
 
 func (ctrl *UserController) Hello(ctx *gin.Context) *resp.TResponse {
-	return resp.NewResponse().SuccessWithData("hello `user`")
+	return resp.NewResponse().Success().WithData("hello `user`")
 }

@@ -4,5 +4,11 @@
     "./schema/application.json": "resource/application*.yaml",
     "file:///d%3A/code/proj/tx_sys/orchestrator/user/schema/application.json": "file:///d%3A/code/proj/tx_sys/orchestrator/user/resource/application-dev.yaml"
   },
-  "conventionalCommits.scopes": ["auth", "global"]
+  "conventionalCommits.scopes": ["auth", "global"],
+  "editor.semanticHighlighting.enabled": true,
+  "terminal.integrated.minimumContrastRatio": 1,
+
+  "gopls": {
+    "ui.semanticTokens": true
+  }
 }

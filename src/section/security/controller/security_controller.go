@@ -14,5 +14,5 @@ type SecurityController struct {
 }
 
 func (ctrl *SecurityController) Hello(ctx *gin.Context) *resp.TResponse {
-	return resp.NewResponse().SuccessWithData("hello `security`")
+	return resp.NewResponse().Success().WithData("hello `security`")
 }

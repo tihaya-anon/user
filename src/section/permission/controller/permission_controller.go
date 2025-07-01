@@ -14,5 +14,5 @@ type PermissionController struct {
 }
 
 func (ctrl *PermissionController) Hello(ctx *gin.Context) *resp.TResponse {
-	return resp.NewResponse().SuccessWithData("hello `permission`")
+	return resp.NewResponse().Success().WithData("hello `permission`")
 }

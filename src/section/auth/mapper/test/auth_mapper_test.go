@@ -57,7 +57,7 @@ func Test_CreateSession_Error(t *testing.T) {
 
 	result, err := authMapper.CreateSession(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(errMsg).Error())
+	assert.EqualError(t, err, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(errors.New(errMsg)).Error())
 }
 
 func Test_GetCredentialsByIdentifierAndType_Success(t *testing.T) {
@@ -106,7 +106,7 @@ func Test_GetCredentialsByIdentifierAndType_NotFound(t *testing.T) {
 
 	result, err := authMapper.GetCredentialsByIdentifierAndType(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, global_model.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.MSG.UNKNOWN_CREDENTIAL).Error())
+	assert.EqualError(t, err, global_model.NewAppError().WithStatusKeyOptionalMap(auth_enum.UNKNOWN_CREDENTIAL{}, &auth_enum.AUTH_STATUS_MAP).Error())
 }
 
 func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
@@ -130,5 +130,5 @@ func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
 
 	result, err := authMapper.GetCredentialsByIdentifierAndType(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(errMsg).Error())
+	assert.EqualError(t, err, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(errors.New(errMsg)).Error())
 }

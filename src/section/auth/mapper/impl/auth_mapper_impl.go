@@ -21,7 +21,7 @@ func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSe
 	}
 	response, err := a.AuthSessionServiceClient.CreateAuthSession(ctx, request)
 	if err != nil {
-		return nil, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(err.Error())
+		return nil, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(err)
 	}
 	sessionID := response.GetSessionId()
 	return &sessionID, nil
@@ -33,10 +33,10 @@ func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, d
 	request := proto.GetAuthCredentialsRequest{Identifier: &dto.Identifier, Type: &credentialType}
 	response, err := a.AuthCredentialServiceClient.GetAuthCredentials(ctx, &request)
 	if err != nil {
-		return nil, global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithMessage(err.Error())
+		return nil, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(err)
 	}
 	if len(response.GetCredentials()) == 0 {
-		return nil, global_model.NewAppError().WithCode(auth_enum.CODE.UNKNOWN_CREDENTIAL).WithMessage(auth_enum.MSG.UNKNOWN_CREDENTIAL)
+		return nil, global_model.NewAppError().WithStatusKeyOptionalMap(auth_enum.UNKNOWN_CREDENTIAL{}, &auth_enum.AUTH_STATUS_MAP)
 	}
 	return response.GetCredentials(), nil
 }

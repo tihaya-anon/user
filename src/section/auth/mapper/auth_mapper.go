@@ -11,12 +11,12 @@ type AuthMapper interface {
 	// GetCredentialsByIdentifierAndType
 	//
 	// error list:
-	// enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_CREDENTIAL
+	// enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_CREDENTIAL
 	GetCredentialsByIdentifierAndType(ctx context.Context, dto auth_dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error)
 	// InvalidSession
 	//
 	// error list:
-	// enum.CODE.GRPC_ERROR
+	// enum.CODE_GRPC_ERROR
 	CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error)
 	// DEFINE METHODS
 }

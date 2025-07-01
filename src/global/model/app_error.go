@@ -1,35 +1,45 @@
 package global_model
 
-import "fmt"
+import (
+	"MVC_DI/global/enum"
+	"fmt"
+)
 
 type AppError struct {
-	Code    string
-	Message *string
-	Detail  any
+	StatusKey any
+	status    *enum.Status
+	Detail    *any
 }
 
 func (e *AppError) Error() string {
-	if e.Message == nil {
-		return fmt.Sprintf("[%s]", e.Code)
+	if e.Detail != nil {
+		return fmt.Sprintf("[%s] %s: %v", e.status.Code(), e.status.Msg(), *e.Detail)
 	}
-	return fmt.Sprintf("[%s] %s", e.Code, *e.Message)
+	return fmt.Sprintf("[%s] %s", e.status.Code(), e.status.Msg())
 }
 
 func NewAppError() *AppError {
 	return &AppError{}
 }
 
-func (e *AppError) WithCode(code string) *AppError {
-	e.Code = code
+// WithStatusKey
+//
+// must use struct enum from package global.enum
+func (e *AppError) WithStatusKey(statusKey any) *AppError {
+	status := enum.STATUS_MAP[statusKey]
+	e.status = status
 	return e
 }
 
-func (e *AppError) WithMessage(message string) *AppError {
-	e.Message = &message
+// WithStatusKey
+//
+// must use struct enum from package global.enum
+func (e *AppError) WithStatusKeyOptionalMap(statusKey any, optionalMap *enum.StatusMap) *AppError {
+	status := (*optionalMap)[statusKey]
+	e.status = status
 	return e
 }
-
 func (e *AppError) WithDetail(detail any) *AppError {
-	e.Detail = detail
+	e.Detail = &detail
 	return e
 }

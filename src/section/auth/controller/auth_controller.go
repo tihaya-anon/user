@@ -35,17 +35,17 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 	userLoginRespDto, err := ctrl.AuthService.LoginUser(ctx, userLoginDto)
 	if err != nil {
 		return controller_uitl.ExposeError(response, err,
-			auth_enum.CODE.UNKNOWN_CREDENTIAL,
-			auth_enum.CODE.PASSWORD_WRONG,
-			auth_enum.CODE.EMAIL_CODE_WRONG,
-			auth_enum.CODE.GOOGLE_2FA_WRONG,
-			auth_enum.CODE.OAUTH_WRONG,
+			auth_enum.UNKNOWN_CREDENTIAL{},
+			auth_enum.PASSWORD_WRONG{},
+			auth_enum.EMAIL_CODE_WRONG{},
+			auth_enum.GOOGLE_2FA_WRONG{},
+			auth_enum.OAUTH_WRONG{},
 		)
 	}
 	// TODO expire config
 	security.SetSessionId(ctx, userLoginRespDto.SessionId, 3600, "/", "", true, true)
 	authSessionResponse := api.AuthSessionResponse{Token: &userLoginRespDto.Token}
-	return response.SuccessWithData(authSessionResponse)
+	return response.Success().WithData(authSessionResponse)
 }
 
 func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
@@ -53,13 +53,13 @@ func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
 
 	sessionId := security.GetSessionId(ctx)
 	if sessionId == nil {
-		return response.AllArgsConstructor(enum.CODE.MISSING_TOKEN, enum.MSG.MISSING_TOKEN, nil)
+		return response.AllArgsConstructor(enum.CODE_MISSING_TOKEN, enum.MSG_MISSING_TOKEN, nil)
 	}
 
 	err := ctrl.AuthService.LogoutUser(ctx, *sessionId)
 	if err != nil {
 		return controller_uitl.ExposeError(response, err,
-			auth_enum.CODE.UNKNOWN_SESSION,
+			auth_enum.UNKNOWN_SESSION{},
 		)
 	}
 	return response.Success()

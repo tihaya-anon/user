@@ -10,11 +10,11 @@ import (
 type AuthService interface {
 	// LoginUser
 	//
-	// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_CREDENTIAL, auth_enum.CODE.PASSWORD_WRONG, auth_enum.CODE.EMAIL_CODE_WRONG, auth_enum.CODE.GOOGLE_2FA_WRONG, auth_enum.CODE.OAUTH_WRONG
+	// error list: enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_CREDENTIAL, auth_enum.CODE_PASSWORD_WRONG, auth_enum.CODE_EMAIL_CODE_WRONG, auth_enum.CODE_GOOGLE_2FA_WRONG, auth_enum.CODE_OAUTH_WRONG
 	LoginUser(ctx *gin.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error)
 	// LogoutUser
 	//
-	// error list: enum.CODE.GRPC_ERROR, auth_enum.CODE.UNKNOWN_SESSION
+	// error list: enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_SESSION
 	LogoutUser(ctx *gin.Context, sessionId int64) error
 	// DEFINE METHODS
 }

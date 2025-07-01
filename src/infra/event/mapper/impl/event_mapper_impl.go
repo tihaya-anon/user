@@ -25,12 +25,12 @@ func (e *EventMapperImpl) SubmitEvent(ctx context.Context, envelope *proto.Kafka
 
 	case proto.TriggerMode_SYNC:
 		if response.GetStatus() != proto.EventStatus_PROCESSED_SUCCESS {
-			return global_model.NewAppError().WithCode(enum.CODE.GRPC_ERROR).WithDetail(response.GetStatus().String())
+			return global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(response.GetStatus().String())
 		}
 		return nil
 
 	default:
-		return global_model.NewAppError().WithCode(enum.CODE.UNKNOWN_TRIGGER_MODE).WithMessage(enum.MSG.UNKNOWN_TRIGGER_MODE).WithDetail(envelope.GetTriggerModeRequested().String())
+		return global_model.NewAppError().WithStatusKey(enum.UNKNOWN_TRIGGER_MODE{}).WithDetail(envelope.GetTriggerModeRequested().String())
 	}
 }
 
