@@ -1,1 +1,1 @@
-package auth_service_test
+package service_test

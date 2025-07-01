@@ -1,12 +1,12 @@
-package auth_mapper_builder
+package builder
 
 import (
 	"MVC_DI/gen/proto"
-	auth_mapper "MVC_DI/section/auth/mapper"
-	auth_mapper_impl "MVC_DI/section/auth/mapper/impl"
+	"MVC_DI/section/auth/mapper"
+	"MVC_DI/section/auth/mapper/impl"
 )
 
-func (builder *AuthMapperBuilder) Build() auth_mapper.AuthMapper {
+func (builder *AuthMapperBuilder) Build() mapper.AuthMapper {
 	if builder.isStrict && builder.authMapperImpl.AuthCredentialServiceClient == nil {
 		panic("`AuthCredentialServiceClient` is required")
 	}
@@ -27,12 +27,12 @@ func (builder *AuthMapperBuilder) WithAuthCredentialServiceClient(client proto.A
 // BUILDER
 type AuthMapperBuilder struct {
 	isStrict       bool
-	authMapperImpl *auth_mapper_impl.AuthMapperImpl
+	authMapperImpl *impl.AuthMapperImpl
 }
 
 func NewAuthMapperBuilder() *AuthMapperBuilder {
 	return &AuthMapperBuilder{
-		authMapperImpl: &auth_mapper_impl.AuthMapperImpl{},
+		authMapperImpl: &impl.AuthMapperImpl{},
 	}
 }
 

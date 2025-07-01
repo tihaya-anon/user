@@ -1,14 +1,14 @@
-package auth_service_impl
+package impl
 
 import (
 	"MVC_DI/async"
 	"MVC_DI/gen/proto"
-	global_model "MVC_DI/global/model"
-	auth_dto "MVC_DI/section/auth/dto"
-	auth_enum "MVC_DI/section/auth/enum"
-	auth_event_publisher "MVC_DI/section/auth/event"
-	auth_mapper "MVC_DI/section/auth/mapper"
-	auth_service "MVC_DI/section/auth/service"
+	"MVC_DI/global/model"
+	"MVC_DI/section/auth/dto"
+	"MVC_DI/section/auth/enum"
+	"MVC_DI/section/auth/event"
+	"MVC_DI/section/auth/mapper"
+	"MVC_DI/section/auth/service"
 	"MVC_DI/security/jwt"
 	"MVC_DI/security/jwt/claims"
 	"context"
@@ -18,24 +18,24 @@ import (
 )
 
 type AuthServiceImpl struct {
-	AuthMapper         auth_mapper.AuthMapper
-	VerifyService      auth_service.VerifyService
-	AuthEventPublisher auth_event_publisher.AuthEventPublisher
+	AuthMapper         mapper.AuthMapper
+	VerifyService      service.VerifyService
+	AuthEventPublisher event.AuthEventPublisher
 	Logger             *logrus.Logger
 }
 
-// LogoutUser implements auth_service.AuthService.
+// LogoutUser implements service.AuthService.
 //
-// error list: enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_SESSION
+// error list: enum.CODE_GRPC_ERROR, enum.CODE_UNKNOWN_SESSION
 func (a *AuthServiceImpl) LogoutUser(ctx *gin.Context, sessionId int64) error {
 	return a.AuthEventPublisher.PublishInvalidSession(ctx, sessionId)
 }
 
-// LoginUser implements auth_service.AuthService.
+// LoginUser implements service.AuthService.
 //
-// error list: enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_CREDENTIAL, auth_enum.CODE_PASSWORD_WRONG, auth_enum.CODE_EMAIL_CODE_WRONG, auth_enum.CODE_2FA_WRONG, auth_enum.CODE_OAUTH_WRONG
-func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.UserLoginDto) (*auth_dto.UserLoginRespDto, error) {
-	getCredentialsByIdentifierAndTypeDto := auth_dto.GetCredentialsByIdentifierAndTypeDto{Identifier: userLoginDto.Identifier, Type: userLoginDto.Type}
+// error list: enum.CODE_GRPC_ERROR, enum.CODE_UNKNOWN_CREDENTIAL, enum.CODE_PASSWORD_WRONG, enum.CODE_EMAIL_CODE_WRONG, enum.CODE_2FA_WRONG, enum.CODE_OAUTH_WRONG
+func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto dto.UserLoginDto) (*dto.UserLoginRespDto, error) {
+	getCredentialsByIdentifierAndTypeDto := dto.GetCredentialsByIdentifierAndTypeDto{Identifier: userLoginDto.Identifier, Type: userLoginDto.Type}
 	authCredentials, err := a.AuthMapper.GetCredentialsByIdentifierAndType(ctx, getCredentialsByIdentifierAndTypeDto)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.User
 
 	authCredential := getActiveCredential(authCredentials)
 	if authCredential == nil {
-		return nil, global_model.NewAppError().WithStatusKey(auth_enum.UNKNOWN_CREDENTIAL{})
+		return nil, model.NewAppError().WithStatusKey(enum.UNKNOWN_CREDENTIAL{})
 	}
 	ok, result, err := a.VerifyService.Verify(userLoginDto, authCredential)
 
@@ -51,7 +51,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.User
 		cloneCtx := context.Background()
 		ipAddress := ctx.Request.RemoteAddr
 		async.AsyncCtx(cloneCtx, a.Logger, func(c context.Context) {
-			publishLoginAuditDto := &auth_dto.PublishLoginAuditDto{
+			publishLoginAuditDto := &dto.PublishLoginAuditDto{
 				IpAddress:  ipAddress,
 				UserId:     authCredential.GetUserId(),
 				DeviceInfo: "deviceInfo",
@@ -69,7 +69,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.User
 		return nil, err
 	}
 
-	createSessionDto := auth_dto.CreateSessionDto{UserId: authCredential.GetUserId()}
+	createSessionDto := dto.CreateSessionDto{UserId: authCredential.GetUserId()}
 	sessionId, err := a.AuthMapper.CreateSession(ctx, createSessionDto)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.User
 	cloneCtx := context.Background()
 	ipAddress := ctx.Request.RemoteAddr
 	async.AsyncCtx(cloneCtx, a.Logger, func(c context.Context) {
-		publishLoginAuditDto := &auth_dto.PublishLoginAuditDto{
+		publishLoginAuditDto := &dto.PublishLoginAuditDto{
 			IpAddress:  ipAddress,
 			UserId:     authCredential.GetUserId(),
 			DeviceInfo: "deviceInfo",
@@ -85,7 +85,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto auth_dto.User
 		}
 		_ = a.AuthEventPublisher.PublishLoginAudit(ctx, publishLoginAuditDto)
 	})
-	response := &auth_dto.UserLoginRespDto{
+	response := &dto.UserLoginRespDto{
 		SessionId: *sessionId,
 		Token:     token,
 	}
@@ -102,4 +102,4 @@ func getActiveCredential(credentials []*proto.AuthCredential) *proto.AuthCredent
 }
 
 // INTERFACE
-var _ auth_service.AuthService = (*AuthServiceImpl)(nil)
+var _ service.AuthService = (*AuthServiceImpl)(nil)

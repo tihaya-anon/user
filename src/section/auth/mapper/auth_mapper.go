@@ -1,22 +1,22 @@
-package auth_mapper
+package mapper
 
 import (
 	"MVC_DI/gen/proto"
-	auth_dto "MVC_DI/section/auth/dto"
+	"MVC_DI/section/auth/dto"
 	"context"
 )
 
-//go:generate mockgen -source=auth_mapper.go -destination=..\..\..\mock\auth\mapper\auth_mapper_mock.go -package=auth_mapper_mock
+//go:generate mockgen -source=mapper.go -destination=..\..\..\mock\auth\mapper\mapper_mock.go -package=mapper_mock
 type AuthMapper interface {
 	// GetCredentialsByIdentifierAndType
 	//
 	// error list:
 	// enum.CODE_GRPC_ERROR, auth_enum.CODE_UNKNOWN_CREDENTIAL
-	GetCredentialsByIdentifierAndType(ctx context.Context, dto auth_dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error)
+	GetCredentialsByIdentifierAndType(ctx context.Context, dto dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error)
 	// InvalidSession
 	//
 	// error list:
 	// enum.CODE_GRPC_ERROR
-	CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error)
+	CreateSession(ctx context.Context, dto dto.CreateSessionDto) (*int64, error)
 	// DEFINE METHODS
 }

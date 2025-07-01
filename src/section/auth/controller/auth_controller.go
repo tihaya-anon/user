@@ -1,11 +1,11 @@
-package auth_controller
+package controller
 
 import (
 	"MVC_DI/gen/api"
-	"MVC_DI/global/enum"
-	auth_dto "MVC_DI/section/auth/dto"
+	global_enum "MVC_DI/global/enum"
+	"MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
-	auth_service "MVC_DI/section/auth/service"
+	"MVC_DI/section/auth/service"
 	"MVC_DI/security"
 	controller_uitl "MVC_DI/util/controller"
 	"MVC_DI/vo/resp"
@@ -15,7 +15,7 @@ import (
 )
 
 type AuthController struct {
-	AuthService auth_service.AuthService
+	AuthService service.AuthService
 	Logger      *logrus.Logger
 }
 
@@ -27,7 +27,7 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 		return nil
 	}
 
-	userLoginDto := auth_dto.UserLoginDto{
+	userLoginDto := dto.UserLoginDto{
 		Secret:     userLoginRequest.Secret,
 		Identifier: userLoginRequest.Identifier,
 		Type:       string(userLoginRequest.Type),
@@ -53,7 +53,7 @@ func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
 
 	sessionId := security.GetSessionId(ctx)
 	if sessionId == nil {
-		return response.AllArgsConstructor(enum.CODE_MISSING_TOKEN, enum.MSG_MISSING_TOKEN, nil)
+		return response.AllArgsConstructor(global_enum.CODE_MISSING_TOKEN, global_enum.MSG_MISSING_TOKEN, nil)
 	}
 
 	err := ctrl.AuthService.LogoutUser(ctx, *sessionId)

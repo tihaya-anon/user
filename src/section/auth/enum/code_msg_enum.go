@@ -1,4 +1,4 @@
-package auth_enum
+package enum
 
 import "MVC_DI/global/enum"
 

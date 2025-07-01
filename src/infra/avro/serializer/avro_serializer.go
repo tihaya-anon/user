@@ -1,4 +1,4 @@
-package avro_serializer
+package serializer
 
 import (
 	"google.golang.org/protobuf/proto"

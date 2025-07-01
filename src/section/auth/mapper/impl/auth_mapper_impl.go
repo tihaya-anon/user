@@ -1,12 +1,12 @@
-package auth_mapper_impl
+package impl
 
 import (
 	"MVC_DI/gen/proto"
-	"MVC_DI/global/enum"
-	global_model "MVC_DI/global/model"
-	auth_dto "MVC_DI/section/auth/dto"
+	global_enum "MVC_DI/global/enum"
+	"MVC_DI/global/model"
+	"MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
-	auth_mapper "MVC_DI/section/auth/mapper"
+	"MVC_DI/section/auth/mapper"
 	"context"
 )
 
@@ -15,31 +15,31 @@ type AuthMapperImpl struct {
 	AuthCredentialServiceClient proto.AuthCredentialServiceClient
 }
 
-func (a AuthMapperImpl) CreateSession(ctx context.Context, dto auth_dto.CreateSessionDto) (*int64, error) {
+func (a AuthMapperImpl) CreateSession(ctx context.Context, dto dto.CreateSessionDto) (*int64, error) {
 	request := &proto.CreateAuthSessionRequest{
 		UserId: dto.UserId,
 	}
 	response, err := a.AuthSessionServiceClient.CreateAuthSession(ctx, request)
 	if err != nil {
-		return nil, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(err)
+		return nil, model.NewAppError().WithStatusKey(global_enum.GRPC_ERROR{}).WithDetail(err)
 	}
 	sessionID := response.GetSessionId()
 	return &sessionID, nil
 }
 
-func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, dto auth_dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error) {
+func (a AuthMapperImpl) GetCredentialsByIdentifierAndType(ctx context.Context, dto dto.GetCredentialsByIdentifierAndTypeDto) ([]*proto.AuthCredential, error) {
 	val := proto.CredentialType_value[dto.Type]
 	credentialType := proto.CredentialType(val)
 	request := proto.GetAuthCredentialsRequest{Identifier: &dto.Identifier, Type: &credentialType}
 	response, err := a.AuthCredentialServiceClient.GetAuthCredentials(ctx, &request)
 	if err != nil {
-		return nil, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(err)
+		return nil, model.NewAppError().WithStatusKey(global_enum.GRPC_ERROR{}).WithDetail(err)
 	}
 	if len(response.GetCredentials()) == 0 {
-		return nil, global_model.NewAppError().WithStatusKeyOptionalMap(auth_enum.UNKNOWN_CREDENTIAL{}, &auth_enum.AUTH_STATUS_MAP)
+		return nil, model.NewAppError().WithStatusKeyOptionalMap(auth_enum.UNKNOWN_CREDENTIAL{}, &auth_enum.AUTH_STATUS_MAP)
 	}
 	return response.GetCredentials(), nil
 }
 
 // INTERFACE
-var _ auth_mapper.AuthMapper = (*AuthMapperImpl)(nil)
+var _ mapper.AuthMapper = (*AuthMapperImpl)(nil)

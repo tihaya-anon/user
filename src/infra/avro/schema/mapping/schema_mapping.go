@@ -1,10 +1,10 @@
-package schema_mapping
+package mapping
 
 import (
 	"google.golang.org/protobuf/proto"
 )
 
-//go:generate mockgen -source=schema_mapping.go -destination=../../../../mock/infra/avro/schema/mapping/schema_mapping_mock.go -package=schema_mapping_mock
+//go:generate mockgen -source=mapping.go -destination=../../../../mock/infra/avro/schema/mapping/mapping_mock.go -package=mapping_mock
 type ISchemaMapping interface {
 	GetSchemaByMessage(message string) *Schema
 	GetSchemaByObject(object proto.Message) *Schema

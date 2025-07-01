@@ -1,12 +1,12 @@
-package event_mapper_builder
+package builder
 
 import (
 	"MVC_DI/gen/proto"
-	event_mapper "MVC_DI/infra/event/mapper"
-	event_mapper_impl "MVC_DI/infra/event/mapper/impl"
+	"MVC_DI/infra/event/mapper"
+	"MVC_DI/infra/event/mapper/impl"
 )
 
-func (builder *EventMapperBuilder) Build() event_mapper.EventMapper {
+func (builder *EventMapperBuilder) Build() mapper.EventMapper {
 	if builder.isStrict && builder.eventMapperImpl.KafkaEventServiceClient == nil {
 		panic("`KafkaEventServiceClient` is required")
 	}
@@ -20,12 +20,12 @@ func (builder *EventMapperBuilder) WithKafkaEventServiceClient(client proto.Kafk
 // BUILDER
 type EventMapperBuilder struct {
 	isStrict        bool
-	eventMapperImpl *event_mapper_impl.EventMapperImpl
+	eventMapperImpl *impl.EventMapperImpl
 }
 
 func NewEventMapperBuilder() *EventMapperBuilder {
 	return &EventMapperBuilder{
-		eventMapperImpl: &event_mapper_impl.EventMapperImpl{},
+		eventMapperImpl: &impl.EventMapperImpl{},
 	}
 }
 

@@ -1,31 +1,31 @@
-package schema_mapping_impl
+package impl
 
 import (
 	"MVC_DI/config"
-	schema_mapping "MVC_DI/infra/avro/schema/mapping"
+	"MVC_DI/infra/avro/schema/mapping"
 	"reflect"
 
 	"google.golang.org/protobuf/proto"
 )
 
 type SchemaMappingImpl struct {
-	Schemas []*schema_mapping.Schema
+	Schemas []*mapping.Schema
 }
 
 // NewSchemaMapping load from system
-func NewSchemaMapping() schema_mapping.ISchemaMapping {
+func NewSchemaMapping() mapping.ISchemaMapping {
 	var schemaMappingImpl = &SchemaMappingImpl{}
 	path := "avro/" + config.Application.Env + "/schema_registry_mapping"
 	config.Parse(path, schemaMappingImpl)
 	return schemaMappingImpl
 }
 
-// GetSchemas implements schema_mapping.ISchemaMapping.
-func (sm *SchemaMappingImpl) GetSchemas() []*schema_mapping.Schema {
+// GetSchemas implements mapping.ISchemaMapping.
+func (sm *SchemaMappingImpl) GetSchemas() []*mapping.Schema {
 	return sm.Schemas
 }
 
-func (sm *SchemaMappingImpl) GetSchemaByMessage(message string) *schema_mapping.Schema {
+func (sm *SchemaMappingImpl) GetSchemaByMessage(message string) *mapping.Schema {
 	for _, schema := range sm.Schemas {
 		if schema.Message == message {
 			return schema
@@ -34,7 +34,7 @@ func (sm *SchemaMappingImpl) GetSchemaByMessage(message string) *schema_mapping.
 	return nil
 }
 
-func (sm *SchemaMappingImpl) GetSchemaByObject(object proto.Message) *schema_mapping.Schema {
+func (sm *SchemaMappingImpl) GetSchemaByObject(object proto.Message) *mapping.Schema {
 	return sm.GetSchemaByMessage(getName(object))
 }
 
@@ -53,4 +53,4 @@ func getName[T any](v T) string {
 }
 
 // INTERFACE
-var _ schema_mapping.ISchemaMapping = (*SchemaMappingImpl)(nil)
+var _ mapping.ISchemaMapping = (*SchemaMappingImpl)(nil)

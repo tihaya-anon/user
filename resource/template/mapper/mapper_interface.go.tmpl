@@ -1,6 +1,6 @@
-package {{.entity_name}}_mapper
+package mapper
 
-//go:generate mockgen -source={{.table_name}}_mapper.go -destination=..\..\..\mock\{{.entity_name}}\mapper\{{.table_name}}_mapper_mock.go -package={{.entity_name}}_mapper_mock
+//go:generate mockgen -source=mapper.go -destination=..\..\..\mock\{{.entity_name}}\mapper\mapper_mock.go -package=mapper_mock
 type {{.TableName}}Mapper interface {
 	// DEFINE METHODS
 }

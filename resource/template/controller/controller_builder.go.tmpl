@@ -1,18 +1,18 @@
-package {{.entity_name}}_controller_builder
+package builder
 
 import (
-  {{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
-  {{.entity_name}}_controller "{{.pkg}}/section/{{.entity_name}}/controller"
+  service "{{.pkg}}/section/{{.entity_name}}/service"
+  controller "{{.pkg}}/section/{{.entity_name}}/controller"
 )
 
-func (builder *{{.TableName}}ControllerBuilder) Build() *{{.entity_name}}_controller.{{.TableName}}Controller {
+func (builder *{{.TableName}}ControllerBuilder) Build() *controller.{{.TableName}}Controller {
   if builder.isStrict && builder.{{.tableName}}Controller.{{.TableName}}Service == nil {
     panic("`{{.TableName}}Service` is required")
   }
   return builder.{{.tableName}}Controller
 }
 
-func (builder *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tableName}}Service {{.entity_name}}_service.{{.TableName}}Service) *{{.TableName}}ControllerBuilder {
+func (builder *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tableName}}Service service.{{.TableName}}Service) *{{.TableName}}ControllerBuilder {
   builder.{{.tableName}}Controller.{{.TableName}}Service = {{.tableName}}Service
   return builder
 }
@@ -20,13 +20,13 @@ func (builder *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tab
 // BUILDER
 type {{.TableName}}ControllerBuilder struct {
   isStrict bool
-  {{.tableName}}Controller *{{.entity_name}}_controller.{{.TableName}}Controller
+  {{.tableName}}Controller *controller.{{.TableName}}Controller
 }
 
 func New{{.TableName}}ControllerBuilder() *{{.TableName}}ControllerBuilder {
   return &{{.TableName}}ControllerBuilder{
     isStrict: false,
-    {{.tableName}}Controller: &{{.entity_name}}_controller.{{.TableName}}Controller{},
+    {{.tableName}}Controller: &controller.{{.TableName}}Controller{},
   }
 }
 

@@ -1,4 +1,4 @@
-package auth_dto
+package dto
 
 import "MVC_DI/gen/proto"
 

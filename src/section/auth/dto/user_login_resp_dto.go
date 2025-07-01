@@ -1,4 +1,4 @@
-package auth_dto
+package dto
 
 type UserLoginRespDto struct {
 	SessionId int64

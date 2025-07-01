@@ -1,19 +1,19 @@
-package auth_service_builder
+package service_builder
 
 import (
-	auth_mapper "MVC_DI/section/auth/mapper"
-	auth_service "MVC_DI/section/auth/service"
-	auth_service_impl "MVC_DI/section/auth/service/impl"
+	"MVC_DI/section/auth/mapper"
+	"MVC_DI/section/auth/service"
+	"MVC_DI/section/auth/service/impl"
 )
 
-func (builder *AuthServiceBuilder) Build() auth_service.AuthService {
+func (builder *AuthServiceBuilder) Build() service.AuthService {
 	if builder.isStrict && builder.authServiceImpl.AuthMapper == nil {
 		panic("`AuthMapper` is required")
 	}
 	return builder.authServiceImpl
 }
 
-func (builder *AuthServiceBuilder) WithAuthMapper(mapper auth_mapper.AuthMapper) *AuthServiceBuilder {
+func (builder *AuthServiceBuilder) WithAuthMapper(mapper mapper.AuthMapper) *AuthServiceBuilder {
 	builder.authServiceImpl.AuthMapper = mapper
 	return builder
 }
@@ -22,12 +22,12 @@ func (builder *AuthServiceBuilder) WithAuthMapper(mapper auth_mapper.AuthMapper)
 
 type AuthServiceBuilder struct {
 	isStrict        bool
-	authServiceImpl *auth_service_impl.AuthServiceImpl
+	authServiceImpl *impl.AuthServiceImpl
 }
 
 func NewAuthServiceBuilder() *AuthServiceBuilder {
 	return &AuthServiceBuilder{
-		authServiceImpl: &auth_service_impl.AuthServiceImpl{},
+		authServiceImpl: &impl.AuthServiceImpl{},
 	}
 }
 

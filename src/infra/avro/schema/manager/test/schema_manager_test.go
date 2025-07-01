@@ -1,4 +1,4 @@
-package schema_manager_test
+package test
 
 import (
 	"os"
@@ -8,13 +8,13 @@ import (
 	"github.com/riferrei/srclient"
 	"github.com/stretchr/testify/require"
 
-	schema_manager_impl "MVC_DI/infra/avro/schema/manager/impl"
-	schema_mapping_mock "MVC_DI/mock/infra/avro/schema/mapping"
+	"MVC_DI/infra/avro/schema/manager/impl"
+	mapping_mock "MVC_DI/mock/infra/avro/schema/mapping"
 )
 
 func Test_GetOrLoadCodecBySubject(t *testing.T) {
 	mockClient := srclient.CreateMockSchemaRegistryClient("mock://test")
-	mockMapping := schema_mapping_mock.NewMockISchemaMapping(nil)
+	mockMapping := mapping_mock.NewMockISchemaMapping(nil)
 
 	sampleSchema := `{
 		"type": "record",
@@ -31,7 +31,7 @@ func Test_GetOrLoadCodecBySubject(t *testing.T) {
 	require.NoError(t, err)
 	defer os.Remove(avscPath)
 
-	sm := schema_manager_impl.NewSchemaManager(mockClient, mockMapping)
+	sm := impl.NewSchemaManager(mockClient, mockMapping)
 	sm.InjectResourceRoot(os.TempDir())
 
 	codec, id, err := sm.GetOrLoadCodecBySubject(subject, avscFilename)

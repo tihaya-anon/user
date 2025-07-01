@@ -1,6 +1,6 @@
-package {{.entity_name}}_service
+package service
 
-//go:generate mockgen -source={{.table_name}}_service.go -destination=..\..\..\mock\{{.entity_name}}\service\{{.table_name}}_service_mock.go -package={{.entity_name}}_service_mock
+//go:generate mockgen -source={{.table_name}}_service.go -destination=..\..\..\mock\{{.entity_name}}\service\{{.table_name}}_service_mock.go -package=service_mock
 type {{.TableName}}Service interface {
 	// DEFINE METHODS
 }

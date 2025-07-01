@@ -1,4 +1,4 @@
-package auth_controller_test
+package controller_test
 
 import (
 	"bytes"
@@ -9,9 +9,9 @@ import (
 
 	"MVC_DI/gen/api"
 	"MVC_DI/global/enum"
-	auth_service_mock "MVC_DI/mock/auth/service"
-	auth_controller "MVC_DI/section/auth/controller"
-	auth_dto "MVC_DI/section/auth/dto"
+	service_mock "MVC_DI/mock/auth/service"
+	"MVC_DI/section/auth/controller"
+	"MVC_DI/section/auth/dto"
 	"MVC_DI/vo/resp"
 
 	"github.com/gin-gonic/gin"
@@ -29,9 +29,9 @@ func TestLoginUser_Success(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockService := auth_service_mock.NewMockAuthService(ctrl)
+	mockService := service_mock.NewMockAuthService(ctrl)
 	logger := logrus.New()
-	controller := auth_controller.AuthController{AuthService: mockService, Logger: logger}
+	controller := controller.AuthController{AuthService: mockService, Logger: logger}
 
 	r := setupRouter()
 	r.POST("/login", func(ctx *gin.Context) {
@@ -45,7 +45,7 @@ func TestLoginUser_Success(t *testing.T) {
 		Type:       "email",
 	}
 
-	loginResp := &auth_dto.UserLoginRespDto{
+	loginResp := &dto.UserLoginRespDto{
 		SessionId: 12345,
 		Token:     "mock_token",
 	}
@@ -71,9 +71,9 @@ func TestLogoutUser_Success(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockService := auth_service_mock.NewMockAuthService(ctrl)
+	mockService := service_mock.NewMockAuthService(ctrl)
 	logger := logrus.New()
-	controller := auth_controller.AuthController{AuthService: mockService, Logger: logger}
+	controller := controller.AuthController{AuthService: mockService, Logger: logger}
 
 	r := setupRouter()
 	r.POST("/logout", func(ctx *gin.Context) {
@@ -99,9 +99,9 @@ func TestLogoutUser_MissingToken(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockService := auth_service_mock.NewMockAuthService(ctrl)
+	mockService := service_mock.NewMockAuthService(ctrl)
 	logger := logrus.New()
-	controller := auth_controller.AuthController{AuthService: mockService, Logger: logger}
+	controller := controller.AuthController{AuthService: mockService, Logger: logger}
 
 	r := setupRouter()
 	r.POST("/logout", func(ctx *gin.Context) {

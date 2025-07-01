@@ -1,11 +1,11 @@
-package auth_service
+package service
 
 import (
 	"MVC_DI/gen/proto"
-	global_model "MVC_DI/global/model"
-	auth_dto "MVC_DI/section/auth/dto"
+	"MVC_DI/global/model"
+	"MVC_DI/section/auth/dto"
 )
 
 type VerifyService interface {
-	Verify(dto auth_dto.UserLoginDto, credential *proto.AuthCredential) (bool, proto.LoginResult, *global_model.AppError)
+	Verify(dto dto.UserLoginDto, credential *proto.AuthCredential) (bool, proto.LoginResult, *model.AppError)
 }

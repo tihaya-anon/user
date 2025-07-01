@@ -1,14 +1,14 @@
-package {{.entity_name}}_controller
+package controller
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
+	"{{.pkg}}/section/{{.entity_name}}/service"
 	"{{.pkg}}/vo/resp"
 )
 
 type {{.TableName}}Controller struct {
-	{{.TableName}}Service {{.entity_name}}_service.{{.TableName}}Service
+	{{.TableName}}Service service.{{.TableName}}Service
 	Logger *logrus.Logger
 }
 

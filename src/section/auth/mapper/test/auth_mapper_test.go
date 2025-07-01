@@ -1,4 +1,4 @@
-package auth_mapper_test
+package mapper_test
 
 import (
 	"context"
@@ -6,12 +6,12 @@ import (
 	"testing"
 
 	"MVC_DI/gen/proto"
-	"MVC_DI/global/enum"
-	global_model "MVC_DI/global/model"
+	global_enum "MVC_DI/global/enum"
+	"MVC_DI/global/model"
 	proto_mock "MVC_DI/mock/gen/proto"
-	auth_dto "MVC_DI/section/auth/dto"
+	"MVC_DI/section/auth/dto"
 	auth_enum "MVC_DI/section/auth/enum"
-	auth_mapper_impl "MVC_DI/section/auth/mapper/impl"
+	"MVC_DI/section/auth/mapper/impl"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -22,11 +22,11 @@ func Test_CreateSession_Success(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockSession := proto_mock.NewMockAuthSessionServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
+	authMapper := &impl.AuthMapperImpl{
 		AuthSessionServiceClient: mockSession,
 	}
 
-	dto := auth_dto.CreateSessionDto{UserId: 42}
+	dto := dto.CreateSessionDto{UserId: 42}
 	ctx := context.Background()
 
 	sessionID := int64(1001)
@@ -44,11 +44,11 @@ func Test_CreateSession_Error(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockSession := proto_mock.NewMockAuthSessionServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
+	authMapper := &impl.AuthMapperImpl{
 		AuthSessionServiceClient: mockSession,
 	}
 
-	dto := auth_dto.CreateSessionDto{UserId: 42}
+	dto := dto.CreateSessionDto{UserId: 42}
 	ctx := context.Background()
 	errMsg := "create session failed"
 	mockSession.EXPECT().
@@ -57,7 +57,7 @@ func Test_CreateSession_Error(t *testing.T) {
 
 	result, err := authMapper.CreateSession(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(errors.New(errMsg)).Error())
+	assert.EqualError(t, err, model.NewAppError().WithStatusKey(global_enum.GRPC_ERROR{}).WithDetail(errors.New(errMsg)).Error())
 }
 
 func Test_GetCredentialsByIdentifierAndType_Success(t *testing.T) {
@@ -65,11 +65,11 @@ func Test_GetCredentialsByIdentifierAndType_Success(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockCredential := proto_mock.NewMockAuthCredentialServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
+	authMapper := &impl.AuthMapperImpl{
 		AuthCredentialServiceClient: mockCredential,
 	}
 
-	dto := auth_dto.GetCredentialsByIdentifierAndTypeDto{
+	dto := dto.GetCredentialsByIdentifierAndTypeDto{
 		Identifier: "email@example.com",
 		Type:       "PASSWORD",
 	}
@@ -90,11 +90,11 @@ func Test_GetCredentialsByIdentifierAndType_NotFound(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockCredential := proto_mock.NewMockAuthCredentialServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
+	authMapper := &impl.AuthMapperImpl{
 		AuthCredentialServiceClient: mockCredential,
 	}
 
-	dto := auth_dto.GetCredentialsByIdentifierAndTypeDto{
+	dto := dto.GetCredentialsByIdentifierAndTypeDto{
 		Identifier: "email@example.com",
 		Type:       "PASSWORD",
 	}
@@ -106,7 +106,7 @@ func Test_GetCredentialsByIdentifierAndType_NotFound(t *testing.T) {
 
 	result, err := authMapper.GetCredentialsByIdentifierAndType(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, global_model.NewAppError().WithStatusKeyOptionalMap(auth_enum.UNKNOWN_CREDENTIAL{}, &auth_enum.AUTH_STATUS_MAP).Error())
+	assert.EqualError(t, err, model.NewAppError().WithStatusKeyOptionalMap(auth_enum.UNKNOWN_CREDENTIAL{}, &auth_enum.AUTH_STATUS_MAP).Error())
 }
 
 func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
@@ -114,11 +114,11 @@ func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockCredential := proto_mock.NewMockAuthCredentialServiceClient(ctrl)
-	authMapper := &auth_mapper_impl.AuthMapperImpl{
+	authMapper := &impl.AuthMapperImpl{
 		AuthCredentialServiceClient: mockCredential,
 	}
 
-	dto := auth_dto.GetCredentialsByIdentifierAndTypeDto{
+	dto := dto.GetCredentialsByIdentifierAndTypeDto{
 		Identifier: "email@example.com",
 		Type:       "PASSWORD",
 	}
@@ -130,5 +130,5 @@ func Test_GetCredentialsByIdentifierAndType_Error(t *testing.T) {
 
 	result, err := authMapper.GetCredentialsByIdentifierAndType(ctx, dto)
 	assert.Nil(t, result)
-	assert.EqualError(t, err, global_model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(errors.New(errMsg)).Error())
+	assert.EqualError(t, err, model.NewAppError().WithStatusKey(global_enum.GRPC_ERROR{}).WithDetail(errors.New(errMsg)).Error())
 }

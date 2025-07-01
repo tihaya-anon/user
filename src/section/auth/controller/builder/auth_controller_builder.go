@@ -1,18 +1,18 @@
-package auth_controller_builder
+package controller_builder
 
 import (
-	auth_controller "MVC_DI/section/auth/controller"
-	auth_service "MVC_DI/section/auth/service"
+	"MVC_DI/section/auth/controller"
+	"MVC_DI/section/auth/service"
 )
 
-func (builder *AuthControllerBuilder) Build() *auth_controller.AuthController {
+func (builder *AuthControllerBuilder) Build() *controller.AuthController {
 	if builder.isStrict && builder.authController.AuthService == nil {
 		panic("`AuthService` is required")
 	}
 	return builder.authController
 }
 
-func (builder *AuthControllerBuilder) WithAuthService(authService auth_service.AuthService) *AuthControllerBuilder {
+func (builder *AuthControllerBuilder) WithAuthService(authService service.AuthService) *AuthControllerBuilder {
 	builder.authController.AuthService = authService
 	return builder
 }
@@ -20,13 +20,13 @@ func (builder *AuthControllerBuilder) WithAuthService(authService auth_service.A
 // BUILDER
 type AuthControllerBuilder struct {
 	isStrict       bool
-	authController *auth_controller.AuthController
+	authController *controller.AuthController
 }
 
 func NewAuthControllerBuilder() *AuthControllerBuilder {
 	return &AuthControllerBuilder{
 		isStrict:       false,
-		authController: &auth_controller.AuthController{},
+		authController: &controller.AuthController{},
 	}
 }
 

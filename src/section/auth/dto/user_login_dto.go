@@ -1,4 +1,4 @@
-package auth_dto
+package dto
 
 type UserLoginDto struct {
 	Secret     string

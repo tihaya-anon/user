@@ -1,9 +1,9 @@
-package event_mapper_test
+package mapper_test
 
 import (
 	"MVC_DI/gen/proto"
 	"MVC_DI/global/enum"
-	event_mapper_impl "MVC_DI/infra/event/mapper/impl"
+	"MVC_DI/infra/event/mapper/impl"
 	"context"
 	"errors"
 	"testing"
@@ -19,7 +19,7 @@ func Test_SubmitEvent_GRPCError(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockClient := mock_proto.NewMockKafkaEventServiceClient(ctrl)
-	mapper := &event_mapper_impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
+	mapper := &impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
 
 	envelope := &proto.KafkaEnvelope{TriggerModeRequested: proto.TriggerMode_SYNC}
 	mockClient.EXPECT().SubmitEvent(gomock.Any(), gomock.Any()).Return(nil, errors.New("grpc failed"))
@@ -33,7 +33,7 @@ func Test_SubmitEvent_Async_Success(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockClient := mock_proto.NewMockKafkaEventServiceClient(ctrl)
-	mapper := &event_mapper_impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
+	mapper := &impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
 
 	envelope := &proto.KafkaEnvelope{TriggerModeRequested: proto.TriggerMode_ASYNC}
 	mockClient.EXPECT().SubmitEvent(gomock.Any(), gomock.Any()).Return(&proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_SUCCESS}, nil)
@@ -47,7 +47,7 @@ func Test_SubmitEvent_Sync_Success(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockClient := mock_proto.NewMockKafkaEventServiceClient(ctrl)
-	mapper := &event_mapper_impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
+	mapper := &impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
 
 	envelope := &proto.KafkaEnvelope{TriggerModeRequested: proto.TriggerMode_SYNC}
 	mockClient.EXPECT().SubmitEvent(gomock.Any(), gomock.Any()).Return(&proto.SubmitEventResponse{Status: proto.EventStatus_PROCESSED_SUCCESS}, nil)
@@ -61,7 +61,7 @@ func Test_SubmitEvent_Sync_Failed(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockClient := mock_proto.NewMockKafkaEventServiceClient(ctrl)
-	mapper := &event_mapper_impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
+	mapper := &impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
 
 	envelope := &proto.KafkaEnvelope{TriggerModeRequested: proto.TriggerMode_SYNC}
 	mockClient.EXPECT().SubmitEvent(gomock.Any(), gomock.Any()).Return(&proto.SubmitEventResponse{Status: proto.EventStatus_FINAL_FAILED}, nil)
@@ -76,7 +76,7 @@ func Test_SubmitEvent_UnknownTriggerMode(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockClient := mock_proto.NewMockKafkaEventServiceClient(ctrl)
-	mapper := &event_mapper_impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
+	mapper := &impl.EventMapperImpl{KafkaEventServiceClient: mockClient}
 
 	envelope := &proto.KafkaEnvelope{TriggerModeRequested: proto.TriggerMode(999)}
 	mockClient.EXPECT().SubmitEvent(gomock.Any(), gomock.Any()).Return(&proto.SubmitEventResponse{}, nil)

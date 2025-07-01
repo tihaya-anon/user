@@ -1,7 +1,7 @@
-package {{.entity_name}}_mapper_impl
+package impl
 
 import (
-	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
+	"{{.pkg}}/section/{{.entity_name}}/mapper"
 
 	"gorm.io/gorm"
 )
@@ -11,4 +11,4 @@ type {{.TableName}}MapperImpl struct{
 }
 
 // INTERFACE
-var _ {{.entity_name}}_mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)
+var _ mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)

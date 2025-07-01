@@ -1,6 +1,6 @@
-package auth_service_impl
+package impl
 
-import auth_service "MVC_DI/section/auth/service"
+import "MVC_DI/section/auth/service"
 
 type MatchServiceImpl struct {
 }
@@ -26,4 +26,4 @@ func (m MatchServiceImpl) MatchOauth(identifier string, raw string, encoded stri
 }
 
 // INTERFACE
-var _ auth_service.MatchService = (*MatchServiceImpl)(nil)
+var _ service.MatchService = (*MatchServiceImpl)(nil)

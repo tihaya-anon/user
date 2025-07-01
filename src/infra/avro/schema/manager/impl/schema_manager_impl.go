@@ -1,4 +1,4 @@
-package schema_manager_impl
+package impl
 
 import (
 	"fmt"
@@ -11,14 +11,14 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"MVC_DI/global/module"
-	schema_manager "MVC_DI/infra/avro/schema/manager"
-	schema_mapping "MVC_DI/infra/avro/schema/mapping"
+	"MVC_DI/infra/avro/schema/manager"
+	"MVC_DI/infra/avro/schema/mapping"
 )
 
 // SchemaManagerImpl Manage schema loading, caching, parsing
 type SchemaManagerImpl struct {
 	client        srclient.ISchemaRegistryClient
-	mapping       schema_mapping.ISchemaMapping
+	mapping       mapping.ISchemaMapping
 	codecCache    map[string]*goavro.Codec
 	schemaIdCache map[string]int
 	mu            sync.RWMutex
@@ -26,7 +26,7 @@ type SchemaManagerImpl struct {
 }
 
 // NewSchemaManager constructor
-func NewSchemaManager(client srclient.ISchemaRegistryClient, mapping schema_mapping.ISchemaMapping) *SchemaManagerImpl {
+func NewSchemaManager(client srclient.ISchemaRegistryClient, mapping mapping.ISchemaMapping) *SchemaManagerImpl {
 	return &SchemaManagerImpl{
 		client:        client,
 		mapping:       mapping,
@@ -41,7 +41,7 @@ func (sm *SchemaManagerImpl) InjectResourceRoot(resourceRoot string) {
 func (sm *SchemaManagerImpl) GetOrLoadCodecByObject(object proto.Message) (*goavro.Codec, int, error) {
 	return sm.GetOrLoadCodecBySchema(sm.mapping.GetSchemaByObject(object))
 }
-func (sm *SchemaManagerImpl) GetOrLoadCodecBySchema(schema *schema_mapping.Schema) (*goavro.Codec, int, error) {
+func (sm *SchemaManagerImpl) GetOrLoadCodecBySchema(schema *mapping.Schema) (*goavro.Codec, int, error) {
 	return sm.GetOrLoadCodecBySubject(schema.Subject, schema.AvscPath)
 }
 func (sm *SchemaManagerImpl) GetOrLoadCodecBySubject(subject, avscPath string) (*goavro.Codec, int, error) {
@@ -100,4 +100,4 @@ func loadSchemaFile(path string) (string, error) {
 }
 
 // INTERFACE
-var _ schema_manager.ISchemaManager = (*SchemaManagerImpl)(nil)
+var _ manager.ISchemaManager = (*SchemaManagerImpl)(nil)

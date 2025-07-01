@@ -1,4 +1,4 @@
-package global_model
+package model
 
 import (
 	"MVC_DI/global/enum"

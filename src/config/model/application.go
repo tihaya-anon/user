@@ -1,4 +1,4 @@
-package config_model
+package model
 
 type app struct {
 	Host string

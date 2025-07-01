@@ -1,20 +1,20 @@
-package avro_serializer_impl
+package serializer_impl
 
 import (
-	schema_manager "MVC_DI/infra/avro/schema/manager"
-	schema_mapping "MVC_DI/infra/avro/schema/mapping"
-	avro_serializer "MVC_DI/infra/avro/serializer"
+	"MVC_DI/infra/avro/schema/manager"
+	"MVC_DI/infra/avro/schema/mapping"
+	"MVC_DI/infra/avro/serializer"
 	payload_util "MVC_DI/util/payload"
 
 	"google.golang.org/protobuf/proto"
 )
 
 type AvroSerializerImpl struct {
-	SchemaMapping schema_mapping.ISchemaMapping
-	SchemaManager schema_manager.ISchemaManager
+	SchemaMapping mapping.ISchemaMapping
+	SchemaManager manager.ISchemaManager
 }
 
-func NewAvroSerializer(schemaMapping schema_mapping.ISchemaMapping, schemaManager schema_manager.ISchemaManager) *AvroSerializerImpl {
+func NewAvroSerializer(schemaMapping mapping.ISchemaMapping, schemaManager manager.ISchemaManager) *AvroSerializerImpl {
 	return &AvroSerializerImpl{SchemaMapping: schemaMapping, SchemaManager: schemaManager}
 }
 func (s *AvroSerializerImpl) SerializeProtoMessage(message proto.Message) (subject string, schemaId int64, payload []byte, err error) {
@@ -38,4 +38,4 @@ func (s *AvroSerializerImpl) SerializeProtoMessage(message proto.Message) (subje
 }
 
 // INTERFACE
-var _ avro_serializer.IAvroSerializer = (*AvroSerializerImpl)(nil)
+var _ serializer.IAvroSerializer = (*AvroSerializerImpl)(nil)
