@@ -1,8 +1,8 @@
 package builder
 
 import (
-  service "{{.pkg}}/section/{{.entity_name}}/service"
-  controller "{{.pkg}}/section/{{.entity_name}}/controller"
+  "{{.pkg}}/section/{{.entity_name}}/service"
+  "{{.pkg}}/section/{{.entity_name}}/controller"
 )
 
 func (builder *{{.TableName}}ControllerBuilder) Build() *controller.{{.TableName}}Controller {

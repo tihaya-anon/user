@@ -1,13 +1,13 @@
-package permission_service_impl
+package impl
 
 import (
-	permission_mapper "MVC_DI/section/permission/mapper"
-	permission_service "MVC_DI/section/permission/service"
+	"MVC_DI/section/permission/service"
+	"MVC_DI/section/permission/mapper"
 )
 
-type PermissionServiceImpl struct {
-	PermissionMapper permission_mapper.PermissionMapper
+type PermissionServiceImpl struct{
+	PermissionMapper mapper.PermissionMapper
 }
 
 // INTERFACE
-var _ permission_service.PermissionService = (*PermissionServiceImpl)(nil)
+var _ service.PermissionService = (*PermissionServiceImpl)(nil)

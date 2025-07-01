@@ -1,36 +1,36 @@
-package user_controller_builder
+package builder
 
 import (
-	user_controller "MVC_DI/section/user/controller"
-	user_service "MVC_DI/section/user/service"
+  "MVC_DI/section/user/service"
+  "MVC_DI/section/user/controller"
 )
 
-func (builder *UserControllerBuilder) Build() *user_controller.UserController {
-	if builder.isStrict && builder.userController.UserService == nil {
-		panic("`UserService` is required")
-	}
-	return builder.userController
+func (builder *UserControllerBuilder) Build() *controller.UserController {
+  if builder.isStrict && builder.userController.UserService == nil {
+    panic("`UserService` is required")
+  }
+  return builder.userController
 }
 
-func (builder *UserControllerBuilder) WithUserService(userService user_service.UserService) *UserControllerBuilder {
-	builder.userController.UserService = userService
-	return builder
+func (builder *UserControllerBuilder) WithUserService(userService service.UserService) *UserControllerBuilder {
+  builder.userController.UserService = userService
+  return builder
 }
 
 // BUILDER
 type UserControllerBuilder struct {
-	isStrict       bool
-	userController *user_controller.UserController
+  isStrict bool
+  userController *controller.UserController
 }
 
 func NewUserControllerBuilder() *UserControllerBuilder {
-	return &UserControllerBuilder{
-		isStrict:       false,
-		userController: &user_controller.UserController{},
-	}
+  return &UserControllerBuilder{
+    isStrict: false,
+    userController: &controller.UserController{},
+  }
 }
 
-func (builder *UserControllerBuilder) UseStrict() *UserControllerBuilder {
-	builder.isStrict = true
-	return builder
+func (builder *UserControllerBuilder) UseStrict() *UserControllerBuilder { 
+  builder.isStrict = true
+  return builder
 }

@@ -6,7 +6,6 @@ import (
 )
 
 func Test_MVC(t *testing.T) {
-	gen.GenerateMVC("MVC_DI", "section", "auth", []string{"auth"})
 	gen.GenerateMVC("MVC_DI", "section", "user", []string{"user"})
 	gen.GenerateMVC("MVC_DI", "section", "credential", []string{"credential"})
 	gen.GenerateMVC("MVC_DI", "section", "permission", []string{"permission"})

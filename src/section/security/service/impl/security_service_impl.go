@@ -1,13 +1,13 @@
-package security_service_impl
+package impl
 
 import (
-	security_mapper "MVC_DI/section/security/mapper"
-	security_service "MVC_DI/section/security/service"
+	"MVC_DI/section/security/service"
+	"MVC_DI/section/security/mapper"
 )
 
-type SecurityServiceImpl struct {
-	SecurityMapper security_mapper.SecurityMapper
+type SecurityServiceImpl struct{
+	SecurityMapper mapper.SecurityMapper
 }
 
 // INTERFACE
-var _ security_service.SecurityService = (*SecurityServiceImpl)(nil)
+var _ service.SecurityService = (*SecurityServiceImpl)(nil)

@@ -1,13 +1,13 @@
-package credential_service_impl
+package impl
 
 import (
-	credential_mapper "MVC_DI/section/credential/mapper"
-	credential_service "MVC_DI/section/credential/service"
+	"MVC_DI/section/credential/service"
+	"MVC_DI/section/credential/mapper"
 )
 
-type CredentialServiceImpl struct {
-	CredentialMapper credential_mapper.CredentialMapper
+type CredentialServiceImpl struct{
+	CredentialMapper mapper.CredentialMapper
 }
 
 // INTERFACE
-var _ credential_service.CredentialService = (*CredentialServiceImpl)(nil)
+var _ service.CredentialService = (*CredentialServiceImpl)(nil)

@@ -1,36 +1,36 @@
-package security_service_builder
+package builder
 
 import (
-	security_mapper "MVC_DI/section/security/mapper"
-	security_service "MVC_DI/section/security/service"
-	security_service_impl "MVC_DI/section/security/service/impl"
+	"MVC_DI/section/security/service"
+	"MVC_DI/section/security/service/impl"
+	"MVC_DI/section/security/mapper"
 )
 
-func (builder *SecurityServiceBuilder) Build() security_service.SecurityService {
+func (builder *SecurityServiceBuilder) Build() service.SecurityService {
 	if builder.isStrict && builder.securityServiceImpl.SecurityMapper == nil {
 		panic("`SecurityMapper` is required")
 	}
 	return builder.securityServiceImpl
 }
 
-func (builder *SecurityServiceBuilder) WithSecurityMapper(mapper security_mapper.SecurityMapper) *SecurityServiceBuilder {
+func (builder *SecurityServiceBuilder) WithSecurityMapper(mapper mapper.SecurityMapper) *SecurityServiceBuilder {
 	builder.securityServiceImpl.SecurityMapper = mapper
 	return builder
 }
 
 // BUILDER
 type SecurityServiceBuilder struct {
-	isStrict            bool
-	securityServiceImpl *security_service_impl.SecurityServiceImpl
+  isStrict bool
+	securityServiceImpl *impl.SecurityServiceImpl
 }
 
 func NewSecurityServiceBuilder() *SecurityServiceBuilder {
 	return &SecurityServiceBuilder{
-		securityServiceImpl: &security_service_impl.SecurityServiceImpl{},
+		securityServiceImpl: &impl.SecurityServiceImpl{},
 	}
 }
 
-func (builder *SecurityServiceBuilder) UseStrict() *SecurityServiceBuilder {
-	builder.isStrict = true
-	return builder
+func (builder *SecurityServiceBuilder) UseStrict() *SecurityServiceBuilder { 
+  builder.isStrict = true
+  return builder
 }

@@ -1,16 +1,15 @@
-package security_controller
+package controller
 
 import (
-	security_service "MVC_DI/section/security/service"
-	"MVC_DI/vo/resp"
-
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"MVC_DI/section/security/service"
+	"MVC_DI/vo/resp"
 )
 
 type SecurityController struct {
-	SecurityService security_service.SecurityService
-	Logger          *logrus.Logger
+	SecurityService service.SecurityService
+	Logger *logrus.Logger
 }
 
 func (ctrl *SecurityController) Hello(ctx *gin.Context) *resp.TResponse {

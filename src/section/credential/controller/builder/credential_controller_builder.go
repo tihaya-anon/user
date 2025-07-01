@@ -1,36 +1,36 @@
-package credential_controller_builder
+package builder
 
 import (
-	credential_controller "MVC_DI/section/credential/controller"
-	credential_service "MVC_DI/section/credential/service"
+  "MVC_DI/section/credential/service"
+  "MVC_DI/section/credential/controller"
 )
 
-func (builder *CredentialControllerBuilder) Build() *credential_controller.CredentialController {
-	if builder.isStrict && builder.credentialController.CredentialService == nil {
-		panic("`CredentialService` is required")
-	}
-	return builder.credentialController
+func (builder *CredentialControllerBuilder) Build() *controller.CredentialController {
+  if builder.isStrict && builder.credentialController.CredentialService == nil {
+    panic("`CredentialService` is required")
+  }
+  return builder.credentialController
 }
 
-func (builder *CredentialControllerBuilder) WithCredentialService(credentialService credential_service.CredentialService) *CredentialControllerBuilder {
-	builder.credentialController.CredentialService = credentialService
-	return builder
+func (builder *CredentialControllerBuilder) WithCredentialService(credentialService service.CredentialService) *CredentialControllerBuilder {
+  builder.credentialController.CredentialService = credentialService
+  return builder
 }
 
 // BUILDER
 type CredentialControllerBuilder struct {
-	isStrict             bool
-	credentialController *credential_controller.CredentialController
+  isStrict bool
+  credentialController *controller.CredentialController
 }
 
 func NewCredentialControllerBuilder() *CredentialControllerBuilder {
-	return &CredentialControllerBuilder{
-		isStrict:             false,
-		credentialController: &credential_controller.CredentialController{},
-	}
+  return &CredentialControllerBuilder{
+    isStrict: false,
+    credentialController: &controller.CredentialController{},
+  }
 }
 
-func (builder *CredentialControllerBuilder) UseStrict() *CredentialControllerBuilder {
-	builder.isStrict = true
-	return builder
+func (builder *CredentialControllerBuilder) UseStrict() *CredentialControllerBuilder { 
+  builder.isStrict = true
+  return builder
 }

@@ -1,14 +1,14 @@
-package security_mapper_impl
+package impl
 
 import (
-	security_mapper "MVC_DI/section/security/mapper"
+	"MVC_DI/section/security/mapper"
 
 	"gorm.io/gorm"
 )
 
-type SecurityMapperImpl struct {
+type SecurityMapperImpl struct{
 	DB *gorm.DB
 }
 
 // INTERFACE
-var _ security_mapper.SecurityMapper = (*SecurityMapperImpl)(nil)
+var _ mapper.SecurityMapper = (*SecurityMapperImpl)(nil)

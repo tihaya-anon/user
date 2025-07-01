@@ -1,14 +1,14 @@
-package user_mapper_impl
+package impl
 
 import (
-	user_mapper "MVC_DI/section/user/mapper"
+	"MVC_DI/section/user/mapper"
 
 	"gorm.io/gorm"
 )
 
-type UserMapperImpl struct {
+type UserMapperImpl struct{
 	DB *gorm.DB
 }
 
 // INTERFACE
-var _ user_mapper.UserMapper = (*UserMapperImpl)(nil)
+var _ mapper.UserMapper = (*UserMapperImpl)(nil)

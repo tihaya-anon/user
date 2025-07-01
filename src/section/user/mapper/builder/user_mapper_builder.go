@@ -1,34 +1,34 @@
-package user_mapper_builder
+package builder
 
 import (
-	user_mapper "MVC_DI/section/user/mapper"
-	user_mapper_impl "MVC_DI/section/user/mapper/impl"
-
+	"MVC_DI/section/user/mapper"
+	"MVC_DI/section/user/mapper/impl"
+	
 	"gorm.io/gorm"
 )
 
-func (builder *UserMapperBuilder) Build() user_mapper.UserMapper {
+func (builder *UserMapperBuilder) Build() mapper.UserMapper {
 	return builder.userMapperImpl
 }
 
 func (builder *UserMapperBuilder) WithDB(DB *gorm.DB) *UserMapperBuilder {
-	builder.userMapperImpl.DB = DB
-	return builder
+  builder.userMapperImpl.DB = DB
+  return builder
 }
 
 // BUILDER
 type UserMapperBuilder struct {
-	isStrict       bool
-	userMapperImpl *user_mapper_impl.UserMapperImpl
+  isStrict bool
+	userMapperImpl *impl.UserMapperImpl
 }
 
 func NewUserMapperBuilder() *UserMapperBuilder {
 	return &UserMapperBuilder{
-		userMapperImpl: &user_mapper_impl.UserMapperImpl{},
+		userMapperImpl: &impl.UserMapperImpl{},
 	}
 }
 
-func (builder *UserMapperBuilder) UseStrict() *UserMapperBuilder {
-	builder.isStrict = true
-	return builder
+func (builder *UserMapperBuilder) UseStrict() *UserMapperBuilder { 
+  builder.isStrict = true
+  return builder
 }

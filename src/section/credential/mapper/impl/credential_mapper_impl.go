@@ -1,14 +1,14 @@
-package credential_mapper_impl
+package impl
 
 import (
-	credential_mapper "MVC_DI/section/credential/mapper"
+	"MVC_DI/section/credential/mapper"
 
 	"gorm.io/gorm"
 )
 
-type CredentialMapperImpl struct {
+type CredentialMapperImpl struct{
 	DB *gorm.DB
 }
 
 // INTERFACE
-var _ credential_mapper.CredentialMapper = (*CredentialMapperImpl)(nil)
+var _ mapper.CredentialMapper = (*CredentialMapperImpl)(nil)

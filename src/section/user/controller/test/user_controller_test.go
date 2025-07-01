@@ -1,1 +1,1 @@
-package user_controller_test
+package test

@@ -1,13 +1,13 @@
-package user_service_impl
+package impl
 
 import (
-	user_mapper "MVC_DI/section/user/mapper"
-	user_service "MVC_DI/section/user/service"
+	"MVC_DI/section/user/service"
+	"MVC_DI/section/user/mapper"
 )
 
-type UserServiceImpl struct {
-	UserMapper user_mapper.UserMapper
+type UserServiceImpl struct{
+	UserMapper mapper.UserMapper
 }
 
 // INTERFACE
-var _ user_service.UserService = (*UserServiceImpl)(nil)
+var _ service.UserService = (*UserServiceImpl)(nil)

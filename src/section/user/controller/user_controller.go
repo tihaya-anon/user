@@ -1,16 +1,15 @@
-package user_controller
+package controller
 
 import (
-	user_service "MVC_DI/section/user/service"
-	"MVC_DI/vo/resp"
-
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"MVC_DI/section/user/service"
+	"MVC_DI/vo/resp"
 )
 
 type UserController struct {
-	UserService user_service.UserService
-	Logger      *logrus.Logger
+	UserService service.UserService
+	Logger *logrus.Logger
 }
 
 func (ctrl *UserController) Hello(ctx *gin.Context) *resp.TResponse {

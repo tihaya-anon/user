@@ -1,1 +1,1 @@
-package permission_service_test
+package test

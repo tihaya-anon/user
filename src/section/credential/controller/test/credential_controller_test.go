@@ -1,1 +1,1 @@
-package credential_controller_test
+package test

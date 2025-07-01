@@ -1,36 +1,36 @@
-package user_service_builder
+package builder
 
 import (
-	user_mapper "MVC_DI/section/user/mapper"
-	user_service "MVC_DI/section/user/service"
-	user_service_impl "MVC_DI/section/user/service/impl"
+	"MVC_DI/section/user/service"
+	"MVC_DI/section/user/service/impl"
+	"MVC_DI/section/user/mapper"
 )
 
-func (builder *UserServiceBuilder) Build() user_service.UserService {
+func (builder *UserServiceBuilder) Build() service.UserService {
 	if builder.isStrict && builder.userServiceImpl.UserMapper == nil {
 		panic("`UserMapper` is required")
 	}
 	return builder.userServiceImpl
 }
 
-func (builder *UserServiceBuilder) WithUserMapper(mapper user_mapper.UserMapper) *UserServiceBuilder {
+func (builder *UserServiceBuilder) WithUserMapper(mapper mapper.UserMapper) *UserServiceBuilder {
 	builder.userServiceImpl.UserMapper = mapper
 	return builder
 }
 
 // BUILDER
 type UserServiceBuilder struct {
-	isStrict        bool
-	userServiceImpl *user_service_impl.UserServiceImpl
+  isStrict bool
+	userServiceImpl *impl.UserServiceImpl
 }
 
 func NewUserServiceBuilder() *UserServiceBuilder {
 	return &UserServiceBuilder{
-		userServiceImpl: &user_service_impl.UserServiceImpl{},
+		userServiceImpl: &impl.UserServiceImpl{},
 	}
 }
 
-func (builder *UserServiceBuilder) UseStrict() *UserServiceBuilder {
-	builder.isStrict = true
-	return builder
+func (builder *UserServiceBuilder) UseStrict() *UserServiceBuilder { 
+  builder.isStrict = true
+  return builder
 }
