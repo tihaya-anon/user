@@ -37,8 +37,8 @@ func Start() {
 	engine.Use(gin.Recovery())
 	global.Green.Printf("activate profile : %s\n", config.Application.Env)
 	global.Green.Printf("listen to        : %s\n", config.Application.App.Uri)
-	publicPath := "/api/v1/public"
-	authPath := "/api/v1/auth"
+	publicPath := "/api/public"
+	authPath := "/api/auth"
 	global.Green.Printf("public path      : %s\n", publicPath)
 	global.Green.Printf("auth path        : %s\n", authPath)
 	startServer(publicPath, authPath, engine, 5*time.Second)

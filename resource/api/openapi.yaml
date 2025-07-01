@@ -9,14 +9,14 @@ security:
 tags:
   - name: Auth
     description: Authentication and session management
-  - name: User
-    description: User lifecycle management
   - name: Credential
     description: User credential management
   - name: Permission
     description: User permission management
   - name: Security
     description: User security management
+  - name: User
+    description: User lifecycle management
 components:
   schemas:
     Empty:

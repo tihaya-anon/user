@@ -2,8 +2,7 @@ package impl
 
 import (
 	"MVC_DI/gen/proto"
-	"MVC_DI/global/context_key"
-	"MVC_DI/infra/avro/serializer"
+	"MVC_DI/infra/event/envelope"
 	"MVC_DI/infra/event/mapper"
 	"MVC_DI/section/auth/dto"
 	"MVC_DI/section/auth/event"
@@ -13,27 +12,24 @@ import (
 )
 
 type AuthEventPublisherImpl struct {
-	AvroSerializer serializer.IAvroSerializer
-	EventMapper    mapper.EventMapper
+	EventMapper          mapper.EventMapper
+	EventEnvelopeFactory envelope.EventEnvelopeFactory
 }
 
 // PublishInvalidSession implements event.AuthEventPublisher.
 func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
-	addLoginAuditLogRequest := &proto.InvalidateSessionRequest{SessionId: sessionId}
-	subject, schemaId, payload, err := a.AvroSerializer.SerializeProtoMessage(addLoginAuditLogRequest)
+	message := &proto.InvalidateSessionRequest{SessionId: sessionId}
+	envelope, err := a.EventEnvelopeFactory.Build(
+		&envelope.EventSubmissionDto{
+			Message:      message,
+			DeliveryMode: proto.DeliveryMode_PUSH,
+			Priority:     proto.Priority_HIGH,
+			TriggerMode:  proto.TriggerMode_ASYNC,
+		},
+	)
 	if err != nil {
 		return err
-	}
-	envelope := &proto.KafkaEnvelope{
-		IdempotencyKey:       context_key.GetIdempotencyKey(ctx),
-		CorrelationId:        context_key.GetCorrelationId(ctx),
-		SchemaSubject:        subject,
-		SchemaId:             schemaId,
-		Priority:             proto.Priority_HIGH,
-		Payload:              payload,
-		DeliveryMode:         proto.DeliveryMode_PUSH,
-		TriggerModeRequested: proto.TriggerMode_ASYNC,
 	}
 	err = a.EventMapper.SubmitEvent(ctx, envelope)
 	if err != nil {
@@ -44,27 +40,23 @@ func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sess
 
 // PublishLoginAudit implements event.AuthEventPublisher.
 func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *dto.PublishLoginAuditDto) error {
-	addLoginAuditLogRequest := &proto.AddLoginAuditLogRequest{
+	message := &proto.AddLoginAuditLogRequest{
 		UserId:     dto.UserId,
 		LoginTime:  timestamppb.Now(),
 		IpAddress:  dto.IpAddress,
 		DeviceInfo: dto.DeviceInfo,
 		Result:     dto.Result,
 	}
-	subject, schemaId, payload, err := a.AvroSerializer.SerializeProtoMessage(addLoginAuditLogRequest)
+	envelope, err := a.EventEnvelopeFactory.Build(
+		&envelope.EventSubmissionDto{
+			Message:      message,
+			DeliveryMode: proto.DeliveryMode_PULL,
+			Priority:     proto.Priority_LOW,
+			TriggerMode:  proto.TriggerMode_ASYNC,
+		},
+	)
 	if err != nil {
-		// TODO log err
 		return err
-	}
-	envelope := &proto.KafkaEnvelope{
-		IdempotencyKey:       context_key.GetIdempotencyKey(ctx),
-		CorrelationId:        context_key.GetCorrelationId(ctx),
-		SchemaSubject:        subject,
-		SchemaId:             schemaId,
-		Priority:             proto.Priority_LOW,
-		Payload:              payload,
-		DeliveryMode:         proto.DeliveryMode_PULL,
-		TriggerModeRequested: proto.TriggerMode_ASYNC,
 	}
 	err = a.EventMapper.SubmitEvent(ctx, envelope)
 	if err != nil {

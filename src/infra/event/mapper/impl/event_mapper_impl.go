@@ -2,6 +2,7 @@ package impl
 
 import (
 	"MVC_DI/gen/proto"
+	"MVC_DI/global/context_key"
 	"MVC_DI/global/enum"
 	"MVC_DI/global/model"
 	"MVC_DI/infra/event/mapper"
@@ -14,6 +15,8 @@ type EventMapperImpl struct {
 
 // SubmitEvent implements mapper.EventMapper.
 func (e *EventMapperImpl) SubmitEvent(ctx context.Context, envelope *proto.KafkaEnvelope) error {
+	envelope.IdempotencyKey = context_key.GetIdempotencyKey(ctx)
+	envelope.CorrelationId = context_key.GetCorrelationId(ctx)
 	response, err := e.KafkaEventServiceClient.SubmitEvent(ctx, &proto.SubmitEventRequest{Envelope: envelope})
 	if err != nil {
 		return err

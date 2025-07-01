@@ -9,8 +9,8 @@ import (
 
 func BindAuthController(ctrl *controller.AuthController) {
 	router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-		publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/auth"))
-		authGroup := router.RoutesWrapper(authRouterGroup.Group("/auth"))
+		publicGroup := router.RoutesWrapper(publicRouterGroup)
+		authGroup := router.RoutesWrapper(authRouterGroup)
 
 		publicGroup.POST("/login").Idem().Handler(ctrl.LoginUser)
 		authGroup.POST("/logout").Idem().Handler(ctrl.LogoutUser)
