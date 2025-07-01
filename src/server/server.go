@@ -24,7 +24,13 @@ func NewServer() *Server {
 func (s *Server) Setup(publicPath, authPath string, engine *gin.Engine) {
 	publicRouterGroup := engine.Group(publicPath)
 	authRouterGroup := engine.Group(authPath)
+
+	publicRouterGroup.Use(middleware.CorrelationIdMiddleware())
+	publicRouterGroup.Use(middleware.RequestIdMiddleware())
+
 	authRouterGroup.Use(middleware.JwtMiddleware())
+	authRouterGroup.Use(middleware.CorrelationIdMiddleware())
+	authRouterGroup.Use(middleware.RequestIdMiddleware())
 
 	for _, registerRouterFunc := range router.RegisterRouterFuncList {
 		registerRouterFunc(publicRouterGroup, authRouterGroup)

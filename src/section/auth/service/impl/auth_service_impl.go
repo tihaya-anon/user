@@ -57,7 +57,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto dto.UserLogin
 				DeviceInfo: "deviceInfo",
 				Result:     result,
 			}
-			_ = a.AuthEventPublisher.PublishLoginAudit(ctx, publishLoginAuditDto)
+			_ = a.AuthEventPublisher.PublishLoginAudit(c, publishLoginAuditDto)
 		})
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (a *AuthServiceImpl) LoginUser(ctx *gin.Context, userLoginDto dto.UserLogin
 			DeviceInfo: "deviceInfo",
 			Result:     proto.LoginResult_SUCCESS,
 		}
-		_ = a.AuthEventPublisher.PublishLoginAudit(ctx, publishLoginAuditDto)
+		_ = a.AuthEventPublisher.PublishLoginAudit(c, publishLoginAuditDto)
 	})
 	response := &dto.UserLoginRespDto{
 		SessionId: *sessionId,

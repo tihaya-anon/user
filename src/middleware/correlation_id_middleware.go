@@ -9,14 +9,8 @@ import (
 
 const CorrelationIdHeader string = "X-Correlation-ID"
 
-func CorrelationIDMiddleware() gin.HandlerFunc {
+func CorrelationIdMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		cid := c.GetHeader(CorrelationIdHeader)
-		if cid == "" {
-			cid = uuid.New().String()
-		}
-		ctx := context_key.WithCorrelationId(c.Request.Context(), cid)
-		c.Request = c.Request.WithContext(ctx)
-		c.Next()
+		bindHeaderToContext(c, context_key.WithCorrelationId, CorrelationIdHeader, func() string { return uuid.NewString() })
 	}
 }

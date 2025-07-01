@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"MVC_DI/global/context_key"
 	"MVC_DI/global/enum"
 	"MVC_DI/security/jwt"
 	"MVC_DI/vo/resp"
@@ -15,7 +16,7 @@ const JwtPrefix string = "Bearer "
 func JwtMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		response := resp.NewResponse()
-		token := ctx.Request.Header.Get(JwtHeader)
+		token := ctx.GetHeader(JwtHeader)
 		if token == "" {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE_MISSING_TOKEN, enum.MSG_MISSING_TOKEN, nil))
 			return
@@ -25,20 +26,10 @@ func JwtMiddleware() gin.HandlerFunc {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE_INVALID_TOKEN, enum.MSG_INVALID_TOKEN, nil))
 			return
 		}
-		ctx.Set("token", &token)
+		c := context_key.WithJwt(ctx.Request.Context(), token)
+		ctx.Request = ctx.Request.WithContext(c)
 		ctx.Next()
 	}
-}
-func GetToken(ctx *gin.Context) *string {
-	token, exists := ctx.Get("token")
-	if !exists {
-		return nil
-	}
-	str, ok := token.(*string)
-	if !ok {
-		return nil
-	}
-	return str
 }
 func extractToken(token string) (bool, string) {
 	isLegal := strings.HasPrefix(token, JwtPrefix) && len(strings.Split(token, " ")) == 2

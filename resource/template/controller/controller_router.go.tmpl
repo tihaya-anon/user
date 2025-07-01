@@ -1,7 +1,6 @@
 package router
 
 import (
-	"{{.pkg}}/middleware"
 	"{{.pkg}}/router"
   "{{.pkg}}/section/{{.entity_name}}/controller"
 	"{{.pkg}}/util"
@@ -11,8 +10,7 @@ import (
 
 func Bind{{.TableName}}Controller (ctrl *controller.{{.TableName}}Controller) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-    // publicGroup := util.RoutesWrapper(publicRouterGroup.Group("/{{.table_name_hyphen}}"))
-    authGroup := util.RoutesWrapper(authRouterGroup.Group("/{{.table_name_hyphen}}"))
-    authGroup.Use(middleware.JwtMiddleware())
+    // publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/{{.table_name_hyphen}}"))
+    // authGroup := router.RoutesWrapper(authRouterGroup.Group("/{{.table_name_hyphen}}"))
   })
 }

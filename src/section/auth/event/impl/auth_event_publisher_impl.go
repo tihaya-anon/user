@@ -26,6 +26,7 @@ func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sess
 		return err
 	}
 	envelope := &proto.KafkaEnvelope{
+		IdempotencyKey:       context_key.GetIdempotencyKey(ctx),
 		CorrelationId:        context_key.GetCorrelationId(ctx),
 		SchemaSubject:        subject,
 		SchemaId:             schemaId,
@@ -53,9 +54,10 @@ func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *dto
 	subject, schemaId, payload, err := a.AvroSerializer.SerializeProtoMessage(addLoginAuditLogRequest)
 	if err != nil {
 		// TODO log err
-		return nil
+		return err
 	}
 	envelope := &proto.KafkaEnvelope{
+		IdempotencyKey:       context_key.GetIdempotencyKey(ctx),
 		CorrelationId:        context_key.GetCorrelationId(ctx),
 		SchemaSubject:        subject,
 		SchemaId:             schemaId,
@@ -68,7 +70,7 @@ func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *dto
 	if err != nil {
 		// TODO log error
 	}
-	return nil
+	return err
 }
 
 // INTERFACE
