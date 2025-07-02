@@ -435,7 +435,51 @@ paths:
           description: User not found
         "400":
           description: Invalid user ID or data
-  /user/{userId}/credentials:
+  /user/me:
+    get:
+      summary: Get user profile information
+      tags:
+        - User
+      operationId: getMeUserProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Empty"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfileResponse"
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID format
+    put:
+      summary: Update user profile information
+      tags:
+        - User
+      operationId: updateMeUserProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUpdateResponse"
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID or data
+  /user/{userId}/credential:
     post:
       summary: Add a new credential for a user
       tags:
@@ -491,7 +535,51 @@ paths:
           description: User not found
         "400":
           description: Invalid user ID
-  /user/{userId}/permissions:
+  /user/me/credential:
+    post:
+      summary: Add a new credential
+      tags:
+        - Credential
+      operationId: addMeCredential
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CredentialAddRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CredentialAddResponse"
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID or credential data
+    get:
+      summary: Get all credentials
+      tags:
+        - Credential
+      operationId: getMeCredentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Empty"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CredentialListResponse"
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID
+  /user/{userId}/permission:
     get:
       summary: Get all permissions for a user
       tags:
@@ -547,6 +635,51 @@ paths:
           description: User not found
         "400":
           description: Invalid user ID or permission data
+  /user/me/permission:
+    get:
+      summary: Get all permissions
+      tags:
+        - Permission
+      operationId: getMeUserPermissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Empty"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionListResponse"
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID
+    post:
+      summary: Set permissions
+      tags:
+        - Permission
+      operationId: setMeUserPermissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PermissionSetRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID or permission data
+
   /user/{userId}/security:
     get:
       summary: Get security settings for a user
@@ -616,6 +749,74 @@ paths:
           required: true
           schema:
             $ref: "#/components/schemas/UserIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SecurityUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+        "404":
+          description: User or security settings not found
+        "400":
+          description: Invalid user ID or security data
+  /user/me/security:
+    get:
+      summary: Get security settings
+      tags:
+        - Security
+      operationId: getMeUserSecurity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Empty"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecuritySettingResponse"
+        "404":
+          description: User or security settings not found
+        "400":
+          description: Invalid user ID
+    post:
+      summary: Create security settings
+      tags:
+        - Security
+      operationId: createMeUserSecurity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SecurityCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+        "409":
+          description: Security settings already exist
+        "404":
+          description: User not found
+        "400":
+          description: Invalid user ID or security data
+    put:
+      summary: Update security settings
+      tags:
+        - Security
+      operationId: updateMeUserSecurity
       requestBody:
         content:
           application/json:
