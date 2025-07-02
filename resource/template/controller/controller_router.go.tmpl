@@ -9,7 +9,7 @@ import (
 
 func Bind{{.TableName}}Controller (ctrl *controller.{{.TableName}}Controller) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-    // publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/{{.table_name_hyphen}}"))
-    // authGroup := router.RoutesWrapper(authRouterGroup.Group("/{{.table_name_hyphen}}"))
+    // publicGroup := router.RoutesWrapper(publicRouterGroup)
+    // authGroup := router.RoutesWrapper(authRouterGroup)
   })
 }

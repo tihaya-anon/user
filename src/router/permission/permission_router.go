@@ -9,7 +9,7 @@ import (
 
 func BindPermissionController (ctrl *controller.PermissionController) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-    // publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/permission"))
-    // authGroup := router.RoutesWrapper(authRouterGroup.Group("/permission"))
+    // publicGroup := router.RoutesWrapper(publicRouterGroup)
+    // authGroup := router.RoutesWrapper(authRouterGroup)
   })
 }

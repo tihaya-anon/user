@@ -9,7 +9,7 @@ import (
 
 func BindSecurityController (ctrl *controller.SecurityController) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-    // publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/security"))
-    // authGroup := router.RoutesWrapper(authRouterGroup.Group("/security"))
+    // publicGroup := router.RoutesWrapper(publicRouterGroup)
+    // authGroup := router.RoutesWrapper(authRouterGroup)
   })
 }

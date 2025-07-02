@@ -9,7 +9,7 @@ import (
 
 func BindCredentialController (ctrl *controller.CredentialController) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-    // publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/credential"))
-    // authGroup := router.RoutesWrapper(authRouterGroup.Group("/credential"))
+    // publicGroup := router.RoutesWrapper(publicRouterGroup)
+    // authGroup := router.RoutesWrapper(authRouterGroup)
   })
 }

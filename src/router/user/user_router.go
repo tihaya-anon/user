@@ -9,7 +9,7 @@ import (
 
 func BindUserController (ctrl *controller.UserController) {
   router.RegisterRouter(func(publicRouterGroup *gin.RouterGroup, authRouterGroup *gin.RouterGroup) {
-    // publicGroup := router.RoutesWrapper(publicRouterGroup.Group("/user"))
-    // authGroup := router.RoutesWrapper(authRouterGroup.Group("/user"))
+    // publicGroup := router.RoutesWrapper(publicRouterGroup)
+    // authGroup := router.RoutesWrapper(authRouterGroup)
   })
 }
