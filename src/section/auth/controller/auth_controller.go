@@ -34,7 +34,7 @@ func (ctrl *AuthController) LoginUser(ctx *gin.Context) *resp.TResponse {
 	}
 	userLoginRespDto, err := ctrl.AuthService.LoginUser(ctx, userLoginDto)
 	if err != nil {
-		return controller_uitl.ExposeError(response, err,
+		return controller_uitl.ExposeError(response, ctrl.Logger, err,
 			auth_enum.UNKNOWN_CREDENTIAL{},
 			auth_enum.PASSWORD_WRONG{},
 			auth_enum.EMAIL_CODE_WRONG{},
@@ -58,7 +58,7 @@ func (ctrl *AuthController) LogoutUser(ctx *gin.Context) *resp.TResponse {
 
 	err := ctrl.AuthService.LogoutUser(ctx, *sessionId)
 	if err != nil {
-		return controller_uitl.ExposeError(response, err,
+		return controller_uitl.ExposeError(response, ctrl.Logger, err,
 			auth_enum.UNKNOWN_SESSION{},
 		)
 	}
