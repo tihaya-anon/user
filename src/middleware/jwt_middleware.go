@@ -3,7 +3,6 @@ package middleware
 import (
 	"MVC_DI/global/context_key"
 	"MVC_DI/global/enum"
-	"MVC_DI/security/jwt"
 	"MVC_DI/vo/resp"
 	"strings"
 
@@ -22,7 +21,7 @@ func JwtMiddleware() gin.HandlerFunc {
 			return
 		}
 		isLegal, token := extractToken(token)
-		if !isLegal || !jwt.CheckJWT(token) {
+		if !isLegal {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE_INVALID_TOKEN, enum.MSG_INVALID_TOKEN, nil))
 			return
 		}

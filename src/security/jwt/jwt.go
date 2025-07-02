@@ -40,7 +40,3 @@ func ParseJWT[T any](tokenString string) (T, error) {
 	return claims.Claims, err
 }
 
-func CheckJWT(tokenString string) bool {
-	_, err := ParseJWT[any](tokenString)
-	return err == nil
-}
