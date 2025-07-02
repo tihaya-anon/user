@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//go:generate mockgen -source=service.go -destination=..\..\..\mock\auth\service\service_mock.go -package=service_mock
+//go:generate mockgen -source=auth_service.go -destination=..\..\..\mock\auth\service\auth_service_mock.go -package=service_mock
 type AuthService interface {
 	// LoginUser
 	//
