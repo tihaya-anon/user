@@ -31,9 +31,9 @@ func (e *AppError) WithStatusKey(statusKey any) *AppError {
 	return e
 }
 
-// WithStatusKey
+// WithStatusKeyOptionalMap
 //
-// must use struct enum from package global.enum
+// must use struct enum from optionalMap
 func (e *AppError) WithStatusKeyOptionalMap(statusKey any, optionalMap *enum.StatusMap) *AppError {
 	status := (*optionalMap)[statusKey]
 	e.status = status

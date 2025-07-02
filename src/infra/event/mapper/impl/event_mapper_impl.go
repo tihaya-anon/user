@@ -3,9 +3,9 @@ package impl
 import (
 	"MVC_DI/gen/proto"
 	"MVC_DI/global/context_key"
-	"MVC_DI/global/enum"
-	"MVC_DI/global/model"
+	"MVC_DI/infra/event/handler"
 	"MVC_DI/infra/event/mapper"
+	"MVC_DI/middleware"
 	"context"
 )
 
@@ -17,24 +17,15 @@ type EventMapperImpl struct {
 func (e *EventMapperImpl) SubmitEvent(ctx context.Context, envelope *proto.KafkaEnvelope) error {
 	envelope.IdempotencyKey = context_key.GetIdempotencyKey(ctx)
 	envelope.CorrelationId = context_key.GetCorrelationId(ctx)
+
+	envelope.Headers[middleware.IdempotencyKeyHeader] = envelope.IdempotencyKey
+	envelope.Headers[middleware.CorrelationIdHeader] = envelope.CorrelationId
+	envelope.Headers[middleware.RequestIdHeader] = context_key.GetRequestId(ctx)
 	response, err := e.KafkaEventServiceClient.SubmitEvent(ctx, &proto.SubmitEventRequest{Envelope: envelope})
 	if err != nil {
-		return err
+		return handler.HandleGrpcError(err)
 	}
-
-	switch envelope.GetTriggerModeRequested() {
-	case proto.TriggerMode_ASYNC:
-		return nil
-
-	case proto.TriggerMode_SYNC:
-		if response.GetStatus() != proto.EventStatus_PROCESSED_SUCCESS {
-			return model.NewAppError().WithStatusKey(enum.GRPC_ERROR{}).WithDetail(response.GetStatus().String())
-		}
-		return nil
-
-	default:
-		return model.NewAppError().WithStatusKey(enum.UNKNOWN_TRIGGER_MODE{}).WithDetail(envelope.GetTriggerModeRequested().String())
-	}
+	return handler.ValidateEventResponse(envelope, response)
 }
 
 // INTERFACE
