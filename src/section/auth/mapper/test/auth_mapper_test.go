@@ -1,5 +1,8 @@
 package mapper_test
 
+//go:generate mockgen -destination=../../../../mock/gen/proto/auth_session_mock.go -package=proto_mock MVC_DI/gen/proto AuthSessionServiceClient
+//go:generate mockgen -destination=../../../../mock/gen/proto/auth_credential_mock.go -package=proto_mock MVC_DI/gen/proto AuthCredentialServiceClient
+
 import (
 	"context"
 	"errors"

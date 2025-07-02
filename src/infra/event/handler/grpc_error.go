@@ -13,7 +13,7 @@ func HandleGrpcError(err error) *model.AppError {
 	s, ok := status.FromError(err)
 	if !ok {
 		return model.NewAppError().
-			WithStatusKey(enum.GRPC_ERROR{}).
+			WithStatusKey(enum.SYSTEM_ERROR{}).
 			WithDetail(fmt.Sprintf("non-gRPC error: %v", err))
 	}
 

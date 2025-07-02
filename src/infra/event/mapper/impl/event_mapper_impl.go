@@ -18,6 +18,7 @@ func (e *EventMapperImpl) SubmitEvent(ctx context.Context, envelope *proto.Kafka
 	envelope.IdempotencyKey = context_key.GetIdempotencyKey(ctx)
 	envelope.CorrelationId = context_key.GetCorrelationId(ctx)
 
+	envelope.Headers = make(map[string]string)
 	envelope.Headers[middleware.IdempotencyKeyHeader] = envelope.IdempotencyKey
 	envelope.Headers[middleware.CorrelationIdHeader] = envelope.CorrelationId
 	envelope.Headers[middleware.RequestIdHeader] = context_key.GetRequestId(ctx)

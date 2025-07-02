@@ -10,7 +10,7 @@ import (
 func ValidateEventResponse(
 	envelope *proto.KafkaEnvelope,
 	resp *proto.SubmitEventResponse,
-) *model.AppError {
+) error {
 
 	reqMode := envelope.GetTriggerModeRequested()
 	effMode := resp.GetTriggerModeEffective()

@@ -34,9 +34,6 @@ func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sess
 	eventEnvelope.TopicName = envelope.AUTH_EVENT_TOPIC
 	eventEnvelope.EventType = event.INNVALID_SESSION_EVENT
 	err = a.EventMapper.SubmitEvent(ctx, eventEnvelope)
-	if err != nil {
-		// TODO log err
-	}
 	return err
 }
 
@@ -63,9 +60,6 @@ func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *dto
 	eventEnvelope.TopicName = envelope.AUTH_EVENT_TOPIC
 	eventEnvelope.EventType = event.LOGIN_AUDIT_EVENT
 	err = a.EventMapper.SubmitEvent(ctx, eventEnvelope)
-	if err != nil {
-		// TODO log error
-	}
 	return err
 }
 
