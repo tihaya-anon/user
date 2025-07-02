@@ -20,7 +20,7 @@ type AuthEventPublisherImpl struct {
 func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sessionId int64) error {
 	// TODO: dynamically decide the trigger mode
 	message := &proto.InvalidateSessionRequest{SessionId: sessionId}
-	envelope, err := a.EventEnvelopeFactory.Build(
+	eventEnvelope, err := a.EventEnvelopeFactory.Build(
 		&envelope.EventSubmissionDto{
 			Message:      message,
 			DeliveryMode: proto.DeliveryMode_PUSH,
@@ -31,7 +31,9 @@ func (a *AuthEventPublisherImpl) PublishInvalidSession(ctx context.Context, sess
 	if err != nil {
 		return err
 	}
-	err = a.EventMapper.SubmitEvent(ctx, envelope)
+	eventEnvelope.TopicName = envelope.AUTH_EVENT_TOPIC
+	eventEnvelope.EventType = event.INNVALID_SESSION_EVENT
+	err = a.EventMapper.SubmitEvent(ctx, eventEnvelope)
 	if err != nil {
 		// TODO log err
 	}
@@ -47,7 +49,7 @@ func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *dto
 		DeviceInfo: dto.DeviceInfo,
 		Result:     dto.Result,
 	}
-	envelope, err := a.EventEnvelopeFactory.Build(
+	eventEnvelope, err := a.EventEnvelopeFactory.Build(
 		&envelope.EventSubmissionDto{
 			Message:      message,
 			DeliveryMode: proto.DeliveryMode_PULL,
@@ -58,7 +60,9 @@ func (a *AuthEventPublisherImpl) PublishLoginAudit(ctx context.Context, dto *dto
 	if err != nil {
 		return err
 	}
-	err = a.EventMapper.SubmitEvent(ctx, envelope)
+	eventEnvelope.TopicName = envelope.AUTH_EVENT_TOPIC
+	eventEnvelope.EventType = event.LOGIN_AUDIT_EVENT
+	err = a.EventMapper.SubmitEvent(ctx, eventEnvelope)
 	if err != nil {
 		// TODO log error
 	}

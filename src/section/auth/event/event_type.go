@@ -1,0 +1,6 @@
+package event
+
+const (
+	INNVALID_SESSION_EVENT = "INNVALID_SESSION"
+	LOGIN_AUDIT_EVENT      = "LOGIN_AUDIT"
+)
